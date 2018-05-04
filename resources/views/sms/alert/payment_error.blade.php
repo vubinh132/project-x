@@ -1,0 +1,1 @@
+Loi: nguoi dung {{ $params['name'] }} thanh toan ve voi ma {{ $params['booking_no'] }} qua {{ $params['payment_method'] }} that bai

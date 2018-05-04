@@ -1,0 +1,1 @@
+Tom tat ve dien tu cua ban {{ $params['departure_date'] }}/{{ $params['airline'] }}/{{ $params['flight_no'] }}/{{ $params['flight'] }}/{{ $params['booking_no'] }}. So luong hanh khach: {{ $params['passenger_no'] }}. Chi tiet LH 19009099 (Viettel: 500d/p, Mang khac: 1000d/p).

@@ -1,0 +1,101 @@
+/* Custom Datatable CSS */
+.dataTables_wrapper {
+  .dataTables_paginate {
+    float: none;
+    text-align: center;
+  }
+
+  .dataTables_filter {
+    .search-text {
+      width: 300px;
+    }
+
+    .input-group {
+      label {
+        padding-top: 10px;
+      }
+    }
+  }
+}
+
+/* Custom bootbox modal */
+.bootbox {
+  &.modal {
+    top: 20%;
+
+    @media screen and (max-width: 767px) {
+      top: 5%;
+    }
+
+    .modal-dialog {
+      margin: 30px auto;
+    }
+  }
+}
+
+ul.alert {
+  padding-left: 30px;
+}
+
+/* Bootstrap Multiselect */
+.multiselect-native-select {
+  .multiselect-container.dropdown-menu {
+    width: 100% !important;
+
+    label.checkbox {
+      input[type=checkbox] {
+        opacity: 1;
+      }
+    }
+
+    label.radio {
+      input[type=radio] {
+        opacity: 1;
+      }
+    }
+  }
+
+  .btn-group {
+    width: 100% !important;
+
+    .multiselect {
+      width: 100% !important;
+    }
+
+    button {
+      &.multiselect {
+        text-align: left;
+
+        &::after {
+          float: right;
+          margin-top: 7px;
+        }
+      }
+    }
+  }
+}
+
+/* Row Sorter */
+table.sorting-table {cursor: move;}
+table tr.sorting-row td {background-color: #ddd;}
+
+.left-label {
+  display: inline-block;
+  font-weight: 500;
+  width: 110px;
+}
+
+/* Bootbox confirm */
+.bootbox-confirm{
+  .modal-dialog{
+    .modal-content{
+      .modal-header{
+        padding: 5px 15px;
+
+        .modal-title{
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}

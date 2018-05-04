@@ -1,0 +1,1 @@
+Loi: nguoi dung {{ $params['name'] }} giu ve chuyen bay tu {{ $params['departure'] }} den {{ $params['arrival'] }} that bai

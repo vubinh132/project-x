@@ -1,0 +1,1 @@
+Your Viettel Booking password has been updated. Please login with new password.

@@ -1,0 +1,1 @@
+{{ $params['otp'] }} is your {{ config('app.name') }} OTP.

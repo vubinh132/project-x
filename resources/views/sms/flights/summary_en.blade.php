@@ -1,0 +1,1 @@
+Your flight info: {{ $params['departure_date'] }}/{{ $params['airline'] }}/{{ $params['flight_no'] }}/{{ $params['flight'] }}/{{ $params['booking_no'] }}. # Passenger: {{ $params['passenger_no'] }}. Please contact 19009099 (Viettel subscription 500d/min, Other: 1000d/min) for support.

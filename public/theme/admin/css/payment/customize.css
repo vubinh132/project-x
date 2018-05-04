@@ -1,0 +1,278 @@
+﻿/* Styling for the Slim Loading Progress Bar container */
+.slim-loading-bar {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+}
+
+/* Styling for the Slim Loading Progress Bar itself */
+.slim-loading-bar-progress {
+    margin: 0;
+    padding: 0;
+    z-index: 99998;
+    background-color: green;
+    color: green;
+    box-shadow: 0 0 10px 0; /* Inherits the font color */
+    height: 2px;
+    opacity: 0;
+
+    /* Add CSS3 styles for transition smoothing */
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.icon-en{
+    background-position: -235px -138px;
+}
+
+.has-error input{
+    border-color: #c52b28 !important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.has-error input:focus{
+    border-color: #843534;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483;
+}
+
+.help-block {
+    font-size: 13px;
+    /*padding-top: 5px;*/
+    color: #c52b28;
+    position: absolute;
+}
+
+.frm__item{
+    margin-bottom: 25px;
+}
+
+.intl-tel-input{
+    width: 100%;
+}
+
+.flag-container .country-list{
+    max-width: 330px;
+    z-index: 6;
+}
+
+.irs-line-mid, .irs-line-left, .irs-line-right, .irs-bar, .irs-bar-edge, .irs-slider{
+    background: url(../images/sprite-skin-flat.png) repeat-x;
+}
+
+.irs-bar{
+    background-position: 0 -60px;
+}
+
+.irs-slider{
+        background-position: 0 -102px;
+        webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 3px #333;
+    -moz-box-shadow: 0px 0px 3px #333;
+    -o-box-shadow: 0px 0px 3px #333;
+    -ms-box-shadow: 0px 0px 3px #333;
+    box-shadow: 0px 0px 3px #333;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.irs-slider.state_hover, .irs-slider:hover{
+    background-position: 0 -102px;
+}
+
+.irs-from, .irs-to, .irs-single{
+    background: #00C2BC;
+}
+
+.irs-from:after, .irs-to:after, .irs-single:after{
+        border-top-color: #00C2BC;
+}
+
+.slider-range{
+    margin-bottom: 15px;
+}
+
+.desti .desti__item .val-selected {
+    min-height: 100px;
+}
+.desti .desti__item .dropdown__inner,
+.slect__passen .dropdown__inner,
+.slect__seats .dropdown__inner {
+    top: -15px;
+}
+
+.filter__tabs--slect a .icon__tabs, 
+.filter__tabs--slect a p {
+  pointer-events: none;
+}
+.filter__tabs--slect .filter__tabs--item:hover:not(.active):before {
+    display: none;
+}
+
+.airlines__filter .airlines__filter--slider .swiper-container .swiper-slide.swiper-slide-active:before{
+    background-color: transparent;
+}
+
+.airlines__filter .airlines__filter--slider .swiper-container .swiper-slide.swiper-slide-active .airlines__filter--item{
+    background-color: #eeeeee;
+}
+
+.swiper-slide div a.active{
+    background-color:white !important;
+}
+
+.swiper-slide div a.active:before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #00C2BC;
+}
+
+app-quick-search .booking__new.book__top {
+    display: block;
+    padding-top: 30px;
+}
+
+.ng-touched.ng-invalid:not(form):not(div),form.error .ng-invalid:not(form):not(div):not(control-date)
+{
+    border:thin solid red !important
+}
+
+.form-group .form-control-feedback {
+    top: 29px;
+    right: 23px;
+    color: #3c763d;
+}
+
+.faq__block .faq__items .swiper-button-disabled {
+    cursor: not-allowed;
+}
+
+.page__home--top.book__top .desti__options .daterangepicker__custom .options__frm {
+    margin-right: 0 !important;
+    margin-left: 2%;
+}
+.page__home--top.book__top .desti__options .daterangepicker__custom .options__frm:first-child {
+    margin-left: 0;
+}
+
+#modal__login .btn.btn__big:hover,
+#modal__login .btn.btn__big:active,
+#modal__login .btn.btn__big:focus,
+#modal__register .btn.btn__big:hover,
+#modal__register .btn.btn__big:active,
+#modal__register .btn.btn__big:focus {
+    color: white;
+}
+
+.book__news .tabs__news li a {
+    padding: 9px 17px 7px;
+}
+.process__booking li a:hover:not(.active) span{
+    background-color: #ebebeb;
+    color: #383838;
+    cursor: default;
+}
+.process__booking li a{
+    cursor: default;
+}
+
+.airlines__filter .airlines__filter--slider .airlines__filter--item img {
+    height: auto;
+    width: 60px;
+    margin: auto;
+}
+
+.discount__tooltip{
+    top: -118px;
+    left: 128px;
+}
+.payment__steps li a:hover:not(.active):before{
+    background:none;
+}
+
+.desti .desti__item .val-selected .desti__name {
+    line-height: initial;
+}
+
+.book_tab--item .desti__options .slect__passen .dropdown .dropdown-menu {
+    width: 265px;
+}
+.icon-hourglass{
+    -webkit-transform: rotate(-180deg);
+    
+}
+.icons.icon-hourglass{
+    width: 67px;
+    background-position: -405px -235px;
+}
+.rotate
+{
+  -webkit-transform: rotate(0deg);
+  -webkit-transition: -webkit-transform 1s;
+}
+
+.booking__new .book__ticket--promoyear .promo__year .swiper__prev.swiper-button-disabled, 
+.booking__new .book__ticket--promoyear .promo__year .swiper__next.swiper-button-disabled{
+    opacity: 1;
+}
+
+.desti .desti__item .dropdown__inner li a {
+    transition: 0.15s all ease;
+    border-left: 0;
+}
+.desti .desti__item .dropdown__inner li:hover a {
+    border-color: transparent;
+    padding-left: 15px;
+    background-color: #ececec;
+}
+.desti .desti__item .dropdown__inner li:hover {
+    border-color: #e1e1e1;
+}
+.desti .desti__item .dropdown__inner li.active,
+.desti .desti__item .dropdown__inner li.active a {
+    background-color: #f1f1f1;
+    border-color: #00c2bc;
+}
+.result__overview .result__overview--right .option__slect {
+    float: right;
+    margin-right: 0;
+    margin-left: 2%;
+}
+.result__overview .result__overview--right .option__slect:last-child {
+    margin-left: 0;
+}
+.desti .desti__item .dropdown__inner li.is-country {
+    padding: 0;
+    font-weight: 700;
+    background-color: #ececec;
+}
+.ticket__airlines .ticket__infor .airlines__logo {
+    margin-right: 15px;
+}
+.ticket__airlines .ticket__infor .ticket__airline--time {
+    float: left;
+}
+.header__top.header-freezing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+}
