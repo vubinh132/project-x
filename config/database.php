@@ -50,7 +50,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'host' => $host,
-            'databas' => $database,
+            'database' => $database,
             'username' => $username,
             'password' => $password,
             'charset' => 'utf8mb4',
