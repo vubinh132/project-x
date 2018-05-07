@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Viettel Booking') }}</title>
+    <title>{{ config('app.name', 'X-CMS') }}</title>
 
     <!-- Theme Styles -->
     <!-- Bootstrap Core CSS -->

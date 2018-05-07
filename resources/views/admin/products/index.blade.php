@@ -52,17 +52,15 @@
                                     <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
                                 </a>
 
-                                {!! Form::open([
-                                    'method'=>'DELETE',
-                                    'url' => ['/admin/products', $item->id],
-                                    'style' => 'display:inline'
-                                ]) !!}
-                                <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
-                                   data-animation="false"
-                                   onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')">
-                                    <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
-                                </a>
-                                {!! Form::close() !!}
+                                <form method="POST" action="{{url('/admin/products/'. $item->id. '/delete')}}"
+                                      style="display:inline ">
+                                    <input type="hidden" class="csrf" name="_token">
+                                    <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
+                                       data-animation="false"
+                                       onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')">
+                                        <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
+                                    </a>
+                                </form>
 
                             </td>
                         </tr>
@@ -72,4 +70,13 @@
             </div>
         </div>
     </div>
+@section('extra_scripts')
+    <script type="text/javascript">
+    var csrf = "{{ csrf_token() }}";
+    setCSRF();
+    function setCSRF() {
+        $('.csrf').val(csrf);
+    }
+    </script>
+@endsection
 @endsection

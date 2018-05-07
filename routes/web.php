@@ -35,7 +35,9 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
     //Products
     Route::post('admin/products/{id}/change-image', 'Admin\\ProductsController@changeImage');
+    Route::post('admin/products/{id}/delete', 'Admin\\ProductsController@destroy');
     Route::resource('admin/products', 'Admin\\ProductsController');
+
 
     //Orders
     Route::resource('admin/orders', 'Admin\\OrdersController');
