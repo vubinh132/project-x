@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\CommonService;
+use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Log, File, Session;
@@ -17,10 +19,17 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('sku')->get();
+        $products = Product::orderBy('id')->get();
 
         $total = count($products);
 
+        foreach ($products as $product){
+            $product->status = $product->statusText();
+            $product->quantity = HTMLService::getProductQuantity($product);
+            $product->avgValue = HTMLService::getAVGValue($product);
+            $product->editLink = url('/admin/products/' . $product->id . '/edit');
+            $product->deleteLink = url('/admin/products/'. $product->id. '/delete');
+        }
 
         return view('admin.products.index', compact('products', 'total'));
     }

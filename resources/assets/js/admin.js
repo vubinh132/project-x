@@ -217,3 +217,20 @@ function isNumberKey(evt){
     var charCode = (evt.which) ? evt.which : event.keyCode;
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
+
+/**
+ * ANGULAR JS
+ */
+
+var app = angular.module('myApp', [], function($interpolateProvider)
+{
+    $interpolateProvider.startSymbol('{%');
+    $interpolateProvider.endSymbol('%}');
+});
+
+app.controller("productIndexCtrl", function ($scope,$sce) {
+    $scope.trustAsHtml = function(html) {
+        return $sce.trustAsHtml(html);
+    }
+    $scope.products = products;
+});

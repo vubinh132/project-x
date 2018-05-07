@@ -12,7 +12,7 @@
             </ol>
         </div>
     </div>
-    <div class="white-box">
+    <div class="white-box" ng-app="myApp" ng-controller="productIndexCtrl">
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">
                 <div class="dataTables_length">
@@ -37,22 +37,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($products as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->sku }}</td>
-                            <td>{{ $item->statusText() }}</td>
-                            {!! \App\Services\HTMLService::getProductQuantity($item) !!}
-                            {!! \App\Services\HTMLService::getAVGPrice($item) !!}
+                        <tr ng-repeat="x in products" on-finish-render="ngRepeatFinished">
+                            <td ng-bind="$index + 1"></td>
+                            <td ng-bind="x.sku"></td>
+                            <td ng-bind="x.status"></td>
+                            <td ng-bind-html="trustAsHtml(x.quantity)"></td>
+                            <td ng-bind-html="trustAsHtml(x.avgValue)"></td>
                             <td>-</td>
                             <td>-</td>
                             <td class="text-center text-nowrap">
-                                <a href="{{ url('/admin/products/' . $item->id . '/edit') }}"
+                                <a ng-href="{%x.editLink%}"
                                    data-toggle="tooltip" title="Update" data-animation="false">
                                     <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
                                 </a>
 
-                                <form method="POST" action="{{url('/admin/products/'. $item->id. '/delete')}}"
+                                <form method="POST" action="{%x.deleteLink%}"
                                       style="display:inline ">
                                     <input type="hidden" class="csrf" name="_token">
                                     <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
@@ -61,10 +60,8 @@
                                         <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
                                     </a>
                                 </form>
-
                             </td>
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -73,10 +70,12 @@
 @section('extra_scripts')
     <script type="text/javascript">
     var csrf = "{{ csrf_token() }}";
+    var products = {!! $products !!};
     setCSRF();
     function setCSRF() {
         $('.csrf').val(csrf);
     }
+
     </script>
 @endsection
 @endsection

@@ -22,7 +22,7 @@ class HTMLService
         return $product->status != Product::STATUS['RESEARCH']? "<td><span class='text-info'>$available</span> | <span class='text-danger'>$inOrder</span> | <span class='text-success'>$sold</span></td>" : "<td>-</td>";
     }
 
-    public static function getAVGPrice($product){
+    public static function getAVGValue($product){
         $AVGPrice = $product->getAVGValue();
         if($AVGPrice){
             return "<td>".CommonService::formatPrice($AVGPrice)."</td>";
