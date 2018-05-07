@@ -17,7 +17,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('id')->get();
+        $products = Product::orderBy('sku')->get();
 
         $total = count($products);
 

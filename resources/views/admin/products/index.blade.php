@@ -39,7 +39,7 @@
                     <tbody>
                     @foreach($products as $item)
                         <tr>
-                            <td>{{ $item->id }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->sku }}</td>
                             <td>{{ $item->statusText() }}</td>
                             {!! \App\Services\HTMLService::getProductQuantity($item) !!}
