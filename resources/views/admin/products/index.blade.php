@@ -22,8 +22,11 @@
                         </a>
                     </label>
                 </div>
+                <div id="loader" style="height: 410px; text-align: center; margin-right: 100px">
+                    <img src="{{asset('images/loader.gif')}}" style="margin-top: 100px">
+                </div>
 
-                <table class="table table-hover">
+                <table class="table table-hover" id="table" style="display: none">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -37,31 +40,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="x in products" on-finish-render="ngRepeatFinished">
-                            <td ng-bind="$index + 1"></td>
-                            <td ng-bind="x.sku"></td>
-                            <td ng-bind="x.status"></td>
-                            <td ng-bind-html="trustAsHtml(x.quantity)"></td>
-                            <td ng-bind-html="trustAsHtml(x.avgValue)"></td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td class="text-center text-nowrap">
-                                <a ng-href="{%x.editLink%}"
-                                   data-toggle="tooltip" title="Update" data-animation="false">
-                                    <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
-                                </a>
+                    <tr ng-repeat="x in products" on-finish-render="ngRepeatFinished">
+                        <td ng-bind="$index + 1"></td>
+                        <td ng-bind="x.sku"></td>
+                        <td ng-bind="x.status"></td>
+                        <td ng-bind-html="trustAsHtml(x.quantity)"></td>
+                        <td ng-bind-html="trustAsHtml(x.avgValue)"></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="text-center text-nowrap">
+                            <a ng-href="{%x.editLink%}"
+                               data-toggle="tooltip" title="Update" data-animation="false">
+                                <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
+                            </a>
 
-                                <form method="POST" action="{%x.deleteLink%}"
-                                      style="display:inline ">
-                                    <input type="hidden" class="csrf" name="_token">
-                                    <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
-                                       data-animation="false"
-                                       onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')">
-                                        <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
-                                    </a>
-                                </form>
-                            </td>
-                        </tr>
+                            <form method="POST" action="{%x.deleteLink%}"
+                                  style="display:inline ">
+                                <input type="hidden" class="csrf" name="_token">
+                                <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
+                                   data-animation="false"
+                                   onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')">
+                                    <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
+                                </a>
+                            </form>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -69,12 +72,13 @@
     </div>
 @section('extra_scripts')
     <script type="text/javascript">
-    var csrf = "{{ csrf_token() }}";
-    var products = {!! $products !!};
-    setCSRF();
-    function setCSRF() {
-        $('.csrf').val(csrf);
-    }
+        var csrf = "{{ csrf_token() }}";
+        var products = {!! $products !!};
+        setCSRF();
+
+        function setCSRF() {
+            $('.csrf').val(csrf);
+        }
 
     </script>
 @endsection

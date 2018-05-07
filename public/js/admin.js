@@ -229,14 +229,15 @@ var app = angular.module('myApp', ['oc.lazyLoad'], function($interpolateProvider
 });
 
 app.controller("productIndexCtrl", function ($scope,$sce) {
+
+    $scope.products = products;
+
     $scope.trustAsHtml = function(html) {
         return $sce.trustAsHtml(html);
     }
-    $scope.products = products;
     $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-
-        console.log("finish");
-
+        $('#loader').hide();
+        $('#table').show();
     });
 });
 app.directive('onFinishRender', function ($timeout) {
