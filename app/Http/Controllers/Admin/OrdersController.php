@@ -19,8 +19,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $test = Order::find(1)->getTotalPrice();
-
+        
         $orders = Order::orderBy('created_at', 'desc')->get();
 
         $total = count($orders);
