@@ -95,8 +95,6 @@ class ProductsController extends Controller
 
         $product = Product::findOrFail($id);
 
-        $product['quantity'] = $product['status'] == Product::STATUS['RESEARCH'] ? 0 : $product['quantity'];
-
         $product->update($requestData);
 
         Session::flash('flash_message', 'Updated!');
