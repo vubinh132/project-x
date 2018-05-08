@@ -156,8 +156,9 @@
         }
 
         function addElementsForProduct(id) {
+            console.log(products);
             for (var key in products) {
-                $('#product_id_' + id).append('<option value="' + key + '">' + products[key] + '</option>');
+                $('#product_id_' + id).append('<option value="' + products[key] + '">' + key + '</option>');
             }
         }
     </script>

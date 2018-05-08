@@ -34,7 +34,7 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get()->pluck('sku', 'id');
+        $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get()->pluck('id', 'sku');
         return view('admin.orders.create', compact('products'));
     }
 
