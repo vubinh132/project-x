@@ -38,7 +38,7 @@
                             Out Of Business
                         </label>
 
-                        <input type="text" class="form-control search-text" id="keyWord" placeholder="Search by SKU...">
+                        <input type="text" class="form-control search-text" id="keyWord" placeholder="Search by SKU..."  ng-pattern = "/^\d+$/">
                         <span class="input-group-btn">
                                     <button class="btn btn-secondary" type="button" id="btnSearch">
                                         Search <i class="fa fa-search"></i>

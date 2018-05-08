@@ -218,6 +218,7 @@ function isNumberKey(evt){
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
 
+
 /**
  * ANGULAR JS
  */
@@ -236,10 +237,25 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
     $('#in, #out, #research').change(function () {
         filter();
         $scope.$apply();
-    })
+    });
+    $(function () {
+        $('#keyWord').keyup(function () {
+            filter();
+            $scope.$apply();
+        });
+    });
 
     function filter() {
         $scope.filteredProducts = [];
+
+        var keyWord = $('#keyWord').val().toLowerCase();
+
+        //validate
+
+        if(!keyWord.match(/^[a-zA-Z0-9_.-]*$/)){
+            keyWord = keyWord.substring(0,keyWord.length-1);
+            $('#keyWord').val(keyWord);
+        }
 
         var filterArray = [];
 
@@ -254,7 +270,7 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
         }
 
         for (var i = 0; i < $scope.products.length; i++) {
-            if (filterArray.indexOf($scope.products[i].status) != -1) {
+            if (filterArray.indexOf($scope.products[i].status) != -1 &&(!keyWord || $scope.products[i].sku.toLowerCase().match(keyWord))) {
                 $scope.filteredProducts.push($scope.products[i]);
             }
         }
