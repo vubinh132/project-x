@@ -23,7 +23,7 @@
                     </label>
                 </div>
                 <div class="dataTables_filter">
-                    {!! Form::open(['method' => 'GET', 'url' => '/admin/users', 'class' => '', 'role' => 'search'])  !!}
+
                     <div class="input-group">
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="in" value="1" id="in" checked>
@@ -38,16 +38,14 @@
                             Out Of Business
                         </label>
 
-                        <input type="text" class="form-control search-text" name="q"
-                               value="{{ Request::get('q') }}"
-                               placeholder="Search by SKU...">
+                        <input type="text" class="form-control search-text" id="keyWord" placeholder="Search by SKU...">
                         <span class="input-group-btn">
-                                    <button class="btn btn-secondary" type="submit">
+                                    <button class="btn btn-secondary" type="button" id="btnSearch">
                                         Search <i class="fa fa-search"></i>
                                     </button>
                                 </span>
                     </div>
-                    {!! Form::close() !!}
+
                 </div>
                 <div id="loader" style="height: 410px; text-align: center; margin-right: 120px">
                     <img src="{{asset('images/loader.gif')}}" style="margin-top: 80px">

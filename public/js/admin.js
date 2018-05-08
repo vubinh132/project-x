@@ -76,13 +76,13 @@ $(document).ready(function () {
         maxHeight: false
     });
 
-    $('.form-control').unbind('keyup change input paste').bind('keyup change input paste',function(e){
+    $('.form-control').unbind('keyup change input paste').bind('keyup change input paste', function (e) {
         var $this = $(this);
         var val = $this.val();
         var valLength = val.length;
         var maxCount = $this.attr('maxlength');
-        if(valLength>maxCount){
-            $this.val($this.val().substring(0,maxCount));
+        if (valLength > maxCount) {
+            $this.val($this.val().substring(0, maxCount));
         }
     });
 });
@@ -213,7 +213,7 @@ function loadImageToImgTag(event) {
     output.src = URL.createObjectURL(event.target.files[0]);
 }
 
-function isNumberKey(evt){
+function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
@@ -236,10 +236,18 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
     $('#in, #out, #research').change(function () {
         filter();
         $scope.$apply();
-    })
+    });
+    $(function () {
+        $('#keyWord').keyup(function () {
+            filter();
+            $scope.$apply();
+        });
+    });
 
     function filter() {
         $scope.filteredProducts = [];
+
+        var keyWord = $('#keyWord').val().toLowerCase();
 
         var filterArray = [];
 
@@ -254,7 +262,7 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
         }
 
         for (var i = 0; i < $scope.products.length; i++) {
-            if (filterArray.indexOf($scope.products[i].status) != -1) {
+            if (filterArray.indexOf($scope.products[i].status) != -1 &&(!keyWord || $scope.products[i].sku.toLowerCase().match(keyWord))) {
                 $scope.filteredProducts.push($scope.products[i]);
             }
         }
