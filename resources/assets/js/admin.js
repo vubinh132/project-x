@@ -222,15 +222,33 @@ function isNumberKey(evt){
  * ANGULAR JS
  */
 
-var app = angular.module('myApp', [], function($interpolateProvider)
+var app = angular.module('myApp', ['oc.lazyLoad'], function($interpolateProvider)
 {
     $interpolateProvider.startSymbol('{%');
     $interpolateProvider.endSymbol('%}');
 });
 
 app.controller("productIndexCtrl", function ($scope,$sce) {
+
+    $scope.products = products;
+
     $scope.trustAsHtml = function(html) {
         return $sce.trustAsHtml(html);
     }
-    $scope.products = products;
+    $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+        $('#loader').hide();
+        $('#table').show();
+    });
+});
+app.directive('onFinishRender', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            if (scope.$last === true) {
+                $timeout(function () {
+                    scope.$emit('ngRepeatFinished');
+                });
+            }
+        }
+    }
 });

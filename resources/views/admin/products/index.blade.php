@@ -22,7 +22,7 @@
                         </a>
                     </label>
                 </div>
-                <div id="loader" style="height: 410px; text-align: center; margin-right: 100px">
+                <div id="loader" style="height: 410px; text-align: center; margin-right: 120px">
                     <img src="{{asset('images/loader.gif')}}" style="margin-top: 100px">
                 </div>
 
