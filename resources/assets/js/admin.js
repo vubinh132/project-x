@@ -222,23 +222,60 @@ function isNumberKey(evt){
  * ANGULAR JS
  */
 
-var app = angular.module('myApp', ['oc.lazyLoad'], function($interpolateProvider)
-{
+var app = angular.module('myApp', ['oc.lazyLoad'], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('{%');
     $interpolateProvider.endSymbol('%}');
 });
 
-app.controller("productIndexCtrl", function ($scope,$sce) {
+app.controller("productIndexCtrl", function ($scope, $sce) {
 
     $scope.products = products;
 
-    $scope.trustAsHtml = function(html) {
+    filter();
+
+    $('#in, #out, #research').change(function () {
+        filter();
+        $scope.$apply();
+    })
+
+    function filter() {
+        $scope.filteredProducts = [];
+
+        var filterArray = [];
+
+        if ($('#in').is(':checked')) {
+            filterArray.push(2);
+        }
+        if ($('#out').is(':checked')) {
+            filterArray.push(3);
+        }
+        if ($('#research').is(':checked')) {
+            filterArray.push(1);
+        }
+
+        for (var i = 0; i < $scope.products.length; i++) {
+            if (filterArray.indexOf($scope.products[i].status) != -1) {
+                $scope.filteredProducts.push($scope.products[i]);
+            }
+        }
+
+        if ($scope.filteredProducts) {
+            $('#loader').hide();
+            $('#table').show();
+        }
+
+        setCSRF();
+    }
+
+    $scope.trustAsHtml = function (html) {
         return $sce.trustAsHtml(html);
     }
+
     $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
         $('#loader').hide();
         $('#table').show();
     });
+
 });
 app.directive('onFinishRender', function ($timeout) {
     return {

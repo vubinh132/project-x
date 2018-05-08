@@ -24,7 +24,7 @@ class ProductsController extends Controller
         $total = count($products);
 
         foreach ($products as $product){
-            $product->status = $product->statusText();
+            $product->statusText = $product->statusText();
             $product->quantity = HTMLService::getProductQuantity($product);
             $product->avgValue = HTMLService::getAVGValue($product);
             $product->editLink = url('/admin/products/' . $product->id . '/edit');

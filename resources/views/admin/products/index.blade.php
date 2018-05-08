@@ -22,8 +22,35 @@
                         </a>
                     </label>
                 </div>
+                <div class="dataTables_filter">
+                    {!! Form::open(['method' => 'GET', 'url' => '/admin/users', 'class' => '', 'role' => 'search'])  !!}
+                    <div class="input-group">
+                        <label style="margin-right: 20px;">
+                            <input type="checkbox" name="in" value="1" id="in" checked>
+                            In Business
+                        </label>
+                        <label style="margin-right: 20px;">
+                            <input type="checkbox" name="research" value="1" id="research">
+                            Research
+                        </label>
+                        <label style="margin-right: 20px;">
+                            <input type="checkbox" name="out" value="1" id="out">
+                            Out Of Business
+                        </label>
+
+                        <input type="text" class="form-control search-text" name="q"
+                               value="{{ Request::get('q') }}"
+                               placeholder="Search by SKU...">
+                        <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="submit">
+                                        Search <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                    </div>
+                    {!! Form::close() !!}
+                </div>
                 <div id="loader" style="height: 410px; text-align: center; margin-right: 120px">
-                    <img src="{{asset('images/loader.gif')}}" style="margin-top: 100px">
+                    <img src="{{asset('images/loader.gif')}}" style="margin-top: 80px">
                 </div>
 
                 <table class="table table-hover" id="table" style="display: none">
@@ -40,10 +67,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="x in products" on-finish-render="ngRepeatFinished">
+                    <tr ng-repeat="x in filteredProducts|orderBy:'sku'" on-finish-render="ngRepeatFinished">
                         <td ng-bind="$index + 1"></td>
                         <td ng-bind="x.sku"></td>
-                        <td ng-bind="x.status"></td>
+                        <td ng-bind="x.statusText"></td>
                         <td ng-bind-html="trustAsHtml(x.quantity)"></td>
                         <td ng-bind-html="trustAsHtml(x.avgValue)"></td>
                         <td>-</td>
@@ -73,7 +100,9 @@
 @section('extra_scripts')
     <script type="text/javascript">
         var csrf = "{{ csrf_token() }}";
+
         var products = {!! $products !!};
+
         setCSRF();
 
         function setCSRF() {

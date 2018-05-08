@@ -60,6 +60,31 @@ class ProductsTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
+            [
+                'sku' => 'BDN01',
+                'status' => 1,
+                'name' => null,
+                'old_price' => null,
+                'price' => null,
+                'description' => null,
+                'content' => null,
+                'image_url' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+            [
+                'sku' => 'BDN02',
+                'status' => 3,
+                'name' => 'BDN01',
+                'old_price' => 25900,
+                'price' => 25900,
+                'description' => 'BDN01',
+                'content' => 'BDN01',
+                'image_url' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
+
         ];
         DB::table('products')->insert($products);
     }
