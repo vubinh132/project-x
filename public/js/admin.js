@@ -279,8 +279,6 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
             $('#loader').hide();
             $('#table').show();
         }
-
-        setCSRF();
     }
 
     $scope.trustAsHtml = function (html) {
@@ -288,8 +286,13 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
     }
 
     $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+
+        setCSRF();
+
         $('#loader').hide();
+
         $('#table').show();
+
     });
 
 });
