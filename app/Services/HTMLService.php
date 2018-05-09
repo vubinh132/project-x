@@ -13,20 +13,20 @@ class HTMLService
     {
         $textClass = $order->getTotalPrice()  >= 0 ? 'text-info' : 'text-danger';
         $price =  $order->getTotalPrice() >=0 ?  CommonService::formatPrice($order->getTotalPrice()): CommonService::formatPrice(-$order->getTotalPrice());
-        return "<td class='$textClass'>$price</td>";
+        return "<span class='$textClass'>$price</span>";
     }
     public static function getProductQuantity($product){
         $available = $product->getAvailableQuantity();
         $inOrder = -$product->getInOrderQuantity();
         $sold = -$product->getSoldQuantity();
-        return $product->status != Product::STATUS['RESEARCH']? "<td><span class='text-info'>$available</span> | <span class='text-danger'>$inOrder</span> | <span class='text-success'>$sold</span></td>" : "<td>-</td>";
+        return $product->status != Product::STATUS['RESEARCH']? "<span class='text-info'>$available</span> | <span class='text-danger'>$inOrder</span> | <span class='text-success'>$sold</span>" : "-";
     }
 
     public static function getAVGValue($product){
         $AVGPrice = $product->getAVGValue();
         if($AVGPrice){
-            return "<td>".CommonService::formatPrice($AVGPrice)."</td>";
+            return CommonService::formatPrice($AVGPrice);
         }
-        return "<td>-</td>";
+        return "-";
 }
 }
