@@ -287,8 +287,6 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
 
     $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
 
-        setCSRF();
-
         $('#loader').hide();
 
         $('#table').show();
@@ -355,8 +353,6 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
     }
 
     $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-
-        setCSRF();
 
         $('#loader').hide();
 
