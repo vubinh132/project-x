@@ -69,7 +69,7 @@
                     <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true" on-finish-render="ngRepeatFinished">
                         <td ng-bind="x.code"></td>
                         <td ng-bind="x.statusText"></td>
-                        <td ng-bind-html="x.totalPrice|trustAsHtml"></td>
+                        <td ng-bind-html="trustAsHtml(x.totalPrice)"></td>
                         <td ng-bind="x.name"></td>
                         <td ng-bind="x.sellingWeb"></td>
                         <td class="text-center text-nowrap">

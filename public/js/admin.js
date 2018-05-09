@@ -285,15 +285,15 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
         return $sce.trustAsHtml(html);
     }
 
-    // $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-    //
-    //     setCSRF();
-    //
-    //     $('#loader').hide();
-    //
-    //     $('#table').show();
-    //
-    // });
+    $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+
+        setCSRF();
+
+        $('#loader').hide();
+
+        $('#table').show();
+
+    });
 
 });
 app.controller("orderIndexCtrl", function ($scope, $sce) {
@@ -354,15 +354,15 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
         return $sce.trustAsHtml(html);
     }
 
-    // $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-    //
-    //     setCSRF();
-    //
-    //     $('#loader').hide();
-    //
-    //     $('#table').show();
-    //
-    // });
+    $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+
+        setCSRF();
+
+        $('#loader').hide();
+
+        $('#table').show();
+
+    });
 
 });
 app.directive('onFinishRender', function ($timeout) {
@@ -377,8 +377,3 @@ app.directive('onFinishRender', function ($timeout) {
         }
     }
 });
-app.filter('trustAsHtml',['$sce', function($sce) {
-    return function(text) {
-        return $sce.trustAsHtml(text);
-    };
-}]);
