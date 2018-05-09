@@ -12,7 +12,7 @@
             </ol>
         </div>
     </div>
-    <div class="white-box">
+    <div class="white-box" ng-app="myApp" ng-controller="orderIndexCtrl">
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">
                 <div class="dataTables_length">
@@ -23,7 +23,37 @@
                     </label>
                 </div>
 
-                <table class="table table-hover">
+                <div class="dataTables_filter">
+
+                    <div class="input-group">
+                        <label style="margin-right: 20px;">
+                            <input type="checkbox" name="processing" value="1" id="processing" checked>
+                            Processing
+                        </label>
+                        <label style="margin-right: 20px;">
+                            <input type="checkbox" name="done" value="1" id="done">
+                            Done Orders Or Internals
+                        </label>
+                        <label style="margin-right: 20px;">
+                            <input type="checkbox" name="canceled" value="1" id="canceled">
+                            Canceled
+                        </label>
+
+                        <input type="text" class="form-control search-text" id="keyWord"
+                               placeholder="Search by order code...">
+                        <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="button" id="btnSearch">
+                                        Search <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                    </div>
+
+                </div>
+                <div id="loader" style="height: 410px; text-align: center; margin-right: 120px">
+                    <img src="{{asset('images/loader.gif')}}" style="margin-top: 80px">
+                </div>
+
+                <table class="table table-hover" id="table" style="display: none">
                     <thead>
                     <tr>
                         <th><span style="margin-left: 50px">Code</span></th>
@@ -35,37 +65,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($orders as $item)
-                        <tr>
-                            <td>{{ $item->getCode() }}</td>
-                            <td>{{ $item->statusText() }}</td>
-                            {!! \App\Services\HTMLService::getOrderTotalPrice($item) !!}
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->selling_web ? $item->sellingWebText() : '' }}</td>
-                            <td class="text-center text-nowrap">
-                                <a href="{{ url('/admin/orders/' . $item->id . '/edit') }}"
-                                   data-toggle="tooltip" title="Update" data-animation="false">
-                                    <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
-                                </a>
 
-                                {{--{!! Form::open([--}}
-                                {{--'method'=>'DELETE',--}}
-                                {{--'url' => ['/admin/products', $item->id],--}}
-                                {{--'style' => 'display:inline'--}}
-                                {{--]) !!}--}}
-                                {{--<a href="javascript:void(0);" data-toggle="tooltip" title="Xoá"--}}
-                                {{--data-animation="false"--}}
-                                {{--onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')">--}}
-                                {{--<i class="fa fa-close text-inverse m-l-5 m-r-5"></i>--}}
-                                {{--</a>--}}
-                                {{--{!! Form::close() !!}--}}
+                    <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true" on-finish-render="ngRepeatFinished">
+                        <td ng-bind="x.code"></td>
+                        <td ng-bind="x.statusText"></td>
+                        <td ng-bind-html="trustAsHtml(x.totalPrice)"></td>
+                        <td ng-bind="x.name"></td>
+                        <td ng-bind="x.sellingWeb"></td>
+                        <td class="text-center text-nowrap">
+                            <a ng-href="{%x.editLink%}"
+                               data-toggle="tooltip" title="Update" data-animation="false">
+                                <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
+                            </a>
+                        </td>
+                    </tr>
 
-                            </td>
-                        </tr>
-                    @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+@section('extra_scripts')
+    <script type="text/javascript">
+
+        var orders = {!! $orders !!};
+
+    </script>
+@endsection
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
@@ -19,10 +20,18 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        
+
         $orders = Order::orderBy('created_at', 'desc')->get();
 
         $total = count($orders);
+
+        foreach ($orders as $order) {
+            $order->code = $order->getCode();
+            $order->statusText = $order->statusText();
+            $order->totalPrice = HTMLService::getOrderTotalPrice($order);
+            $order->sellingWeb = $order->sellingWebText();
+            $order->editLink = url('/admin/orders/' . $order->id . '/edit');
+        }
 
         return view('admin.orders.index', compact('orders', 'total'));
     }
