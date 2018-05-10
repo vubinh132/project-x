@@ -275,7 +275,7 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
             }
         }
 
-        if ($scope.filteredProducts) {
+        if ($scope.filteredProducts.length == 0) {
             $('#loader').hide();
             $('#table').show();
         }
@@ -342,7 +342,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
             }
         }
 
-        if ($scope.filteredOrders) {
+        if ($scope.filteredOrders.length == 0) {
             $('#loader').hide();
             $('#table').show();
         }

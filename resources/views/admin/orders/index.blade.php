@@ -49,8 +49,8 @@
                     </div>
 
                 </div>
-                <div id="loader" style="height: 410px; text-align: center; margin-right: 120px">
-                    <img src="{{asset('images/loader.gif')}}" style="margin-top: 80px">
+                <div id="loader" class="loader">
+                    <img src="{{asset('images/loader.gif')}}" class="loader-img">
                 </div>
 
                 <table class="table table-hover" id="table" style="display: none">

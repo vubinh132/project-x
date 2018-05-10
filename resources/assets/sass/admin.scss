@@ -76,8 +76,13 @@ ul.alert {
 }
 
 /* Row Sorter */
-table.sorting-table {cursor: move;}
-table tr.sorting-row td {background-color: #ddd;}
+table.sorting-table {
+  cursor: move;
+}
+
+table tr.sorting-row td {
+  background-color: #ddd;
+}
 
 .left-label {
   display: inline-block;
@@ -86,16 +91,39 @@ table tr.sorting-row td {background-color: #ddd;}
 }
 
 /* Bootbox confirm */
-.bootbox-confirm{
-  .modal-dialog{
-    .modal-content{
-      .modal-header{
+.bootbox-confirm {
+  .modal-dialog {
+    .modal-content {
+      .modal-header {
         padding: 5px 15px;
 
-        .modal-title{
+        .modal-title {
           margin-top: 20px;
         }
       }
     }
+  }
+}
+
+@media (max-width: 1400px) {
+  .loader {
+    height: 400px;
+    text-align: center;
+    margin-right: 120px;
+  }
+
+  .loader-img {
+    margin-top: 80px;
+  }
+}
+
+@media (min-width: 1401px) {
+  .loader {
+    height: 400px;
+  }
+
+  .loader-img {
+    margin-top: 80px;
+    margin-left: 570px;
   }
 }
