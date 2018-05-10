@@ -69,12 +69,12 @@
                     <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true" on-finish-render="ngRepeatFinished">
                         <td ng-bind="x.code"></td>
                         <td ng-bind="x.statusText"></td>
-                        <td ng-bind-html="trustAsHtml(x.totalPrice)"></td>
+                        <td ng-bind-html="trustAsHtml(x.totalPrice)" data-toggle='tooltip' ng-attr-title="{%x.orderDetail%}" data-html="true" data-animation="false" bs-tooltip></td>
                         <td ng-bind="x.name"></td>
                         <td ng-bind="x.sellingWeb"></td>
                         <td class="text-center text-nowrap">
                             <a ng-href="{%x.editLink%}"
-                               data-toggle="tooltip" title="Update" data-animation="false">
+                               data-toggle="tooltip" title="Update" data-animation="false" bs-tooltip>
                                 <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
                             </a>
                         </td>
@@ -85,6 +85,8 @@
             </div>
         </div>
     </div>
+
+
 @section('extra_scripts')
     <script type="text/javascript">
 

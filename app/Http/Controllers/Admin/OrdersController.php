@@ -31,6 +31,7 @@ class OrdersController extends Controller
             $order->totalPrice = HTMLService::getOrderTotalPrice($order);
             $order->sellingWeb = $order->sellingWebText();
             $order->editLink = url('/admin/orders/' . $order->id . '/edit');
+            $order->orderDetail = HTMLService::getOrderDetails($order);
         }
 
         return view('admin.orders.index', compact('orders', 'total'));

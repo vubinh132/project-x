@@ -75,7 +75,7 @@
                         <td>-</td>
                         <td class="text-center text-nowrap">
                             <a ng-href="{%x.editLink%}"
-                               data-toggle="tooltip" title="Update" data-animation="false">
+                               data-toggle="tooltip" title="Update" data-animation="false" bs-tooltip>
                                 <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
                             </a>
 
@@ -84,7 +84,7 @@
                                 <input type="hidden" class="csrf" name="_token">
                                 <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
                                    data-animation="false"
-                                   onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')">
+                                   onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')" bs-tooltip>
                                     <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
                                 </a>
                             </form>

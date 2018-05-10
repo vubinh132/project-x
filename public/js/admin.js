@@ -76,13 +76,13 @@ $(document).ready(function () {
         maxHeight: false
     });
 
-    $('.form-control').unbind('keyup change input paste').bind('keyup change input paste',function(e){
+    $('.form-control').unbind('keyup change input paste').bind('keyup change input paste', function (e) {
         var $this = $(this);
         var val = $this.val();
         var valLength = val.length;
         var maxCount = $this.attr('maxlength');
-        if(valLength>maxCount){
-            $this.val($this.val().substring(0,maxCount));
+        if (valLength > maxCount) {
+            $this.val($this.val().substring(0, maxCount));
         }
     });
 });
@@ -213,7 +213,7 @@ function loadImageToImgTag(event) {
     output.src = URL.createObjectURL(event.target.files[0]);
 }
 
-function isNumberKey(evt){
+function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
     return !(charCode > 31 && (charCode < 48 || charCode > 57));
 }
@@ -252,8 +252,8 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
 
         //validate
 
-        if(!keyWord.match(/^[a-zA-Z0-9_.-]*$/)){
-            keyWord = keyWord.substring(0,keyWord.length-1);
+        if (!keyWord.match(/^[a-zA-Z0-9_.-]*$/)) {
+            keyWord = keyWord.substring(0, keyWord.length - 1);
             $('#keyWord').val(keyWord);
         }
 
@@ -270,7 +270,7 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
         }
 
         for (var i = 0; i < $scope.products.length; i++) {
-            if (filterArray.indexOf($scope.products[i].status) != -1 &&(!keyWord || $scope.products[i].sku.toLowerCase().match(keyWord))) {
+            if (filterArray.indexOf($scope.products[i].status) != -1 && (!keyWord || $scope.products[i].sku.toLowerCase().match(keyWord))) {
                 $scope.filteredProducts.push($scope.products[i]);
             }
         }
@@ -318,8 +318,8 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
 
         //validate
 
-        if(!keyWord.match(/^[a-zA-Z0-9_.-]*$/)){
-            keyWord = keyWord.substring(0,keyWord.length-1);
+        if (!keyWord.match(/^[a-zA-Z0-9_.-]*$/)) {
+            keyWord = keyWord.substring(0, keyWord.length - 1);
             $('#keyWord').val(keyWord);
         }
 
@@ -337,7 +337,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
         }
 
         for (var i = 0; i < $scope.orders.length; i++) {
-            if (filterArray.indexOf($scope.orders[i].status) != -1 &&(!keyWord || $scope.orders[i].code.toLowerCase().match(keyWord))) {
+            if (filterArray.indexOf($scope.orders[i].status) != -1 && (!keyWord || $scope.orders[i].code.toLowerCase().match(keyWord))) {
                 $scope.filteredOrders.push($scope.orders[i]);
             }
         }
@@ -372,4 +372,20 @@ app.directive('onFinishRender', function ($timeout) {
             }
         }
     }
+});
+
+
+app.directive('bsTooltip', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            $(element).hover(function () {
+                // on mouseenter
+                $(element).tooltip('show');
+            }, function () {
+                // on mouseleave
+                $(element).tooltip('hide');
+            });
+        }
+    };
 });
