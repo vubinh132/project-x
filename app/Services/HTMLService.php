@@ -28,7 +28,9 @@ class HTMLService
             $quantityHTML = "<span>$quantity</span>";
             $price = $product->pivot->price;
             $priceHTML = $price >= 0 ? "<span class=\"text-info\">" . CommonService::formatPrice(abs($price)) . "</span>" : "<span class=\"text-danger\">" . CommonService::formatPrice(abs($price)) . "</span>";
-            $html = $html . "<tr><td style=\"width: 100px\">$sku</td><td style=\"width: 100px\">$quantityHTML</td><td style=\"width: 100px\">$priceHTML</td></tr>";
+            $unitPrice = CommonService::formatPrice(ceil(abs($price / $product->pivot->quantity)));
+            $unitPriceHTML = "<span>$unitPrice</span>";
+            $html = $html . "<tr><td style=\"width: 70px\">$sku</td><td style=\"width: 50px\">$unitPriceHTML</td><td style=\"width: 20px;\">x</td><td style=\"width: 18px\">$quantityHTML</td><td style=\"width: 90px\">$priceHTML</td></tr>";
         }
         return $html;
     }

@@ -128,3 +128,8 @@ table tr.sorting-row td {
   }
 }
 
+.tooltip-inner {
+  min-width: 100px;
+  max-width: 100%;
+  opacity: 0.9 !important;
+}
