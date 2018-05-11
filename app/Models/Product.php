@@ -113,9 +113,9 @@ class Product extends Model
 
     public function getAVGProfit()
     {
-        $available = $this->getAvailableQuantity();
+        $availableAndInOrder = $this->getAvailableQuantity() + $this->getInOrderQuantity();
         $soldQuantity = $this->getSoldQuantity();
-        if (!$available && !$soldQuantity) {
+        if (!$availableAndInOrder && !$soldQuantity) {
             return null;
         } else {
             $avgProfit = [];
