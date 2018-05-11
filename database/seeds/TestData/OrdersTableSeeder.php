@@ -85,6 +85,22 @@ class OrdersTableSeeder extends Seeder
                 'created_at' => "2018-05-06",
                 'updated_at' => "2018-05-06"
             ],
+            [
+                'product_id' => 1,
+                'order_id' => 8,
+                'quantity' => -1,
+                'price' => 9500,
+                'created_at' => "2018-05-11",
+                'updated_at' => "2018-05-11"
+            ],
+            [
+                'product_id' => 2,
+                'order_id' => 8,
+                'quantity' => -1,
+                'price' => 20000,
+                'created_at' => "2018-05-11",
+                'updated_at' => "2018-05-11"
+            ],
         ];
         $orders = [
             [
@@ -150,6 +166,15 @@ class OrdersTableSeeder extends Seeder
                 'note' => null,
                 'created_at' => "2018-05-06",
                 'updated_at' => "2018-05-06"
+            ],
+            [
+                'status' => 2,
+                'name' => "Nguyen Van E",
+                'code' => "S-27942248977057",
+                "selling_web" => 3,
+                'note' => null,
+                'created_at' => "2018-05-11",
+                'updated_at' => "2018-05-11"
             ],
         ];
         DB::table('orders')->insert($orders);

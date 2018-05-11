@@ -90,28 +90,149 @@ class Product extends Model
                 ->where('orders.status', Order::STATUS['INTERNAL'])
                 ->orderBy('order_details.created_at', 'desc')
                 ->get(['order_details.quantity', 'order_details.price']);
-                foreach ($prices as $price) {
-                    $quantity = $price->quantity;
-                    if ($remain >= $quantity) {
-                        $totalPrice += -$price->price;
-                        $remain = $remain - $quantity;
-                    } else {
-                        $avg = -$price->price / $quantity;
-                        $totalPrice += ($avg * $remain);
-                        $remain = 0;
-                    }
-                    if (!$remain) {
-                        break;
-                    }
+            foreach ($prices as $price) {
+                $quantity = $price->quantity;
+                if ($remain >= $quantity) {
+                    $totalPrice += -$price->price;
+                    $remain = $remain - $quantity;
+                } else {
+                    $avg = -$price->price / $quantity;
+                    $totalPrice += ($avg * $remain);
+                    $remain = 0;
                 }
-                $AVGValue = ceil($totalPrice / $available);
+                if (!$remain) {
+                    break;
+                }
+            }
+            $AVGValue = ceil($totalPrice / $available);
         } else {
             $AVGValue = 0;
         }
         return $AVGValue;
     }
 
-    public function canDelete()
+    public function getAVGProfit()
+    {
+        $available = $this->getAvailableQuantity();
+        $soldQuantity = $this->getSoldQuantity();
+        if (!$available && !$soldQuantity) {
+            return null;
+        } else {
+            $avgProfit = [];
+
+            $result = [];
+
+            $orderArray = [];
+
+            $priceArray = [];
+
+            $orders = DB::table('order_details')
+                ->join('products', 'products.id', 'order_details.product_id')
+                ->join('orders', 'orders.id', 'order_details.order_id')
+                ->where('products.id', $this->id)
+                ->where('orders.status', Order::STATUS['PAID'])
+                ->orderBy('order_details.created_at', 'asc')
+                ->get(['order_details.quantity', 'order_details.price']);
+
+            $prices = DB::table('order_details')
+                ->join('products', 'products.id', 'order_details.product_id')
+                ->join('orders', 'orders.id', 'order_details.order_id')
+                ->where('products.id', $this->id)
+                ->where('orders.status', Order::STATUS['INTERNAL'])
+                ->orderBy('order_details.created_at', 'asc')
+                ->get(['order_details.quantity', 'order_details.price']);
+
+            foreach ($orders as $element) {
+                $quantity = abs($element->quantity);
+                $unitPrice = abs($element->price) / $quantity;
+                for ($i = 0; $i < $quantity; $i++) {
+                    array_push($orderArray, $unitPrice);
+                }
+            }
+
+            foreach ($prices as $element) {
+                $quantity = abs($element->quantity);
+                $unitPrice = abs($element->price) / $quantity;
+                for ($i = 0; $i < $quantity; $i++) {
+                    array_push($priceArray, $unitPrice);
+                }
+            }
+
+            for ($i = count($orderArray) - 1; $i >= 0; $i--) {
+                array_push($avgProfit, ($orderArray[$i] - $priceArray[$i]));
+            }
+
+            if (!$avgProfit) {
+                return 0;
+            }
+
+            //1
+            $totalPrice = 0;
+            for ($i = 0; $i < 1; $i++) {
+                $totalPrice += $avgProfit[$i];
+            }
+            $result[1] = $totalPrice / 1;
+
+
+            //5
+            if (count($avgProfit) >= 5) {
+                $totalPrice = 0;
+                for ($i = 0; $i < 5; $i++) {
+                    $totalPrice += $avgProfit[$i];
+                }
+                $result[5] = $totalPrice / 5;
+            } else {
+                $result[5] = null;
+            }
+
+            //10
+            if (count($avgProfit) >= 10) {
+                $totalPrice = 0;
+                for ($i = 0; $i < 10; $i++) {
+                    $totalPrice += $avgProfit[$i];
+                }
+                $result[10] = $totalPrice / 10;
+            } else {
+                $result[10] = null;
+            }
+
+            //50
+            if (count($avgProfit) >= 50) {
+                $totalPrice = 0;
+                for ($i = 0; $i < 50; $i++) {
+                    $totalPrice += $avgProfit[$i];
+                }
+                $result[50] = $totalPrice / 50;
+            } else {
+                $result[50] = null;
+            }
+
+            //100
+            if (count($avgProfit) >= 100) {
+                $totalPrice = 0;
+                for ($i = 0; $i < 100; $i++) {
+                    $totalPrice += $avgProfit[$i];
+                }
+                $result[100] = $totalPrice / 100;
+            } else {
+                $result[100] = null;
+            }
+
+            //all
+            $totalPrice = 0;
+            for ($i = 0; $i < count($avgProfit); $i++) {
+                $totalPrice += $avgProfit[$i];
+            }
+            $result['all'] = $totalPrice / count($avgProfit);
+
+
+            return $result;
+
+        }
+    }
+
+    public
+    function canDelete()
     {
         return !$this->orders()->count();
     }

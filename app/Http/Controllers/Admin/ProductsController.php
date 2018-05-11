@@ -29,6 +29,9 @@ class ProductsController extends Controller
             $product->avgValue = HTMLService::getAVGValue($product);
             $product->editLink = url('/admin/products/' . $product->id . '/edit');
             $product->deleteLink = url('/admin/products/'. $product->id. '/delete');
+            $array = $product->getAVGProfit();
+            $product->avgProfit = HTMLService::getAVGProfit($array);
+            $product->getAVGProfitDetails = HTMLService::getAVGProfitDetails($array);
         }
 
         return view('admin.products.index', compact('products', 'total'));

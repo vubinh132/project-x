@@ -18,7 +18,7 @@ class HTMLService
 
     public static function getOrderDetails($order)
     {
-        $productOrder = Order::where('id', $order->id)->with(['products'=>function($query){
+        $productOrder = Order::where('id', $order->id)->with(['products' => function ($query) {
             $query->orderBy('sku');
         }])->get();
         $html = '';
@@ -33,6 +33,33 @@ class HTMLService
             $html = $html . "<tr><td style=\"width: 70px\">$sku</td><td style=\"width: 50px\">$unitPriceHTML</td><td style=\"width: 20px;\">x</td><td style=\"width: 18px\">$quantityHTML</td><td style=\"width: 90px\">$priceHTML</td></tr>";
         }
         return $html;
+    }
+
+    public static function getAVGProfit($array)
+    {
+        if (is_null($array)) {
+            return "<span>-</span>";
+        } elseif ($array == 0) {
+            return "<span>0</span>";
+        } else {
+            $all = $array['all'];
+            return $all >= 0 ? "<span class=\"text-info\">" . CommonService::formatPrice(abs($all)) . "</span>" : "<span class=\"text-danger\">" . CommonService::formatPrice(abs($all)) . "</span>";
+        }
+
+    }
+
+    public static function getAVGProfitDetails($array)
+    {
+        if (!$array) {
+            return 'no data...';
+        } else {
+            $html = "";
+            foreach ($array as $key => $value) {
+                $valueHTML = $value >= 0 ? "<span class=\"text-info\">" . CommonService::formatPrice(abs($value)) . "</span>" : "<span class=\"text-danger\">" . CommonService::formatPrice(abs($value)) . "</span>";
+                $html = $html . "<tr><td style=\"width: 50px\">$key</td><td style=\"width: 100px\">" . $valueHTML . "</td></tr>";
+            }
+            return $html;
+        }
     }
 
     public static function getProductQuantity($product)
