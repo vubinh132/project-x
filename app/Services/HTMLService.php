@@ -55,8 +55,13 @@ class HTMLService
         } else {
             $html = "";
             foreach ($array as $key => $value) {
-                $valueHTML = $value >= 0 ? "<span class=\"text-info\">" . CommonService::formatPrice(abs($value)) . "</span>" : "<span class=\"text-danger\">" . CommonService::formatPrice(abs($value)) . "</span>";
-                $html = $html . "<tr><td style=\"width: 50px\">$key</td><td style=\"width: 100px\">" . $valueHTML . "</td></tr>";
+                if (is_null($value)) {
+                    $html = $html . "<tr><td style=\"width: 50px\">$key</td><td style=\"width: 100px\">0</td></tr>";
+                } else {
+                    $valueHTML = $value >= 0 ? "<span class=\"text-info\">" . CommonService::formatPrice(abs($value)) . "</span>" : "<span class=\"text-danger\">" . CommonService::formatPrice(abs($value)) . "</span>";
+                    $html = $html . "<tr><td style=\"width: 50px\">$key</td><td style=\"width: 100px\">" . $valueHTML . "</td></tr>";
+
+                }
             }
             return $html;
         }
