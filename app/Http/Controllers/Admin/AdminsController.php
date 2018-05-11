@@ -6,9 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\CommonService;
 use Illuminate\Http\Request;
+use App\Mail\SimpleEmailSender;
 use Carbon\Carbon;
 use App\Models\Order;
-use Log, DB;
+use Log, DB, Mail;
 
 class AdminsController extends Controller
 {
@@ -19,6 +20,8 @@ class AdminsController extends Controller
      */
     public function index()
     {
+//        Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('test', 'emails.template', ['content' => 'just test'], null));
+
         //start date
         $startDay = new Carbon(CommonService::getSettingChosenValue('START_DATE'));
         $diffInSeconds = (new Carbon($startDay))->diffInSeconds(Carbon::now());
