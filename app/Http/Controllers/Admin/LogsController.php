@@ -19,8 +19,7 @@ class LogsController extends Controller
     public function index()
     {
         $logs = LogModel::orderBy('created_at', 'desc')->take(30)->get();
-
-        Log::info($logs);
+        
         return view('admin.logs.index', compact('logs'));
     }
 

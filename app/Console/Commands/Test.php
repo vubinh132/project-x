@@ -4,11 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use Log;
-
 use Carbon\Carbon;
 
-use App\Models\Product;
+use App\Models\Log;
 
 class Test extends Command
 {
@@ -43,6 +41,6 @@ class Test extends Command
      */
     public function handle()
     {
-        Product::create(['sku'=>Carbon::now(), 'status' => 1]);
+        Log::create(['category' => Log::CATEGORY['JOB'], 'content' => 'just test job...', 'notification_type' => Log::NOTIFICATION_TYPE['NONE']]);
     }
 }

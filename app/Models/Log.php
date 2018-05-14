@@ -9,10 +9,12 @@ class Log extends Model
 
     const CATEGORY = [
         'SECURITY' => 1,
+        'JOB' => 2,
 
     ];
     const CATEGORY_TEXT = [
         'SECURITY' => 'Security',
+        'JOB' => 'Job'
     ];
 
     const NOTIFICATION_TYPE = [
