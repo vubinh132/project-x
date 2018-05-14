@@ -8,6 +8,8 @@ use Log;
 
 use Carbon\Carbon;
 
+use App\Models\Product;
+
 class Test extends Command
 {
     /**
@@ -41,6 +43,6 @@ class Test extends Command
      */
     public function handle()
     {
-        Log::info(Carbon::now());
+        Product::create(['sku'=>Carbon::now(), 'status' => 1]);
     }
 }

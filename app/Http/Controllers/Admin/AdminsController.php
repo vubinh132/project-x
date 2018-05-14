@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Models\Order;
 use Log, DB, Mail;
 
+
 class AdminsController extends Controller
 {
     /**
@@ -37,8 +38,6 @@ class AdminsController extends Controller
 
         //profit
         $profit = ceil(Order::join('order_details','orders.id', 'order_details.order_id')->whereIn('orders.status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->sum('order_details.price') / 1000);
-
-        Log::info(Carbon::now());
 
         return view('admin.index', compact('days', 'profit', 'productValue'));
     }
