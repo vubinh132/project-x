@@ -67,6 +67,19 @@ class HTMLService
         }
     }
 
+    public static function getSellingSpeedDetails($array)
+    {
+        if (!$array) {
+            return 'no data...';
+        } else {
+            $html = "";
+            foreach ($array as $key => $value) {
+                    $html = $html . "<tr><td style=\"width: 100px\">$key</td><td style=\"width: 100px\">" . abs($value) . "</td></tr>";
+            }
+            return $html;
+        }
+    }
+
     public static function getProductQuantity($product)
     {
         $available = $product->getAvailableQuantity();

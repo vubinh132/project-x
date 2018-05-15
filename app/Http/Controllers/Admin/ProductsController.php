@@ -31,7 +31,10 @@ class ProductsController extends Controller
             $product->deleteLink = url('/admin/products/'. $product->id. '/delete');
             $array = $product->getAVGProfit();
             $product->avgProfit = HTMLService::getAVGProfit($array);
-            $product->getAVGProfitDetails = HTMLService::getAVGProfitDetails($array);
+            $product->avgProfitDetails = HTMLService::getAVGProfitDetails($array);
+            $product->sellingSpeed = $product->getSellingSpeed();
+            $product->sellingSpeedDetails = HTMLService::getSellingSpeedDetails($product->getSellingSpeedDetails());
+
         }
 
         return view('admin.products.index', compact('products', 'total'));

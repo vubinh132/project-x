@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\CommonService;
 use Illuminate\Database\Eloquent\Model;
 use File, DB;
+use Carbon\Carbon;
 
 class Product extends Model
 {
@@ -229,8 +230,78 @@ class Product extends Model
         }
     }
 
-    public
-    function canDelete()
+    public function getSellingSpeed()
+    {
+        if (!$this->getAvailableQuantity() && !$this->getInOrderQuantity() && !$this->getSoldQuantity()) {
+            return '-';
+        } else {
+            $firstOrder = DB::table('order_details')
+                ->where('product_id', $this->id)
+                ->orderBy('created_at')
+                ->first();
+            $firstTime = $firstOrder->created_at;
+            $day = Carbon::now()->diffInDays(new Carbon($firstTime)) + 1;
+            $soldQuantity = $this->getSoldQuantity();
+            $result = round(-$soldQuantity / $day, 3);
+            return $result;
+        }
+    }
+
+    public function getSellingSpeedDetails()
+    {
+        if (!$this->getAvailableQuantity() && !$this->getInOrderQuantity() && !$this->getSoldQuantity()) {
+
+            return null;
+
+        } else {
+
+            $today = Carbon::now()->startOfDay();
+
+            $yesterday = Carbon::now()->subDay(1)->startOfDay();
+
+            $last7Days = Carbon::now()->subDay(6)->startOfDay();
+
+            $thisMonth = Carbon::now()->startOfMonth();
+
+            $result = [];
+            $todayQ = DB::table('order_details')
+                ->join('orders', 'orders.id', 'order_details.order_id')
+                ->where('orders.status', Order::STATUS['PAID'])
+                ->where('order_details.product_id', $this->id)
+                ->where('order_details.updated_at', '>=', $today)
+                ->sum('order_details.quantity');
+            $result['Today'] = $todayQ;
+
+            $yesterdayQ = DB::table('order_details')
+                ->join('orders', 'orders.id', 'order_details.order_id')
+                ->where('orders.status', Order::STATUS['PAID'])
+                ->where('order_details.product_id', $this->id)
+                ->where('order_details.updated_at', '>=', $yesterday)
+                ->where('order_details.updated_at', '<', $today)
+                ->sum('order_details.quantity');
+            $result['Yesterday'] = $yesterdayQ;
+
+            $last7DaysQ = DB::table('order_details')
+                ->join('orders', 'orders.id', 'order_details.order_id')
+                ->where('orders.status', Order::STATUS['PAID'])
+                ->where('order_details.product_id', $this->id)
+                ->where('order_details.updated_at', '>=', $last7Days)
+                ->sum('order_details.quantity');
+            $result['Last 7 days'] = $last7DaysQ;
+
+            $thisMonthQ = DB::table('order_details')
+                ->join('orders', 'orders.id', 'order_details.order_id')
+                ->where('orders.status', Order::STATUS['PAID'])
+                ->where('order_details.product_id', $this->id)
+                ->where('order_details.updated_at', '>=', $thisMonth)
+                ->sum('order_details.quantity');
+            $result['This month'] = $thisMonthQ;
+
+            return $result;
+        }
+    }
+
+    public function canDelete()
     {
         return !$this->orders()->count();
     }

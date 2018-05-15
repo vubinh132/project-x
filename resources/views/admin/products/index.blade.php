@@ -68,8 +68,8 @@
                         <td ng-bind="x.statusText"></td>
                         <td ng-bind-html="trustAsHtml(x.quantity)"></td>
                         <td ng-bind-html="trustAsHtml(x.avgValue)"></td>
-                        <td><span  ng-bind-html="trustAsHtml(x.avgProfit)" data-toggle='tooltip' ng-attr-title="{%x.getAVGProfitDetails%}" data-html="true" data-animation="false" bs-tooltip></span></td>
-                        <td>-</td>
+                        <td><span ng-bind-html="trustAsHtml(x.avgProfit)" data-toggle='tooltip' ng-attr-title="{%x.avgProfitDetails%}" data-html="true" data-animation="false" bs-tooltip></span></td>
+                        <td><span ng-bind="x.sellingSpeed"  data-toggle='tooltip' ng-attr-title="{%x.sellingSpeedDetails%}" data-html="true" data-animation="false" bs-tooltip></span></td>
                         <td class="text-center text-nowrap">
                             <a ng-href="{%x.editLink%}"
                                data-toggle="tooltip" title="Update" data-animation="false" bs-tooltip>
