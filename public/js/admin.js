@@ -412,7 +412,6 @@ app.controller("logIndexCtrl", function ($scope, $http, $sce) {
     }
 });
 
-
 app.directive('onFinishRender', function ($timeout) {
     return {
         restrict: 'A',
