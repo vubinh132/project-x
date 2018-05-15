@@ -275,23 +275,11 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
             }
         }
 
-        if ($scope.filteredProducts.length == 0) {
-            $('#loader').hide();
-            $('#table').show();
-        }
     }
 
     $scope.trustAsHtml = function (html) {
         return $sce.trustAsHtml(html);
     }
-
-    $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-
-        $('#loader').hide();
-
-        $('#table').show();
-
-    });
 
 });
 app.controller("orderIndexCtrl", function ($scope, $sce) {
@@ -341,24 +329,12 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
                 $scope.filteredOrders.push($scope.orders[i]);
             }
         }
-
-        if ($scope.filteredOrders.length == 0) {
-            $('#loader').hide();
-            $('#table').show();
-        }
+        
     }
 
     $scope.trustAsHtml = function (html) {
         return $sce.trustAsHtml(html);
     }
-
-    $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
-
-        $('#loader').hide();
-
-        $('#table').show();
-
-    });
 
 });
 

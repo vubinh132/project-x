@@ -49,11 +49,9 @@
                     </div>
 
                 </div>
-                <div id="loader" class="loader">
-                    <img src="{{asset('images/loader.gif')}}" class="loader-img">
-                </div>
 
-                <table class="table table-hover" id="table" style="display: none">
+
+                <table class="table table-hover" id="table">
                     <thead>
                     <tr>
                         <th><span style="margin-left: 50px">Code</span></th>
@@ -66,7 +64,7 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true" on-finish-render="ngRepeatFinished">
+                    <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true">
                         <td ng-bind="x.code"></td>
                         <td ng-bind="x.statusText"></td>
                         <td><span  ng-bind-html="trustAsHtml(x.totalPrice)" data-toggle='tooltip' ng-attr-title="{%x.orderDetail%}" data-html="true" data-animation="false" bs-tooltip></span></td>

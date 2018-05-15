@@ -47,11 +47,8 @@
                     </div>
 
                 </div>
-                <div id="loader" class="loader">
-                    <img src="{{asset('images/loader.gif')}}" class="loader-img">
-                </div>
 
-                <table class="table table-hover" id="table" style="display: none">
+                <table class="table table-hover" id="table">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -65,7 +62,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="x in filteredProducts|orderBy:'sku'" on-finish-render="ngRepeatFinished">
+                    <tr ng-repeat="x in filteredProducts|orderBy:'sku'">
                         <td ng-bind="$index + 1"></td>
                         <td ng-bind="x.sku"></td>
                         <td ng-bind="x.statusText"></td>

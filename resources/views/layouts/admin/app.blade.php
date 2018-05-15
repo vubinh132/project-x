@@ -41,6 +41,7 @@
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
 <body>
+<div class="loader"></div>
 <div id="wrapper">
     @include('layouts.admin.header')
 
@@ -112,6 +113,9 @@ ocLazyLoad
 <script src="{{ asset('js/admin.js') }}"></script>
 
 <script type="text/javascript">
+    $(window).load(function() {
+        $(".loader").fadeOut(1000);
+    });
     @if (session('flash_message'))
     $(document).ready(function () {
         $.toast({
