@@ -21,14 +21,14 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>Datetime</th>
+                        <th style="width: 150px; text-align: center">Datetime</th>
                         <th>Category</th>
                         <th class="text-center">Content</th>
                     </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="x in data|orderBy:'created_at':true">
-                            <td ng-bind="x.created_at"></td>
+                            <td ng-bind-html="trustAsHtml(x.created_at + '</br>' + getTime(x.created_at))"></td>
                             <td ng-bind="x.categoryText"></td>
                             <td ng-bind="x.content"></td>
                         </tr>
