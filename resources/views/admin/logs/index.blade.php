@@ -12,17 +12,12 @@
             </ol>
         </div>
     </div>
-    <div class="white-box">
+    <div class="white-box" ng-app="myApp" ng-controller="logIndexCtrl">
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">
-                {{--<div class="dataTables_length">--}}
-                {{--<label>--}}
-                {{--<a href="{{ url('/admin/orders/create') }}" class="btn btn-success pull-left">--}}
-                {{--<i class="fa fa-plus"></i> Add Order--}}
-                {{--</a>--}}
-                {{--</label>--}}
-                {{--</div>--}}
-
+                <div class="col-md-5 col-sm-5" style="margin-bottom: 20px">
+                    {!! Form::select('category', $categories, null, ['id' => 'category','class' => 'form-control', 'required' => 'required']) !!}
+                </div>
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -32,13 +27,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($logs as $item)
-                        <tr>
-                            <td>{{ $item->created_at }}</td>
-                            <td>{{ $item->categoryText() }}</td>
-                            <td class="">{{ $item->content }}</td>
+                        <tr ng-repeat="x in data|orderBy:'created_at':true">
+                            <td ng-bind="x.created_at"></td>
+                            <td ng-bind="x.categoryText"></td>
+                            <td ng-bind="x.content"></td>
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
             </div>

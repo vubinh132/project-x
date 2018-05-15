@@ -14,7 +14,7 @@ class Log extends Model
     ];
     const CATEGORY_TEXT = [
         'SECURITY' => 'Security',
-        'JOB' => 'Job'
+        'JOB' => 'Cron-job'
     ];
 
     const NOTIFICATION_TYPE = [
@@ -52,6 +52,15 @@ class Log extends Model
     public function categoryText()
     {
         return $this->category ? Log::CATEGORY_TEXT[array_keys(Log::CATEGORY, $this->category)[0]] : '';
+    }
+
+    public static function getCategories(){
+        $categories = [];
+        $categories[0] = 'ALL';
+        foreach (Log::CATEGORY as $key => $value){
+            $categories[$value] = $key;
+        }
+        return $categories;
     }
 
 }

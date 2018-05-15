@@ -361,6 +361,31 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
     });
 
 });
+
+app.controller("logIndexCtrl", function ($scope, $http) {
+    $scope.data = [];
+    loadData();
+
+    $( document ).ready(function() {
+        $('#category').on('change', function () {
+            loadData();
+            $scope.$apply();
+        });
+    });
+
+    function loadData() {
+        var id = $("#category").val();
+        var url = window.location.origin + '/admin/list/logs?category=' + id;
+        $http({
+            method : "GET",
+            url : url
+        }).then(function (response) {
+            $scope.data = response.data.data;
+        });
+    }
+});
+
+
 app.directive('onFinishRender', function ($timeout) {
     return {
         restrict: 'A',
