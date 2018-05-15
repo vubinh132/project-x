@@ -329,7 +329,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
                 $scope.filteredOrders.push($scope.orders[i]);
             }
         }
-        
+
     }
 
     $scope.trustAsHtml = function (html) {
