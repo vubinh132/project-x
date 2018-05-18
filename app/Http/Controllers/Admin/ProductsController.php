@@ -100,11 +100,7 @@ class ProductsController extends Controller
             'status' => "required",
             'sku' => " required|unique:products,sku,$id",
             'name' => " required",
-            'old_price' => "required|numeric|min:0",
             'price' => "required|numeric|min:0",
-            'description' => "required",
-            'content' => 'html_required'
-
         ]);
         $requestData = $request->all();
 
