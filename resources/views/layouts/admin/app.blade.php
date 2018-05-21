@@ -108,6 +108,8 @@ ocLazyLoad
 <script src="{{ asset('theme/admin/js/custom.min.js') }}"></script>
 <!-- QR code JavaScript -->
 <script src="{{ asset('theme/admin/js/jquery-qrcode.min.js') }}"></script>
+<!-- Jquery format number -->
+<script src="{{ asset('theme/admin/js/jquery.number.min.js') }}"></script>
 <!-- Scripts -->
 <script src="{{ asset('js/vendor.js') }}"></script>
 <script src="{{ asset('js/admin.js') }}"></script>
