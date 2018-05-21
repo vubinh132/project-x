@@ -38,6 +38,8 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::post('admin/products/{id}/delete', 'Admin\\ProductsController@destroy');
     Route::resource('admin/products', 'Admin\\ProductsController');
 
+    //get unit price of product
+    Route::get('admin/products/{id}/unit-price', 'Admin\\ProductsController@getUnitPrice');
 
     //Orders
     Route::resource('admin/orders', 'Admin\\OrdersController');

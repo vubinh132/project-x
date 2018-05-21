@@ -1,4 +1,4 @@
-<input type="hidden" value="1" id="numOfProducts" name = "numOfProducts">
+<input type="hidden" value="1" id="numOfProducts" name="numOfProducts">
 <div class="form-group row {{ $errors->has('status') ? 'has-error' : ''}}">
     {!! Form::label('status', 'Status', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-5 col-sm-5">
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<div style="margin-top: 20px; padding-bottom: 75px">
+<div style="margin-top: 20px; padding-bottom: 75px" class="order-details">
     <div class="text-center" style="margin-bottom: 20px; font-size: 17px"><b>Order Details</b></div>
     <div id="products">
         <div class="row">
@@ -29,17 +29,33 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <select class="form-control" id="product_id_1" name="product_id_1">
+                <select class="form-control product-selector" id="product_id_1" name="product_id_1">
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="number" max="100" class="form-control" placeholder="quantity" id="quantity_1"
+                <input type="number" min="1000" class="form-control unit-price-selector" placeholder="unit price"
+                       id="unit_1"
+                       name="unit_1" required>
+            </div>
+            <div class="col-md-2">
+                <input type="number" min="0" max="100" class="form-control quantity-selector" placeholder="quantity"
+                       id="quantity_1"
                        name="quantity_1" required>
             </div>
-            <div class="col-md-4">
-                <input type="number" min="1000" class="form-control" placeholder="total price" id="price_1"
-                       name="price_1" required>
+            <div class="col-md-2">
+                <input type="text" class="form-control total-price-selector" placeholder="total price" id="price_1"
+                       name="price_1" required disabled>
             </div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-top: 15px">
+        <div class="col-md-8"></div>
+        <div class="col-md-2 text-center" style="margin-top: 10px">
+            <span><b class="text-info" style="font-size: 20px">TOTAL PRICE</b></span>
+        </div>
+        <div class="col-md-2 text-center" style="margin-top: 10px">
+            <span><b class="text-info" id="total-price" style="font-size: 20px"></b></span>
         </div>
     </div>
     <button type="button" id="btn_add" class="pull-right btn btn-info" style="margin-top: 20px">Add Product</button>
@@ -96,33 +112,87 @@
         var count = 2;
         $(document).ready(function () {
 
+            //add product for product 1
             addElementsForProduct(1);
 
+            //disable quantity and load unit price for product 1
+            $('#quantity_1').attr('disabled', true);
+            setUnitPrice($('#unit_1').parent().parent(), 1)
+
+            //set status, selling wb, operation
             setStatus();
             setSellingWeb();
             setOperation();
 
+            //change status event
             $("#status").change(function () {
                 setStatus();
                 setOperation();
             });
+
+            //change selling web event
             $("#selling-web").change(function () {
                 setSellingWeb();
             });
 
+
+            //add product
             $('#btn_add').click(function () {
-                $('#products').append('<div class="row" style="margin-top: 15px"><div class="col-md-2"><select class="form-control" id="operation_' + count + '" name="operation_' + count + '"><option value="1">OUT</option> <option value="2">IN</option></select></div><div class="col-md-4"><select class="form-control" id="product_id_' + count + '" name="product_id_' + count + '"></select></div><div class="col-md-2"><input type="number" max = "100" class="form-control" placeholder="quantity" id="quantity_' + count + '" name="quantity_' + count + '" required></div><div class="col-md-4"><input type="number" min="1000" class="form-control" placeholder="total price" id="price_' + count + '" name="price_' + count + '" required></div></div>');
+                $('#products').append('<div class="row" style="margin-top: 15px"><div class="col-md-2"><select class="form-control" id="operation_' + count + '" name="operation_' + count + '"><option value="1">OUT</option> <option value="2">IN</option></select></div><div class="col-md-4"><select class="form-control product-selector" id="product_id_' + count + '" name="product_id_' + count + '"></select></div><div class="col-md-2"><input type="number" min="1000" class="form-control unit-price-selector" placeholder="unit price" id="unit_' + count + '" name="unit_' + count + '" required></div><div class="col-md-2"><input type="number" min = "0" max = "100" class="form-control quantity-selector" placeholder="quantity" id="quantity_' + count + '" name="quantity_' + count + '" required></div><div class="col-md-2"><input type="text" class="form-control total-price-selector" placeholder="total price" id="price_' + count + '" name="price_' + count + '" required disabled></div></div>');
                 addElementsForProduct(count);
+                setUnitPrice($('#unit_' + count).parent().parent(), 1)
+
                 $('#numOfProducts').val(count);
                 if ($("#status").val() != 3) {
                     $('#operation_' + count).hide();
-                }else{
+                } else {
                     $('#operation_' + count).val(2)
                 }
                 count++;
             });
+
+            //change product
+            $('.order-details').on('change', '.product-selector', function () {
+                var parent = $(this).parent().parent();
+                parent.find('input.quantity-selector').val('');
+                parent.find('input.total-price-selector').val('');
+                parent.find('input.quantity-selector').attr('disabled', true);
+                var id = $(this).val();
+                setUnitPrice(parent, id);
+                $('#total-price').html('');
+
+            })
+
+            //change unit price or quantity
+            $('.order-details').on('keyup', 'input.quantity-selector, input.unit-price-selector', function () {
+                var parent = $(this).parent().parent();
+                setTotalPrice(parent);
+
+                var totalPrice = 0;
+                $('input.total-price-selector').each(function (index) {
+                    totalPrice += parseInt($(this).val());
+                })
+                $('#total-price').html(totalPrice);
+            })
+
         });
 
+        //end document ready
+
+        //start function
+
+        //set unit price
+        function setUnitPrice(selector, id) {
+            var url = window.location.origin + '/admin/products/' + id + '/unit-price';
+            $.get(url, function (data, status) {
+                var unitPrice = data.data.price;
+                selector.find('input.unit-price-selector').val(unitPrice);
+                //enable quantity when unit price is loaded
+                selector.find('input.quantity-selector').attr('disabled', false);
+            });
+        }
+
+        //set status
         function setStatus() {
             if ($("#status").val() == 3) {
                 $('#selling-web-group').hide();
@@ -131,6 +201,7 @@
             }
         }
 
+        //set selling web
         function setSellingWeb() {
 
             if ($("#selling-web").val() == 1) {
@@ -142,6 +213,8 @@
             }
         }
 
+
+        //set operation
         function setOperation() {
             if ($("#status").val() == 3) {
                 for (var i = 1; i < count; i++) {
@@ -155,10 +228,25 @@
             }
         }
 
+
+        //add products for drop-down
         function addElementsForProduct(id) {
-            console.log(products);
             for (var key in products) {
                 $('#product_id_' + id).append('<option value="' + products[key] + '">' + key + '</option>');
+            }
+        }
+
+
+        //set total price
+        function setTotalPrice(parentSelector) {
+            var totalPriceSelector = parentSelector.find('input.total-price-selector');
+            var unitPrice = parentSelector.find('input.unit-price-selector').val();
+            var quantity = parentSelector.find('input.quantity-selector').val();
+            if (unitPrice && quantity) {
+                totalPriceSelector.val(unitPrice * quantity);
+            }
+            else {
+                totalPriceSelector.val('');
             }
         }
     </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\CommonService;
 use App\Services\HTMLService;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Log, File, Session;
@@ -23,12 +24,12 @@ class ProductsController extends Controller
 
         $total = count($products);
 
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $product->statusText = $product->statusText();
             $product->quantity = HTMLService::getProductQuantity($product);
             $product->avgValue = HTMLService::getAVGValue($product);
             $product->editLink = url('/admin/products/' . $product->id . '/edit');
-            $product->deleteLink = url('/admin/products/'. $product->id. '/delete');
+            $product->deleteLink = url('/admin/products/' . $product->id . '/delete');
             $array = $product->getAVGProfit();
             $product->avgProfit = HTMLService::getAVGProfit($array);
             $product->avgProfitDetails = HTMLService::getAVGProfitDetails($array);
@@ -159,5 +160,24 @@ class ProductsController extends Controller
         return redirect('admin/products/' . $id . '/edit');
     }
 
+    public function getUnitPrice($id)
+    {
+        try {
+            $product = Product::where('id', $id)->where('status', Product::STATUS['IN_BUSINESS'])->firstOrFail(['price']);
+
+            return response()->json([
+                'success' => true,
+                'data' => $product
+
+            ]);
+
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+
+            ]);
+        }
+    }
 
 }
