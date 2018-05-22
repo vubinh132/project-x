@@ -28,15 +28,15 @@
                     <div class="input-group">
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="processing" value="1" id="processing" checked>
-                            Processing
+                            Processing ({{$processing}})
                         </label>
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="done" value="1" id="done">
-                            Done Orders Or Internals
+                            Done Orders ({{$done}})
                         </label>
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="canceled" value="1" id="canceled">
-                            Canceled
+                            Canceled ({{$canceled}})
                         </label>
 
                         <input type="text" class="form-control search-text" id="keyWord"

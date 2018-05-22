@@ -34,7 +34,11 @@ class OrdersController extends Controller
             $order->orderDetail = HTMLService::getOrderDetails($order);
         }
 
-        return view('admin.orders.index', compact('orders', 'total'));
+        $processing = Order::where('status', Order::STATUS['ORDERED'])->count();
+        $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
+        $canceled = Order::where('status', Order::STATUS['CANCEL'])->count();
+
+        return view('admin.orders.index', compact('orders', 'total', 'processing', 'done', 'canceled'));
     }
 
     /**
