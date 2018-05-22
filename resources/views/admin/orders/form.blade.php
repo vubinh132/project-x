@@ -33,7 +33,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <input type="number" min="1000" class="form-control unit-price-selector" placeholder="unit price"
+                <input type="text" class="form-control unit-price-selector" placeholder="unit price"
                        id="unit_1"
                        name="unit_1" required>
             </div>
@@ -123,8 +123,6 @@
             setSellingWeb();
             setOperation();
 
-            $('#total-price').number(true, 0);
-
             //change status event
             $("#status").change(function () {
                 setStatus();
@@ -139,7 +137,7 @@
 
             //add product
             $('#btn_add').click(function () {
-                $('#products').append('<div class="row" style="margin-top: 15px"><div class="col-md-2"><select class="form-control" id="operation_' + count + '" name="operation_' + count + '"><option value="1">OUT</option> <option value="2">IN</option></select></div><div class="col-md-4"><select class="form-control product-selector" id="product_id_' + count + '" name="product_id_' + count + '"></select></div><div class="col-md-2"><input type="number" min="1000" class="form-control unit-price-selector" placeholder="unit price" id="unit_' + count + '" name="unit_' + count + '" required></div><div class="col-md-2"><input type="number" min = "0" max = "100" class="form-control quantity-selector" placeholder="quantity" id="quantity_' + count + '" name="quantity_' + count + '" required></div><div class="col-md-2"><input type="text" class="form-control total-price-selector" placeholder="total price" id="price_' + count + '" name="price_' + count + '" required readonly></div></div>');
+                $('#products').append('<div class="row" style="margin-top: 15px"><div class="col-md-2"><select class="form-control" id="operation_' + count + '" name="operation_' + count + '"><option value="1">OUT</option> <option value="2">IN</option></select></div><div class="col-md-4"><select class="form-control product-selector" id="product_id_' + count + '" name="product_id_' + count + '"></select></div><div class="col-md-2"><input type="text" class="form-control unit-price-selector" placeholder="unit price" id="unit_' + count + '" name="unit_' + count + '" required></div><div class="col-md-2"><input type="number" min = "0" max = "100" class="form-control quantity-selector" placeholder="quantity" id="quantity_' + count + '" name="quantity_' + count + '" required></div><div class="col-md-2"><input type="text" class="form-control total-price-selector" placeholder="total price" id="price_' + count + '" name="price_' + count + '" required readonly></div></div>');
                 addElementsForProduct(count);
                 setUnitPrice($('#unit_' + count).parent().parent(), 1)
                 $('#numOfProducts').val(count);
@@ -161,14 +159,18 @@
             //change unit price or quantity
             $('.order-details').on('keyup', 'input.quantity-selector, input.unit-price-selector', function () {
                 var parent = $(this).parent().parent();
+                //format unit price
+                var unitPrice = parent.find('input.unit-price-selector');
+                unitPrice.val($.number(unitPrice.val()))
                 setTotalPrice(parent);
                 var totalPrice = 0;
                 $('input.total-price-selector').each(function (index) {
-                    totalPrice += parseInt($(this).val());
+                    totalPrice += parseInt($(this).val().replace(/,/g, ''));
                 })
-                $('#total-price').html(totalPrice);
                 if (totalPrice) {
-                    $('#total-price').number(true, 0);
+                    $('#total-price').html($.number(totalPrice));
+                }else{
+                    $('#total-price').html('');
                 }
             })
 
@@ -187,7 +189,7 @@
             var url = window.location.origin + '/admin/products/' + id + '/unit-price';
             $.get(url, function (data, status) {
                 var unitPrice = data.data.price;
-                selector.find('input.unit-price-selector').val(unitPrice);
+                selector.find('input.unit-price-selector').val($.number(unitPrice));
                 //enable quantity when unit price is loaded
                 selector.find('input.quantity-selector').attr('disabled', false);
             });
@@ -241,10 +243,10 @@
         //set total price
         function setTotalPrice(parentSelector) {
             var totalPriceSelector = parentSelector.find('input.total-price-selector');
-            var unitPrice = parentSelector.find('input.unit-price-selector').val();
+            var unitPrice = parseInt(parentSelector.find('input.unit-price-selector').val().replace(/,/g, ''));
             var quantity = parentSelector.find('input.quantity-selector').val();
             if (unitPrice && quantity) {
-                totalPriceSelector.val(unitPrice * quantity);
+                totalPriceSelector.val($.number(unitPrice * quantity));
             }
             else {
                 totalPriceSelector.val('');

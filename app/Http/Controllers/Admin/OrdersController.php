@@ -64,6 +64,11 @@ class OrdersController extends Controller
 
         $requestData = $request->all();
 
+        //parsing price
+        for ($i = 1; $i <= $requestData['numOfProducts']; $i++) {
+            $requestData['price_' . $i] = (int)str_replace(',', '', $requestData['price_' . $i]);
+        }
+
         $products = [];
 
         $numOfProduct = $requestData['numOfProducts'];
