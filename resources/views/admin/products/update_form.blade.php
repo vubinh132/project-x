@@ -16,7 +16,7 @@
 <div class="form-group row {{ $errors->has('name') ? 'has-error' : ''}}">
     {!! Form::label('name', 'Name', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
-        {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+        {!! Form::text('name', null, ['class' => 'form-control']) !!}
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -32,7 +32,7 @@
 <div class="form-group row {{ $errors->has('old_price') ? 'has-error' : ''}}">
     {!! Form::label('old_price', 'Old Price', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
-        {!! Form::text('old_price', null, ['class' => 'form-control', 'required' => 'required','min' => 0]) !!}
+        {!! Form::text('old_price', null, ['class' => 'form-control', 'min' => 0]) !!}
         {!! $errors->first('old_price', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -40,7 +40,7 @@
 <div class="form-group row {{ $errors->has('description') ? 'has-error' : ''}}">
     {!! Form::label('description', 'Description', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
-        {!! Form::text('description', null, ['class' => 'form-control', 'required' => 'required']) !!}
+        {!! Form::text('description', null, ['class' => 'form-control']) !!}
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

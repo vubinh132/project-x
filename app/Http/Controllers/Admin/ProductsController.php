@@ -100,7 +100,6 @@ class ProductsController extends Controller
         $this->validate($request, [
             'status' => "required",
             'sku' => " required|unique:products,sku,$id",
-            'name' => " required",
             'price' => "required|numeric|min:0",
         ]);
         $requestData = $request->all();
