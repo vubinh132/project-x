@@ -37,6 +37,8 @@
     <link href="{{ asset('theme/admin/css/jquery.toast.css') }}" rel="stylesheet">
     <!-- Multiselect CSS -->
     <link href="{{ asset('theme/admin/css/bootstrap-multiselect.css') }}" rel="stylesheet">
+    <!-- Confirm box -->
+    <link href="{{ asset('theme/admin/css/jquery-confirm.min.css') }}" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 </head>
@@ -88,6 +90,8 @@ ocLazyLoad
 <!-- jQuery peity -->
 <script src="{{ asset('theme/admin/js/jquery.peity.min.js') }}"></script>
 <script src="{{ asset('theme/admin/js/jquery.peity.init.js') }}"></script>
+<!-- Comfirm box -->
+<script src="{{ asset('theme/admin/js/jquery-confirm.min.js') }}"></script>
 <!-- Bootbox -->
 <script src="{{ asset('theme/admin/js/bootbox.min.js') }}"></script>
 <!-- Moment -->
