@@ -13,6 +13,8 @@
 
 Auth::routes();
 
+
+
 Route::group(['middleware' => ['admin', 'revalidate']], function () {
     // Home page
     Route::get('admin', 'Admin\\AdminsController@index');
@@ -49,7 +51,10 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('admin/list/logs', 'Admin\\LogsController@list');
 
     //General Settings
+    //send email for testing
+    Route::get('admin/general-settings/send-email', 'Admin\\GeneralSettingsController@sendEmail');
     Route::resource('admin/general-settings', 'Admin\\GeneralSettingsController');
+
 
     //Note
     Route::resource('admin/notes', 'Admin\\NotesController');
@@ -59,5 +64,6 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
 
 });
+
 
 

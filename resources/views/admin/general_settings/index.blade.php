@@ -26,7 +26,48 @@
                     {!! Form::text('name', "Current Version: $version[0] | Last Update: $version[2]", ['class' => 'form-control text-center', 'required' => 'required', 'disabled'=>'disabled']) !!}
                 </div>
             </div>
+            <div class="form-group row ">
+                {!! Form::label('email', 'Send Mail Testing', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+                <div class="col-md-7 col-sm-5">
+                    {!! Form::email('email', "", ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'Email address for testing...', 'id' => 'email']) !!}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <button type="button" class="form-control" id="send"><span id="ui-button-text">SEND</span></button>
+                </div>
+            </div>
         </form>
 
     </div>
+@section('extra_scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#send").click(function () {
+                $("#ui-button-text").text('SENDING...');
+                $("#send").attr('disabled', true);
+                $.ajax({
+                    url: "{{url('/admin/general-settings/send-email?email=')}}" + $("#email").val(),
+                    type: 'GET',
+                    success: function (res) {
+
+                        if (res.success) {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Success',
+                                content: 'An email sent successfully',
+                            });
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: res.massage,
+                            });
+                        }
+                        $("#ui-button-text").text('SEND');
+                        $("#send").attr('disabled', false);
+                    }
+                })
+            });
+        });
+    </script>
+@endsection
 @endsection

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
 use App\Services\CommonService;
-use Log;
+use Log, Mail;
+use Exception;
+use App\Mail\SimpleEmailSender;
 
 
 class GeneralSettingsController extends Controller
@@ -28,6 +30,24 @@ class GeneralSettingsController extends Controller
     public function update(Request $request)
     {
 
+    }
+
+    public function sendEmail(Request $request)
+    {
+        try {
+            $email = $request->get('email');
+            Mail::to($email)->send(new SimpleEmailSender('test', 'emails.template', ['content' => 'just test'], null));
+
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'massage' => $e->getMessage()
+            ]);
+        }
     }
 
 
