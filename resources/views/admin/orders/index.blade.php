@@ -38,14 +38,12 @@
                             <input type="checkbox" name="canceled" value="1" id="canceled">
                             Canceled ({{$canceled}})
                         </label>
-
+                        <span class="input-group-btn btn btn-secondary" ng-bind="filteredOrders.length"
+                              style="width: 50px">
+                        </span>
                         <input type="text" class="form-control search-text" id="keyWord"
-                               placeholder="Search by order code...">
-                        <span class="input-group-btn">
-                                    <button class="btn btn-secondary" type="button" id="btnSearch">
-                                        Search <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
+                               placeholder="Search by order code..." style="margin-left: 0 !important;">
+
                     </div>
 
                 </div>
@@ -67,7 +65,9 @@
                     <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true">
                         <td ng-bind="x.code"></td>
                         <td ng-bind="x.statusText"></td>
-                        <td><span  ng-bind-html="trustAsHtml(x.totalPrice)" data-toggle='tooltip' ng-attr-title="{%x.orderDetail%}" data-html="true" data-animation="false" bs-tooltip></span></td>
+                        <td><span ng-bind-html="trustAsHtml(x.totalPrice)" data-toggle='tooltip'
+                                  ng-attr-title="{%x.orderDetail%}" data-html="true" data-animation="false"
+                                  bs-tooltip></span></td>
                         <td ng-bind="x.name"></td>
                         <td ng-bind="x.sellingWeb"></td>
                         <td class="text-center text-nowrap">

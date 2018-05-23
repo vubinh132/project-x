@@ -27,23 +27,22 @@
                     <div class="input-group">
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="in" value="1" id="in" checked>
-                            In Business
+                            In Business ({{$in}})
                         </label>
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="research" value="1" id="research">
-                            Research
+                            Research ({{$research}})
                         </label>
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="out" value="1" id="out">
-                            Out Of Business
+                            Out Of Business ({{$out}})
                         </label>
 
-                        <input type="text" class="form-control search-text" id="keyWord" placeholder="Search by SKU...">
-                        <span class="input-group-btn">
-                                    <button class="btn btn-secondary" type="button" id="btnSearch">
-                                        Search <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
+                        <span class="input-group-btn btn btn-secondary" ng-bind="filteredProducts.length"
+                              style="width: 50px">
+                        </span>
+                        <input type="text" class="form-control search-text" id="keyWord"
+                               placeholder="Search by order code..." style="margin-left: 0 !important;">
                     </div>
 
                 </div>

@@ -38,7 +38,11 @@ class ProductsController extends Controller
 
         }
 
-        return view('admin.products.index', compact('products', 'total'));
+        $research = Product::where('status', Product::STATUS['RESEARCH'])->count();
+        $in = Product::where('status', Product::STATUS['IN_BUSINESS'])->count();
+        $out = Product::where('status', Product::STATUS['OUT_OF_BUSINESS'])->count();
+
+        return view('admin.products.index', compact('products', 'total', 'research', 'in', 'out'));
     }
 
     /**
@@ -83,6 +87,7 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
+
 
         return view('admin.products.edit', compact('product'));
     }
