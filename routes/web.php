@@ -55,12 +55,14 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('admin/general-settings/send-email', 'Admin\\GeneralSettingsController@sendEmail');
     Route::resource('admin/general-settings', 'Admin\\GeneralSettingsController');
 
-
     //Note
     Route::resource('admin/notes', 'Admin\\NotesController');
 
-    // Settings
-//    Route::resource('admin/settings/emails', 'Admin\\EmailController', ['except' => ['create', 'destroy']]);
+    //External APIs
+    //Lazada APIs
+    Route::get('admin/external-api/lazada', 'Admin\\external_apis\\LazadaController@index');
+    //Google APIs
+    Route::get('admin/external-api/google', 'Admin\\external_apis\\GoogleController@index');
 
 
 });

@@ -1,1 +1,0 @@
-Congratulations on registering successfully. Let's enjoy Viettel Booking's services.

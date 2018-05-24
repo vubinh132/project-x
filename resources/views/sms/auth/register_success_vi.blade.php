@@ -1,1 +1,0 @@
-Chao mung ban da dang ky tai khoan thanh cong. Hay cung Viettel Booking trai nghiem dich vu.

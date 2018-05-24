@@ -4,7 +4,7 @@
     $settingMenuSelected = strpos($controller, 'settings') > -1 || strpos($controller, 'logs') > -1;
     $businessMenuSelected = strpos($controller, 'products') > -1 || strpos($controller, 'orders') > -1;
     $storageMenuSelected = strpos($controller, 'diary') > -1 || strpos($controller, 'notes') > -1;
-    $lazadaMenuSelected = strpos($controller, 'lazada') > -1;
+    $externalApisMenuSelected = strpos($controller, 'lazada') > -1 || strpos($controller, 'google') > -1;
 
 
 @endphp
@@ -51,14 +51,18 @@
             </li>
 
             <li>
-                <a href="javascript:void(0);" class="waves-effect {{ $lazadaMenuSelected ? 'active' : '' }}">
+                <a href="javascript:void(0);" class="waves-effect {{ $externalApisMenuSelected ? 'active' : '' }}">
                     <i class="fa fa-cubes" aria-hidden="true"></i>
-                    <span class="hide-menu">Lazada<i class="fa arrow"></i></span>
+                    <span class="hide-menu">External APIs<i class="fa arrow"></i></span>
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Notes</a>
+                        <a href="{{url('/admin/external-api/lazada')}}">Lazada</a>
                     </li>
+                    <li>
+                        <a href="{{url('/admin/external-api/google')}}">Google</a>
+                    </li>
+
 
                 </ul>
             </li>

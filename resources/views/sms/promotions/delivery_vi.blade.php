@@ -1,1 +1,0 @@
-Ma uu dai tai {{ $params['partner'] }} cua Quy khach la {{ $params['code'] }}.@if($params['has_expire_date']) Vui long su dung truoc ngay {{ $params['end_date'] }}.@endif Chi tiet truy cap https://Booking.viettel.vn

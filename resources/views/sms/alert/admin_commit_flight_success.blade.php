@@ -1,1 +1,0 @@
-Thong bao: quan tri vien {{ $params['name'] }} lay ve chuyen bay tu {{ $params['departure'] }} den {{ $params['arrival'] }} voi ma {{ $params['booking_no'] }} thanh cong

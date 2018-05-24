@@ -1,1 +1,0 @@
-{{ $params['otp'] }} la ma xac thuc tai khoan {{ config('app.name') }} cua ban.

@@ -1,1 +1,0 @@
-Loi: quan tri vien {{ $params['name'] }} xac nhan chuyen khoan cho ma {{ $params['booking_no'] }} that bai
