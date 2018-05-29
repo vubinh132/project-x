@@ -5,8 +5,11 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use Carbon\Carbon;
-
+use App\Services\CommonService;
+use App\Services\LazadaService;
 use App\Models\Log;
+use App\Models\Product;
+
 
 class Test extends Command
 {
@@ -41,6 +44,20 @@ class Test extends Command
      */
     public function handle()
     {
-        Log::create(['category' => Log::CATEGORY['JOB'], 'content' => 'just test job...', 'notification_type' => Log::NOTIFICATION_TYPE['NONE']]);
+
+        $day = (float)CommonService::getSettingChosenValue('SYNC_TIME');
+        $res = LazadaService::syncOrders($day, LazadaService::MODE['ALL']);
+        $success = $res['success'];
+        if ($success) {
+            $insert = $res['data']['insert'];
+            $update = $res['data']['update'];
+            $fail = $res['data']['fail'];
+            $mess = "Sync orders from Lazada $insert insert, $update update, $fail fail";
+        } else {
+            $message = $res['message'];
+            $mess = "Sync orders from Lazada is failed. $message";
+        }
+        Log::create(['category' => Log::CATEGORY['JOB'], 'content' => $mess, 'notification_type' => Log::NOTIFICATION_TYPE['NONE']]);
+
     }
 }

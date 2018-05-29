@@ -28,7 +28,10 @@
             </div>
             <div class="form-group row ">
                 {!! Form::label('email', 'Send Mail Testing', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
-                <div class="col-md-7 col-sm-5">
+                <div class="col-md-3 col-sm-3">
+                    {!! Form::text('mailServer', $mailServer, ['class' => 'form-control', 'required' => 'required', 'disabled' => 'disabled']) !!}
+                </div>
+                <div class="col-md-4 col-sm-2">
                     {!! Form::email('email', "", ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'Email address for testing...', 'id' => 'email']) !!}
                 </div>
                 <div class="col-md-2 col-sm-2">

@@ -53,7 +53,7 @@ class Order extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'status', 'name', 'phone', 'address', 'price', 'email', 'note', 'selling_web'];
+    protected $fillable = ['code', 'status', 'name', 'phone', 'address', 'price', 'email', 'note', 'selling_web', 'created_at', 'updated_at', 'api_created_at', 'api_updated_at'];
 
     /**
      * Get the users of role.

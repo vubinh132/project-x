@@ -23,8 +23,9 @@ class GeneralSettingsController extends Controller
     {
         $startDate = CommonService::getSettingChosenValue('START_DATE');
         $version = explode('|', CommonService::getSettingChosenValue('VERSION_DETAILS'));
+        $mailServer = env('MAIL_USERNAME');
 
-        return view('admin.general_settings.index', compact('startDate', 'version'));
+        return view('admin.general_settings.index', compact('startDate', 'version', 'mailServer'));
     }
 
     public function update(Request $request)

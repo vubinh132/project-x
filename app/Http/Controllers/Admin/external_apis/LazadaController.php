@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin\external_apis;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
+use App\Models\Log;
+use App\Services\LazadaService;
 use App\Services\CommonService;
-use Log, Mail;
-use Exception;
-use App\Mail\SimpleEmailSender;
 
 
 class LazadaController extends Controller
@@ -21,9 +20,9 @@ class LazadaController extends Controller
      */
     public function index(Request $request)
     {
+
         return view('admin.external_apis.lazada.index');
     }
-
 
 
 }

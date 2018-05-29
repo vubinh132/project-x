@@ -17,5 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SettingsTableSeeder::class);
         //seed for note
         $this->call(NotesTableSeeder::class);
+        //sync time
+        $this->call(Ver8SyncTimeSeeder::class);
     }
 }

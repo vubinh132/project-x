@@ -20,6 +20,7 @@ class AdminsController extends Controller
      * @return \Illuminate\View\View
      */
     public function index()
+
     {
 //        Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('test', 'emails.template', ['content' => 'just test'], null));
 
@@ -31,13 +32,13 @@ class AdminsController extends Controller
         //product value
         $productValue = 0;
         $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->get();
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $productValue += ($product->getAvailableQuantity() * $product->getAVGValue());
         }
-        $productValue = ceil($productValue/1000);
+        $productValue = ceil($productValue / 1000);
 
         //profit
-        $profit = ceil(Order::join('order_details','orders.id', 'order_details.order_id')->whereIn('orders.status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->sum('order_details.price') / 1000);
+        $profit = ceil(Order::join('order_details', 'orders.id', 'order_details.order_id')->whereIn('orders.status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->sum('order_details.price') / 1000);
 
         return view('admin.index', compact('days', 'profit', 'productValue'));
     }
