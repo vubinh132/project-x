@@ -32,6 +32,7 @@ class OrdersController extends Controller
             $order->sellingWeb = $order->sellingWebText();
             $order->editLink = url('/admin/orders/' . $order->id . '/edit');
             $order->orderDetail = HTMLService::getOrderDetails($order);
+            $order->created_at = $order->getCreatedAt();
         }
 
         $processing = Order::where('status', Order::STATUS['ORDERED'])->count();

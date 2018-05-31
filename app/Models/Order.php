@@ -80,7 +80,12 @@ class Order extends Model
 
     public function getTotalPrice()
     {
-        return (float) Order::join('order_details', 'orders.id', 'order_details.order_id')->where('orders.id', $this->id)->sum('order_details.price');
+        return (float)Order::join('order_details', 'orders.id', 'order_details.order_id')->where('orders.id', $this->id)->sum('order_details.price');
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->api_created_at ? $this->api_created_at : $this->created_at;
     }
 
 

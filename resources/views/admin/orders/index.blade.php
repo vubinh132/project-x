@@ -57,6 +57,7 @@
                         <th>Total Price</th>
                         <th>Name</th>
                         <th>Selling Web</th>
+                        <th>Created Date</th>
                         <th class="text-center" style="width: 100px;">Actions</th>
                     </tr>
                     </thead>
@@ -70,6 +71,7 @@
                                   bs-tooltip></span></td>
                         <td ng-bind="x.name"></td>
                         <td ng-bind="x.sellingWeb"></td>
+                        <td ng-bind="x.created_at"></td>
                         <td class="text-center text-nowrap">
                             <a ng-href="{%x.editLink%}"
                                data-toggle="tooltip" title="Update" data-animation="false" bs-tooltip>
