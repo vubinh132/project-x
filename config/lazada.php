@@ -24,6 +24,8 @@ return [
 
     'VTC01-01' => 'VTV01-01',
 
+    'OKH01' => 'OKH01-03',
+
     //PACKAGE
     'BND010203-111' => 'BDN01-B&BDN01-W&BDN01-P',
     'VTC0102-11' => 'VTC01-W&VTC01-B'
