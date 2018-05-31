@@ -38,6 +38,18 @@
                     <button type="button" class="form-control" id="send"><span id="ui-button-text">SEND</span></button>
                 </div>
             </div>
+            <div class="form-group row ">
+                {!! Form::label('lazada-api', 'Lazada Sync Orders', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+                <div class="col-md-3 col-sm-3">
+
+                </div>
+                <div class="col-md-4 col-sm-2">
+                    {!! Form::number('day', $day, ['class' => 'form-control text-center', 'required' => 'required', 'placeholder' => 'Day to sync...', 'id' => 'day']) !!}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <button type="button" class="form-control" id="lazada"><span id="ui-button-text-lazada">UPDATE</span></button>
+                </div>
+            </div>
         </form>
 
     </div>
@@ -67,6 +79,33 @@
                         }
                         $("#ui-button-text").text('SEND');
                         $("#send").attr('disabled', false);
+                    }
+                })
+            });
+
+            $("#lazada").click(function () {
+                $("#ui-button-text-lazada").text('UPDATING...');
+                $("#lazada").attr('disabled', true);
+                $.ajax({
+                    url: "{{url('/admin/general-settings/update-syn-time?day=')}}" + $("#day").val(),
+                    type: 'GET',
+                    success: function (res) {
+
+                        if (res.success) {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Success',
+                                content: 'Update successfully',
+                            });
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: res.massage,
+                            });
+                        }
+                        $("#ui-button-text-lazada").text('UPDATE');
+                        $("#lazada").attr('disabled', false);
                     }
                 })
             });

@@ -53,6 +53,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     //General Settings
     //send email for testing
     Route::get('admin/general-settings/send-email', 'Admin\\GeneralSettingsController@sendEmail');
+    Route::get('admin/general-settings/update-syn-time', 'Admin\\GeneralSettingsController@updateSyncTime');
     Route::resource('admin/general-settings', 'Admin\\GeneralSettingsController');
 
     //Note

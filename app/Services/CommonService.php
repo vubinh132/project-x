@@ -152,8 +152,17 @@ class CommonService
 
     public static function getSettingChosenValue($keyName)
     {
-        $test = 123;
         return SettingKey::where('key', $keyName)->first()->chosenValue()->first()['value'];
+    }
+
+    public static function updateSettingValue($keyName, $value, $isSelectionValue = false)
+    {
+        if (!$isSelectionValue) {
+            $chosenValue = SettingKey::where('key', $keyName)->first()->chosenValue()->first();
+            $chosenValue->update(['value' => $value]);
+        } else {
+            // update selection value
+        }
     }
 
     public static function updateVersion()

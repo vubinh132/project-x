@@ -32,4 +32,6 @@ class SettingValue extends Model
      * Get the users of role.
      */
 
+    public $timestamps = false;
+
 }
