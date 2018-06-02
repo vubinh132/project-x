@@ -53,13 +53,13 @@
                 <div class="col-in row">
                     <div class="col-md-6 col-sm-6 col-xs-6">
                         <i class="linea-icon linea-basic fa-fw text-info" data-icon="V"></i>
-                        <h5 class="text-muted vb">LỊCH KHÁM</h5></div>
+                        <h5 class="text-muted vb">TODAY PROFIT</h5></div>
                     <div class="col-md-6 col-sm-6 col-xs-6">
-                        <h3 class="counter text-right m-t-15 text-info">0</h3></div>
+                        <h3 class="counter text-right m-t-15 text-info">{{$todayProfit}}</h3></div>
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="progress">
                             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40% Complete (success)</span>
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">40% Complete (success)</span>
                             </div>
                         </div>
                     </div>

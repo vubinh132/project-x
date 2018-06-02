@@ -2,7 +2,7 @@
 
 return [
     'USER_ID' => 'vuqbinh995@gmail.com',
-    'API_KEY' => 'VcnayAr89ddUuRJDpYlMXb8rGnzobteG77No2vExxhroJs6fi-0hz_Cf',
+    'API_KEY' => env('LAZADA_API_KEY'),
     'ROOT_URL' => 'https://api.sellercenter.lazada.vn',
     'API_VERSION' => '1.0',
     'RETURN_FORMAT_DATA' => 'json',
