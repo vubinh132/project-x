@@ -35,14 +35,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#sync").click(function () {
-                console.log('start');
                 $("#sync-text").text('SYNCING..');
                 $("#sync").attr('disabled', true);
                 $.ajax({
                     url: "{{url('/admin/external-api/lazada/sync-orders')}}",
                     type: 'GET',
                     success: function (res) {
-                        console.log('end');
                         $.alert({
                             backgroundDismiss: true,
                             title: 'Success',
