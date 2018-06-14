@@ -217,6 +217,8 @@ class LazadaService
 
             $result[] = $res;
 
+            Log::info("finish");
+
             $days -= $step;
         }
 
