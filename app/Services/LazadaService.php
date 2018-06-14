@@ -205,8 +205,6 @@ class LazadaService
     public static function syncAllOrders()
     {
 
-        Log::info("================================START================================");
-
         $step = 30;
 
         $startDay = new Carbon(CommonService::getSettingChosenValue('START_DATE'));
@@ -216,8 +214,6 @@ class LazadaService
         $days = $startDay->diffInDays(Carbon::now());
         while ($days > 0) {
 
-            Log::info("================================$days================================");
-
             $res = LazadaService::syncOrders($days, 2);
 
             $result[] = $res;
@@ -225,7 +221,6 @@ class LazadaService
             $days -= $step;
         }
 
-        Log::info("================================START================================");
 
         return $result;
     }
