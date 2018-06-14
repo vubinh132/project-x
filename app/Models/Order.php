@@ -12,13 +12,15 @@ class Order extends Model
         'ORDERED' => 1,
         'PAID' => 2,
         'INTERNAL' => 3,
-        'CANCEL' => 4
+        'CANCELED' => 4,
+        'RETURNED' => 5
     ];
     const STATUS_TEXT = [
         'ORDERED' => 'Ordered',
         'PAID' => 'Paid',
         'INTERNAL' => 'Internal',
-        'CANCEL' => 'Cancel'
+        'CANCELED' => 'Canceled',
+        'RETURNED' => 'Returned'
     ];
 
     const SELLING_WEB = [

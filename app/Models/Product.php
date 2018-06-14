@@ -64,7 +64,7 @@ class Product extends Model
 
     public function getAvailableQuantity()
     {
-        return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->whereNotIn('orders.status', [Order::STATUS['CANCEL']])->sum('order_details.quantity');
+        return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->whereNotIn('orders.status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED']])->sum('order_details.quantity');
     }
 
     public function getInOrderQuantity()

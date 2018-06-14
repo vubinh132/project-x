@@ -32,11 +32,11 @@
                         </label>
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="done" value="1" id="done">
-                            Done Orders ({{$done}})
+                            Done ({{$done}})
                         </label>
                         <label style="margin-right: 20px;">
                             <input type="checkbox" name="canceled" value="1" id="canceled">
-                            Canceled ({{$canceled}})
+                            Canceled & Returned ({{$canceled}})
                         </label>
                         <span class="input-group-btn btn btn-secondary" ng-bind="filteredOrders.length"
                               style="width: 50px">
