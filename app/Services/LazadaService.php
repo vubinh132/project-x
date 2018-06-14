@@ -204,6 +204,9 @@ class LazadaService
 
     public static function syncAllOrders()
     {
+
+        return [];
+        
         $step = 30;
 
         $startDay = new Carbon(CommonService::getSettingChosenValue('START_DATE'));
