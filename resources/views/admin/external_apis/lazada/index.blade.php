@@ -14,8 +14,44 @@
     </div>
     <div class="white-box">
 
+        <div class="form-group row ">
+            {!! Form::label('sync', 'Sync Orders', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+            <div class="col-md-3 col-sm-3">
+
+            </div>
+            <div class="col-md-4 col-sm-2">
+
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <button type="button" class="form-control" id="sync">
+                    <span id="sync-text">SYNC</span>
+                </button>
+            </div>
+        </div>
+
 
     </div>
-
-
+@section('extra_scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sync").click(function () {
+                $("#sync-text").text('SYNCING..');
+                $("#sync").attr('disabled', true);
+                $.ajax({
+                    url: "{{url('/admin/external-api/lazada/sync-orders')}}",
+                    type: 'GET',
+                    success: function (res) {
+                        $.alert({
+                            backgroundDismiss: true,
+                            title: 'Success',
+                            content: JSON.stringify(res),
+                        });
+                        $("#sync-text").text('SYNC');
+                        $("#sync").attr('disabled', false);
+                    }
+                })
+            });
+        });
+    </script>
+@endsection
 @endsection

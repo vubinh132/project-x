@@ -14,7 +14,6 @@
 Auth::routes();
 
 
-
 Route::group(['middleware' => ['admin', 'revalidate']], function () {
     // Home page
     Route::get('admin', 'Admin\\AdminsController@index');
@@ -53,6 +52,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     //General Settings
     //send email for testing
     Route::get('admin/general-settings/send-email', 'Admin\\GeneralSettingsController@sendEmail');
+    //update sync day
     Route::get('admin/general-settings/update-syn-time', 'Admin\\GeneralSettingsController@updateSyncTime');
     Route::resource('admin/general-settings', 'Admin\\GeneralSettingsController');
 
@@ -61,7 +61,10 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
     //External APIs
     //Lazada APIs
+    //sync orders
+    Route::get('admin/external-api/lazada/sync-orders', 'Admin\\external_apis\\LazadaController@syncOrders');
     Route::get('admin/external-api/lazada', 'Admin\\external_apis\\LazadaController@index');
+
     //Google APIs
     Route::get('admin/external-api/google', 'Admin\\external_apis\\GoogleController@index');
 

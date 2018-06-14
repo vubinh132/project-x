@@ -17,9 +17,9 @@ class LazadaService
         'shipped' => 1,
         'ready_to_ship' => 1,
         'delivered' => 2,
-        'returned' => 4,
+        'returned' => 5,
         'canceled' => 4,
-        'failed' => 4
+        'failed' => 5
     ];
 
     const MODE = [
@@ -202,7 +202,28 @@ class LazadaService
         }
     }
 
-    public static function getOrderItem($code)
+    public static function syncAllOrders()
+    {
+        $step = 30;
+
+        $startDay = new Carbon(CommonService::getSettingChosenValue('START_DATE'));
+
+        $result = [];
+
+        $days = $startDay->diffInDays(Carbon::now());
+        while ($days > 0) {
+
+            $res = LazadaService::syncOrders($days, 2);
+
+            $result[] = $res;
+
+            $days -= $step;
+        }
+
+        return $result;
+    }
+
+    private static function getOrderItem($code)
     {
         try {
             $now = Carbon::now()->toIso8601String();

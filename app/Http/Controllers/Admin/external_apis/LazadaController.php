@@ -24,5 +24,12 @@ class LazadaController extends Controller
         return view('admin.external_apis.lazada.index');
     }
 
+    public function syncOrders()
+    {
+        $res = LazadaService::syncAllOrders();
+
+        return response()->json($res);
+    }
+
 
 }
