@@ -282,6 +282,7 @@ app.controller("productIndexCtrl", function ($scope, $sce) {
     }
 
 });
+
 app.controller("orderIndexCtrl", function ($scope, $sce) {
 
     $scope.orders = orders;
@@ -327,6 +328,49 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
 
         for (var i = 0; i < $scope.orders.length; i++) {
             if (filterArray.indexOf($scope.orders[i].status) != -1 && (!keyWord || $scope.orders[i].code.toLowerCase().match(keyWord))) {
+                $scope.filteredOrders.push($scope.orders[i]);
+            }
+        }
+
+    }
+
+    $scope.trustAsHtml = function (html) {
+        return $sce.trustAsHtml(html);
+    }
+
+});
+
+app.controller("romIndexCtrl", function ($scope, $sce) {
+
+    $scope.orders = orders;
+
+    filter();
+
+    $('#processing, #done, #canceled').change(function () {
+        filter();
+        $scope.$apply();
+    });
+    $(function () {
+        $('#keyWord').keyup(function () {
+            filter();
+            $scope.$apply();
+        });
+    });
+
+    function filter() {
+        $scope.filteredOrders = [];
+
+        var keyWord = $('#keyWord').val().toLowerCase();
+
+        //validate
+
+        if (!keyWord.match(/^[a-zA-Z0-9_.-]*$/)) {
+            keyWord = keyWord.substring(0, keyWord.length - 1);
+            $('#keyWord').val(keyWord);
+        }
+
+        for (var i = 0; i < $scope.orders.length; i++) {
+            if (!keyWord || $scope.orders[i].code.toLowerCase().match(keyWord)) {
                 $scope.filteredOrders.push($scope.orders[i]);
             }
         }
@@ -401,7 +445,6 @@ app.directive('onFinishRender', function ($timeout) {
         }
     }
 });
-
 
 app.directive('bsTooltip', function () {
     return {

@@ -47,6 +47,9 @@
                     <li>
                         <a href="{{ url('/admin/orders') }}">Orders</a>
                     </li>
+                    <li>
+                        <a href="{{ url('/admin/rom') }}">ROM</a>
+                    </li>
                 </ul>
             </li>
 
