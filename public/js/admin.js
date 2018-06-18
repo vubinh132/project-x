@@ -392,7 +392,6 @@ app.controller("romIndexCtrl", function ($scope, $sce) {
             url: url,
             type: 'GET',
             success: function (res) {
-                console.log($scope.filteredOrders);
                 filter();
                 $scope.$apply();
 
