@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'USER_ID' => 'vuqbinh995@gmail.com',
+    'USER_ID' => env('LAZADA_USER_ID'),
     'API_KEY' => env('LAZADA_API_KEY'),
     'ROOT_URL' => 'https://api.sellercenter.lazada.vn',
     'API_VERSION' => '1.0',
