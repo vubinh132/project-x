@@ -27,7 +27,7 @@ class LazadaService
         'ALL' => 2,
     ];
 
-    public static function syncOrders($day, $mode = 1)
+    public static function syncOrders($startDay, $endDay, $mode = 1)
     {
         try {
 
@@ -41,7 +41,9 @@ class LazadaService
 
             $now = Carbon::now()->toIso8601String();
 
-            $updateAfter = Carbon::now()->subDay($day)->toIso8601String();
+            $updateAfter = (new Carbon($startDay))->startOfDay()->toIso8601String();
+
+            $updateBefore = (new Carbon($endDay))->endOfDay()->toIso8601String();
 
             $url = config('lazada.ROOT_URL');
 
@@ -54,6 +56,8 @@ class LazadaService
                 'Timestamp' => $now,
 
                 'UpdatedAfter' => $updateAfter,
+
+                'UpdatedBefore' => $updateBefore,
 
                 'SortBy' => 'updated_at',
 
@@ -326,6 +330,7 @@ class LazadaService
                 foreach ($SKUs as $SKU) {
                     //check sku
                     if (!in_array($SKU, $MProducts)) {
+                        Log::info("======= wrong sku $SKU =======");
                         return [
                             'success' => false,
                             'data' => 'sku is wrong'
@@ -347,6 +352,7 @@ class LazadaService
                 }
             } else {
                 if (!in_array($sku, $MProducts)) {
+                    Log::info("======= wrong sku $sku =======");
                     return [
                         'success' => false,
                         'message' => 'sku is wrong'
