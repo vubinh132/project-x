@@ -1,9 +1,9 @@
 <?php
-
+namespace App\SDKs\lazada;
 class Autoloader{
   
   /**
-     * Autoloade Class in SDK.
+   * Autoloade Class in SDK.
      * PS: only load SDK class
      * @param string $class class name
      * @return void

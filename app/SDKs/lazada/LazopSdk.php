@@ -1,4 +1,5 @@
 <?php
+namespace App\SDKs\lazada;
 /**
  * IOP SDK entry
  * please do not modified this file unless you know how to modify and how to recover

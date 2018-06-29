@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\Log;
 use App\Services\LazadaService;
 use App\Services\CommonService;
-
+use App\SDKs\lazada\lazop\LazopClient;
+use App\SDKs\lazada\lazop\UrlConstants;
+use App\SDKs\lazada\lazop\LazopRequest;
 use Log as Log1;
 
 
@@ -38,7 +40,12 @@ class LazadaController extends Controller
     public function auth(Request $request)
     {
         $code = $request->get('code');
+        $c = new LazopClient(UrlConstants::$api_gateway_url_vn, config('lazada.APP_KEY'), config('lazada.APP_SECRET'));
+        $r = new LazopRequest("/auth/token/create");
+        $r->addApiParam("code", $code);
+        $response = $c->execute($r);
         Log1::info($code);
+        dd($response);
     }
 
 

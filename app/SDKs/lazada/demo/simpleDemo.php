@@ -1,4 +1,5 @@
 <?php
+namespace App\SDKs\lazada\demo;
     include "../LazopSdk.php";
 
     $c = new LazopClient('https://api.lazada.test/rest', '${appKey}', '${appSecret}');

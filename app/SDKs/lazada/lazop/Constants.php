@@ -1,4 +1,5 @@
 <?php
+namespace App\SDKs\lazada\lazop;
 class Constants
 {
 	static $log_level_debug = "DEBUG";

@@ -1,4 +1,5 @@
 <?php
+namespace App\SDKs\lazada\lazop;
 class LazopLogger
 {
 	public $conf = array(
