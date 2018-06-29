@@ -40,12 +40,12 @@ class LazadaController extends Controller
     public function auth(Request $request)
     {
         $code = $request->get('code');
-        $c = new LazopClient(UrlConstants::$api_gateway_url_vn, config('lazada.APP_KEY'), config('lazada.APP_SECRET'));
+        dd($code);
+        $c = new LazopClient(UrlConstants::$api_authorization_url, config('lazada.APP_KEY'), config('lazada.APP_SECRET'));
         $r = new LazopRequest("/auth/token/create");
         $r->addApiParam("code", $code);
         $response = $c->execute($r);
         Log1::info($code);
-        dd($response);
     }
 
 
