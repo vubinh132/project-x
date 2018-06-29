@@ -206,27 +206,31 @@ class LazadaService
         }
     }
 
-    public static function syncAllOrders()
+    public static function syncOrderByDay($day)
     {
-
-        $step = 30;
-
-        $startDay = new Carbon(CommonService::getSettingChosenValue('START_DATE'));
-
-        $result = [];
-
-        $days = $startDay->diffInDays(Carbon::now());
-        while ($days > 0) {
-
-            $res = LazadaService::syncOrders($days, 2);
-
-            $result[] = $res;
-
-            $days -= $step;
+        $res = LazadaService::syncOrders($day, $day, LazadaService::MODE['ALL']);
+        $success = $res['success'];
+        if ($success) {
+            $insert = $res['data']['insert'];
+            $update = $res['data']['update'];
+            $fail = $res['data']['fail'];
+            return [
+                'success' => true,
+                'data' => [
+                    'insert' => $insert,
+                    'update' => $update,
+                    'fail' => $fail,
+                ]
+            ];
+        } else {
+            $message = $res['message'];
+            $mess = "Sync orders from Lazada is failed. $message";
+            return [
+                'success' => false,
+                'message' => $mess
+            ];
         }
 
-
-        return $result;
     }
 
     private static function getOrderItem($code)
