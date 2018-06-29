@@ -68,7 +68,7 @@
             });
 
             $("#auth").click(function () {
-                window.location.href = "http://stackoverflow.com";
+                window.location.href = '{{config('lazada.AUTH_URL')}}';
             })
         });
     </script>

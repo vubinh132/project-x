@@ -13,3 +13,4 @@ yarn-error.log
 .env
 /public/images/product_images/*
 server.php
+/public/LAZOP_SDK_WORK_DIR
