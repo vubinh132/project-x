@@ -91,7 +91,6 @@ class AdminsController extends Controller
                         $availableQuantity--;
                     } else {
                         $todayFund += $pPrice;
-                        Log::info($pPrice);
                         $quantity--;
                         if ($quantity == 0) {
                             $flag = true;

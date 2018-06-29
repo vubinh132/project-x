@@ -8,6 +8,10 @@ use GuzzleHttp\Client;
 use App\Models\Order;
 use Exception;
 use App\Models\Product;
+use App\Services\CommonService;
+use App\SDKs\lazada\lazop\LazopClient;
+use App\SDKs\lazada\lazop\LazopRequest;
+use App\SDKs\lazada\lazop\UrlConstants;
 
 
 class LazadaService
@@ -31,6 +35,10 @@ class LazadaService
     {
         try {
 
+            //get token
+
+            $token = CommonService::getSettingChosenValue("L_TOKEN");
+
             $update = 0;
 
             $insert = 0;
@@ -39,60 +47,46 @@ class LazadaService
 
             $MProducts = Product::where('status', Product::STATUS['IN_BUSINESS'])->get()->pluck('sku')->toArray();
 
-            $now = Carbon::now()->toIso8601String();
-
             $updateAfter = (new Carbon($startDay))->startOfDay()->toIso8601String();
 
             $updateBefore = (new Carbon($endDay))->endOfDay()->toIso8601String();
 
-            $url = config('lazada.ROOT_URL');
+            $c = new LazopClient(UrlConstants::$api_gateway_url_vn, config('lazada.APP_KEY'), config('lazada.APP_SECRET'));
 
-            $parameters = array(
+            $r = new LazopRequest('/orders/get', 'GET');
 
-                // The API method to call.
-                'Action' => 'GetOrders',
+            $r->addApiParam('update_after', $updateAfter);
 
-                // The current time in ISO8601 format
-                'Timestamp' => $now,
+            $r->addApiParam('update_before', $updateBefore);
 
-                'UpdatedAfter' => $updateAfter,
+            $r->addApiParam('sort_by', 'updated_at');
 
-                'UpdatedBefore' => $updateBefore,
+            $r->addApiParam('sort_direction', 'ASC');
 
-                'SortBy' => 'updated_at',
+            $res = $c->execute($r, $token);
 
-                'SortDirection' => 'ASC'
-            );
+            $body = json_decode($res, true);
 
-            $url = LazadaService::createUrl($url, $parameters);
-
-            $client = new Client();
-
-            $res = $client->request('GET', $url);
-
-            $body = json_decode($res->getBody()->getContents(), true);
-
-            if (isset($body['SuccessResponse'])) {
-                $successRes = $body['SuccessResponse'];
+            if ($body['code'] == 0) {
                 $orders = Order::where('selling_web', Order::SELLING_WEB['LAZADA'])->get();
-                $lazadaOrders = $successRes['Body']['Orders'];
+                $lazadaOrders = $body['data']['orders'];
                 foreach ($lazadaOrders as $lazadaOrder) {
 
                     //lazada order information
-                    $lazadaOrderCode = sprintf('%.0f', $lazadaOrder['OrderNumber']);
-                    $LPhone = $lazadaOrder['AddressShipping']['Phone'];
-                    $LName = $lazadaOrder['AddressShipping']['FirstName'];
-                    $LAddress = $lazadaOrder['AddressShipping']['Address1'] . ' ,'
-                        . $lazadaOrder['AddressShipping']['Address5'] . ' ,'
-                        . $lazadaOrder['AddressShipping']['Address4'] . ' ,'
-                        . $lazadaOrder['AddressShipping']['Address3'] . ' ,'
-                        . $lazadaOrder['AddressShipping']['Country'];
-                    $LCreatedAt = $lazadaOrder['CreatedAt'];
-                    $LUpdatedAt = $lazadaOrder['UpdatedAt'];
-                    $LStatus = LazadaService::ORDER_STATUS[$lazadaOrder['Statuses'][0]];
+                    $lazadaOrderCode = sprintf('%.0f', $lazadaOrder['order_number']);
+                    $LPhone = $lazadaOrder['address_shipping']['phone'];
+                    $LName = $lazadaOrder['address_shipping']['first_name'];
+                    $LAddress = $lazadaOrder['address_shipping']['address1'] . ' ,'
+                        . $lazadaOrder['address_shipping']['address5'] . ' ,'
+                        . $lazadaOrder['address_shipping']['address4'] . ' ,'
+                        . $lazadaOrder['address_shipping']['address3'] . ' ,'
+                        . $lazadaOrder['address_shipping']['country'];
+                    $LCreatedAt = $lazadaOrder['created_at'];
+                    $LUpdatedAt = $lazadaOrder['updated_at'];
+                    $LStatus = LazadaService::ORDER_STATUS[$lazadaOrder['statuses'][0]];
 
                     //lazada order details
-                    $LProductsRes = LazadaService::getOrderItem($lazadaOrderCode);
+                    $LProductsRes = LazadaService::getOrderItems($lazadaOrderCode);
 
                     if (!$LProductsRes['success']) {
                         $fail++;
@@ -126,8 +120,8 @@ class LazadaService
                                     'phone' => $LPhone,
                                     'address' => $LAddress,
                                     'status' => $LStatus,
-                                    'api_created_at' => $LCreatedAt,
-                                    'api_updated_at' => $LUpdatedAt,
+                                    'api_created_at' => new Carbon($LCreatedAt),
+                                    'api_updated_at' => new Carbon($LUpdatedAt),
                                 ]);
                                 //check order details
                                 foreach ($LProducts as $product) {
@@ -169,8 +163,8 @@ class LazadaService
                                     'address' => $LAddress,
                                     'status' => $LStatus,
                                     'selling_web' => 2,
-                                    'api_created_at' => $LCreatedAt,
-                                    'api_updated_at' => $LUpdatedAt
+                                    'api_created_at' => new Carbon($LCreatedAt),
+                                    'api_updated_at' => new Carbon($LUpdatedAt)
                                 ]);
                                 foreach ($LProducts as $LProduct) {
                                     $product = Product::where('sku', $LProduct[0])->firstOrFail();
@@ -233,38 +227,26 @@ class LazadaService
 
     }
 
-    private static function getOrderItem($code)
+    private static function getOrderItems($code)
     {
         try {
-            $now = Carbon::now()->toIso8601String();
 
-            $url = config('lazada.ROOT_URL');
+            $token = CommonService::getSettingChosenValue("L_TOKEN");
 
-            $parameters = array(
+            $c = new LazopClient(UrlConstants::$api_gateway_url_vn, config('lazada.APP_KEY'), config('lazada.APP_SECRET'));
 
-                // The API method to call.
-                'Action' => 'GetOrderItems',
+            $r = new LazopRequest('/order/items/get', 'GET');
 
-                // The current time in ISO8601 format
-                'Timestamp' => $now,
+            $r->addApiParam('order_id', $code);
 
-                'OrderId' => $code
+            $res = $c->execute($r, $token);
 
-            );
+            $body = json_decode($res, true);
 
-            $url = LazadaService::createUrl($url, $parameters);
-
-            $client = new Client();
-
-            $res = $client->request('GET', $url);
-
-            $body = json_decode($res->getBody()->getContents(), true);
-
-            if (isset($body['SuccessResponse'])) {
-                $successRes = $body['SuccessResponse'];
+            if ($body['code'] == 0) {
                 return [
                     'success' => true,
-                    'data' => $successRes['Body']['OrderItems']
+                    'data' => $body['data']
                 ];
             }
             $errorRes = $body['ErrorResponse'];
@@ -326,7 +308,7 @@ class LazadaService
         $result = [];
 
         foreach ($rawOrders as $rawOrder) {
-            $sku = config('lazada.' . $rawOrder['Sku'], $rawOrder['Sku']);
+            $sku = config('lazada.' . $rawOrder['sku'], $rawOrder['sku']);
             //package
             if (str_contains($sku, '&')) {
                 $SKUs = explode('&', $sku);
@@ -345,13 +327,13 @@ class LazadaService
                         if ($result[$i][0] == $SKU) {
                             $oldQuantity = $result[$i][1];
                             $oldPrice = $result[$i][2];
-                            $result[$i] = [$SKU, $oldQuantity + 1, $oldPrice + $rawOrder['ItemPrice'] / $numOfItem];
+                            $result[$i] = [$SKU, $oldQuantity + 1, $oldPrice + $rawOrder['item_price'] / $numOfItem];
                             $flag = true;
                             break;
                         }
                     }
                     if (!$flag) {
-                        $result[] = [$SKU, 1, $rawOrder['ItemPrice'] / $numOfItem];
+                        $result[] = [$SKU, 1, $rawOrder['item_price'] / $numOfItem];
                     }
                 }
             } else {
@@ -367,13 +349,13 @@ class LazadaService
                     if ($result[$i][0] == $sku) {
                         $oldQuantity = $result[$i][1];
                         $oldPrice = $result[$i][2];
-                        $result[$i] = [$sku, $oldQuantity + 1, $oldPrice + $rawOrder['ItemPrice']];
+                        $result[$i] = [$sku, $oldQuantity + 1, $oldPrice + $rawOrder['item_price']];
                         $flag = true;
                         break;
                     }
                 }
                 if (!$flag) {
-                    $result[] = [$sku, 1, $rawOrder['ItemPrice']];
+                    $result[] = [$sku, 1, $rawOrder['item_price']];
                 }
             }
         }

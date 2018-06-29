@@ -11,8 +11,6 @@ use App\Services\CommonService;
 use App\SDKs\lazada\lazop\LazopClient;
 use App\SDKs\lazada\lazop\UrlConstants;
 use App\SDKs\lazada\lazop\LazopRequest;
-use Log as Log1;
-
 
 class LazadaController extends Controller
 {
@@ -40,12 +38,16 @@ class LazadaController extends Controller
     public function auth(Request $request)
     {
         $code = $request->get('code');
-        dd($code);
         $c = new LazopClient(UrlConstants::$api_authorization_url, config('lazada.APP_KEY'), config('lazada.APP_SECRET'));
         $r = new LazopRequest("/auth/token/create");
         $r->addApiParam("code", $code);
         $response = $c->execute($r);
-        Log1::info($code);
+        $res = json_decode($response);
+        $token = $res->access_token;
+        CommonService::updateSettingValue("L_TOKEN", $token);
+
+        return response()->json(['success' => true]);
+
     }
 
 
