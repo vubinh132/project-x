@@ -243,6 +243,7 @@ return [
         'CommonService' => App\Services\CommonService::class,
         'Location' => Stevebauman\Location\Facades\Location::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+
     ],
 
 ];

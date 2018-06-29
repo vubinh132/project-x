@@ -67,6 +67,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     //Lazada APIs
     //sync orders
     Route::get('admin/external-api/lazada/sync-orders', 'Admin\\external_apis\\LazadaController@syncOrders');
+    Route::get('admin/external-api/lazada/auth', 'Admin\\external_apis\\LazadaController@auth');
     Route::get('admin/external-api/lazada', 'Admin\\external_apis\\LazadaController@index');
 
     //Google APIs

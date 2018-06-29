@@ -9,6 +9,8 @@ use App\Models\Log;
 use App\Services\LazadaService;
 use App\Services\CommonService;
 
+use Log as Log1;
+
 
 class LazadaController extends Controller
 {
@@ -31,6 +33,12 @@ class LazadaController extends Controller
         $res = LazadaService::syncOrderByDay($day);
 
         return response()->json($res);
+    }
+
+    public function auth(Request $request)
+    {
+        $code = $request->get('code');
+        Log1::info($code);
     }
 
 
