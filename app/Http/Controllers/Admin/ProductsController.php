@@ -184,4 +184,15 @@ class ProductsController extends Controller
         }
     }
 
+    public function test()
+    {
+        $result = ['success' => true];
+        $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->get(['id', 'sku']);
+        foreach ($products as $product){
+            $product['quantity'] = $product->getAvailableQuantity();
+        }
+        $result['products'] = $products;
+        return response()->json($result);
+    }
+
 }
