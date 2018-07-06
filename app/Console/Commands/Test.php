@@ -48,7 +48,7 @@ class Test extends Command
         $day = (float)CommonService::getSettingChosenValue('SYNC_TIME');
         $startDay = Carbon::now()->subDay($day - 1)->startOfDay();
         $endDay = Carbon::now()->endOfDay();
-        $res = LazadaService::syncOrders($startDay, $endDay, LazadaService::MODE['ALL']);
+        $res = LazadaService::syncOrders($startDay, $endDay);
         $success = $res['success'];
         if ($success) {
             $insert = $res['data']['insert'];

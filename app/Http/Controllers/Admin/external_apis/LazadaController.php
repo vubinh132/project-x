@@ -11,6 +11,7 @@ use App\Services\CommonService;
 use App\SDKs\lazada\lazop\LazopClient;
 use App\SDKs\lazada\lazop\UrlConstants;
 use App\SDKs\lazada\lazop\LazopRequest;
+use Carbon\Carbon;
 
 class LazadaController extends Controller
 {
@@ -35,6 +36,20 @@ class LazadaController extends Controller
         return response()->json($res);
     }
 
+    public function syncAllOrders(Request $request)
+    {
+
+        $startDay = (new Carbon('2018-03-05'))->startOfDay();
+        $endDay = Carbon::now()->startOfDay();
+        while ($endDay >= $startDay) {
+            $res = LazadaService::syncOrderByDay($startDay);
+            $result[] = [$startDay->toIso8601String(), $res];
+            $startDay->addDay(1);
+        }
+
+        return response()->json($result);
+    }
+    
     public function auth(Request $request)
     {
         $code = $request->get('code');
