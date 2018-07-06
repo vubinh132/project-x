@@ -29,6 +29,8 @@ return [
 
     'OKH01' => 'OKH01-03',
 
+    'MNE01-08' => 'MHE01-08',
+
     //PACKAGE
     'BDN010203-111' => 'BDN01-B&BDN01-W&BDN01-P',
     'VTC0102-11' => 'VTC01-W&VTC01-B'
