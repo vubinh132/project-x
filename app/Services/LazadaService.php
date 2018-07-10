@@ -25,6 +25,7 @@ class LazadaService
     ];
 
 
+//  order APIs
     public static function syncOrders($startDay, $endDay)
     {
         try {
@@ -208,7 +209,7 @@ class LazadaService
                     }
 
                     $flag = false;
-                    
+
                     for ($i = 0; $i < count($result); $i++) {
                         if ($result[$i][0] == $SKU) {
                             $oldQuantity = $result[$i][1];
@@ -237,6 +238,7 @@ class LazadaService
         }
     }
 
+//  products APIs
     private static function callAPI($method, $url, $params)
     {
         try {

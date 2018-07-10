@@ -31,7 +31,12 @@ return [
 
     'MNE01-08' => 'MHE01-08',
 
+    'NNA002-B07' => 'NNA02-B07',
+    'NNA002-B08' => 'NNA02-B08',
+    'NNA002-B09' => 'NNA02-B09',
     'NNA002-B10' => 'NNA02-B10',
+    'NNA002-B11' => 'NNA02-B11',
+    'NNA002-B12' => 'NNA02-B12',
 
     //PACKAGE
     'BDN010203-111' => 'BDN01-B&BDN01-W&BDN01-P',
