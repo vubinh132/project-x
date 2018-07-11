@@ -239,6 +239,107 @@ class LazadaService
     }
 
 //  products APIs
+    public static function getProductQuantity()
+    {
+        try {
+            $SKUs = [];
+
+            // get live products
+            $params = [
+                'filter' => 'live',
+                'limit' => 500
+            ];
+
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $products = $res['data']['products'];
+            foreach ($products as $product) {
+                foreach ($product['skus'] as $sku) {
+                    $SKUs[$sku['SellerSku']] = $sku['Available'];
+                }
+            }
+
+            //get sold out products
+            $params = [
+                'filter' => 'sold-out',
+                'limit' => 500
+            ];
+
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $products = $res['data']['products'];
+            foreach ($products as $product) {
+                foreach ($product['skus'] as $sku) {
+                    $SKUs[$sku['SellerSku']] = $sku['Available'];
+                }
+            }
+
+            //sort array
+            ksort($SKUs);
+
+            return $SKUs;
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public static function getProductSKUs()
+    {
+        try {
+            $SKUs = [];
+
+            // get live products
+            $params = [
+                'filter' => 'live',
+                'limit' => 500
+            ];
+
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $products = $res['data']['products'];
+            foreach ($products as $product) {
+                foreach ($product['skus'] as $sku) {
+                    $SKUs[] = $sku['SellerSku'];
+                }
+            }
+
+            //get sold out products
+            $params = [
+                'filter' => 'sold-out',
+                'limit' => 500
+            ];
+
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $products = $res['data']['products'];
+            foreach ($products as $product) {
+                foreach ($product['skus'] as $sku) {
+                    $SKUs[] = $sku['SellerSku'];
+                }
+            }
+            return [
+                'success' => true,
+                'data' => $SKUs
+            ];
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     private static function callAPI($method, $url, $params)
     {
         try {

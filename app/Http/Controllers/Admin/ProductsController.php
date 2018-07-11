@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\CommonService;
 use App\Services\HTMLService;
-use Exception;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Log, File, Session;
+use App\Services\LazadaService;
 
 
 class ProductsController extends Controller
@@ -164,35 +163,79 @@ class ProductsController extends Controller
         return redirect('admin/products/' . $id . '/edit');
     }
 
-    public function getUnitPrice($id)
-    {
-        try {
-            $product = Product::where('id', $id)->where('status', Product::STATUS['IN_BUSINESS'])->firstOrFail(['price']);
-
-            return response()->json([
-                'success' => true,
-                'data' => $product
-
-            ]);
-
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-
-            ]);
-        }
-    }
+//    public function getUnitPrice($id)
+//    {
+//        try {
+//            $product = Product::where('id', $id)->where('status', Product::STATUS['IN_BUSINESS'])->firstOrFail(['price']);
+//
+//            return response()->json([
+//                'success' => true,
+//                'data' => $product
+//
+//            ]);
+//
+//        } catch (Exception $e) {
+//            Log::error($e->getMessage());
+//            return response()->json([
+//                'success' => false,
+//
+//            ]);
+//        }
+//    }
 
     public function test()
     {
         $result = ['success' => true];
         $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->get(['id', 'sku']);
-        foreach ($products as $product){
+        foreach ($products as $product) {
             $product['quantity'] = $product->getAvailableQuantity();
         }
         $result['products'] = $products;
         return response()->json($result);
+    }
+
+    public function productChecking()
+    {
+        LazadaService::getProductQuantity();
+        $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get(['sku', 'id']);
+        foreach ($products as $product) {
+            $product->available = $product->getAvailableQuantity();
+        }
+        return view('admin.products.checking', compact('products'));
+
+    }
+
+    public function productCheckingTest()
+    {
+        $wrongSKUs = [];
+        $res = LazadaService::getProductSKUs();
+        if (!$res['success']) {
+            return response()->json($res);
+        }
+        $LSKUs = $res['data'];
+        $MSKUs = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get(['sku'])->pluck('sku')->toArray();
+        foreach ($LSKUs as $LSKU) {
+            if (str_contains($LSKU, '&')) {
+                $arraySKU = explode('&', $LSKU);
+            } else {
+                $arraySKU = [$LSKU];
+            }
+            foreach ($arraySKU as $sku) {
+                if (!in_array($sku, $MSKUs)) {
+                    $wrongSKUs[] = $LSKU;
+                    break;
+                }
+            }
+        }
+
+        $wrongSKUs = sort($wrongSKUs);
+
+        return response()->json([
+            'Ms. La' => [
+                'count' => count($wrongSKUs),
+                'SKUs' => $wrongSKUs
+            ]
+        ]);
     }
 
 }
