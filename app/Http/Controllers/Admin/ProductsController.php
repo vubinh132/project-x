@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Log, File, Session;
+use Log, File, Session, DB;
 use App\Services\LazadaService;
 
 
@@ -196,11 +197,35 @@ class ProductsController extends Controller
 
     public function productChecking()
     {
-        LazadaService::getProductQuantity();
-        $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get(['sku', 'id']);
-        foreach ($products as $product) {
-            $product->available = $product->getAvailableQuantity();
+        $res = LazadaService::getProductQuantity();
+        if (!$res['success']) {
+            return response()->json($res);
         }
+        $LProducts = $res['products'];
+
+        $products = DB::table('products')
+            ->select(DB::raw('products.sku, sum(order_details.quantity) as available'))
+            ->leftJoin('order_details', 'order_details.product_id', 'products.id')
+            ->join('orders', 'orders.id', 'order_details.order_id')
+            ->where('products.status', Product::STATUS['IN_BUSINESS'])
+            ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['INTERNAL']])
+            ->groupBy('products.sku')
+            ->get();
+        foreach ($products as $product) {
+            $sku = $product->sku;
+            $flag = false;
+            foreach ($LProducts as $key => $value) {
+                if ($key == $sku) {
+                    $product->l = $value;
+                    $flag = true;
+                    break;
+                }
+            }
+            if (!$flag) {
+                $product->l = 'N/a';
+            }
+        }
+
         return view('admin.products.checking', compact('products'));
 
     }

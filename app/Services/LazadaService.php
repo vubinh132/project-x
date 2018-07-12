@@ -281,7 +281,8 @@ class LazadaService
             //sort array
             ksort($SKUs);
 
-            return $SKUs;
+            return ['success' => true, 'products' => $SKUs];
+
         } catch (Exception $e) {
             return [
                 'success' => false,
