@@ -228,7 +228,7 @@ class ProductsController extends Controller
             }
         }
 
-        $wrongSKUs = sort($wrongSKUs);
+        sort($wrongSKUs);
 
         return response()->json([
             'Ms. La' => [
