@@ -164,25 +164,25 @@ class ProductsController extends Controller
         return redirect('admin/products/' . $id . '/edit');
     }
 
-//    public function getUnitPrice($id)
-//    {
-//        try {
-//            $product = Product::where('id', $id)->where('status', Product::STATUS['IN_BUSINESS'])->firstOrFail(['price']);
-//
-//            return response()->json([
-//                'success' => true,
-//                'data' => $product
-//
-//            ]);
-//
-//        } catch (Exception $e) {
-//            Log::error($e->getMessage());
-//            return response()->json([
-//                'success' => false,
-//
-//            ]);
-//        }
-//    }
+    public function getUnitPrice($id)
+    {
+        try {
+            $product = Product::where('id', $id)->where('status', Product::STATUS['IN_BUSINESS'])->firstOrFail(['price']);
+
+            return response()->json([
+                'success' => true,
+                'data' => $product
+
+            ]);
+
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+
+            ]);
+        }
+    }
 
     public function test()
     {
