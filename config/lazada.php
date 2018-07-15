@@ -22,6 +22,8 @@ return [
     'NQD04' => 'NDQ01-11',
     'NQD05' => 'NDQ01-12',
 
+    'NQD01-10' => 'NDQ01-10',
+
     'VTC01' => 'VTC01-W',
     'VTC02' => 'VTC01-B',
 
