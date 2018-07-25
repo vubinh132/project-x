@@ -39,7 +39,7 @@ class LazadaService
                 'update_after' => (new Carbon($startDay))->startOfDay()->toIso8601String(),
                 'update_before' => (new Carbon($endDay))->endOfDay()->toIso8601String(),
                 'sort_by' => 'updated_at',
-                'sort_direction' => 'ASC'
+                'sort_direction' => 'DESC'
             ];
 
             $res = LazadaService::callAPI('GET', '/orders/get', $params);
