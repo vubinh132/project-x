@@ -82,6 +82,7 @@ class LazadaService
                         } else {
                             $LStatus1 = $lazadaOrder['statuses'][1];
                             $order->update([
+                                'is_parted' => true,
                                 'status' => LazadaService::ORDER_STATUS[$LStatus1],
                                 'api_updated_at' => new Carbon($LUpdatedAt),
                             ]);
