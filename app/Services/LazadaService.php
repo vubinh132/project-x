@@ -120,6 +120,7 @@ class LazadaService
                                 ]);
                             } else {
                                 $order = Order::create([
+                                    'is_parted' => true,
                                     'code' => "L-$lazadaOrderCode",
                                     'name' => $LName,
                                     'phone' => $LPhone,
