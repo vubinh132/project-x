@@ -60,7 +60,6 @@ class LazadaService
                     . $lazadaOrder['address_shipping']['country'];
                 $LCreatedAt = $lazadaOrder['created_at'];
                 $LUpdatedAt = $lazadaOrder['updated_at'];
-                $LStatus = LazadaService::ORDER_STATUS[$lazadaOrder['statuses'][0]];
                 $LStatuses = $lazadaOrder['statuses'];
 
                 $flag = false;
@@ -76,17 +75,16 @@ class LazadaService
 
                         if ($numOfStatus == 1) {
                             $order->update([
-                                'status' => $LStatus,
+                                'status' => LazadaService::ORDER_STATUS[$LStatuses[0]],
                                 'api_updated_at' => new Carbon($LUpdatedAt)
                             ]);
                         } else {
-                            $LStatus1 = $lazadaOrder['statuses'][1];
                             $order->update([
                                 'is_parted' => true,
-                                'status' => LazadaService::ORDER_STATUS[$LStatus1],
+                                'status' => LazadaService::ORDER_STATUS[$LStatuses[1]],
                                 'api_updated_at' => new Carbon($LUpdatedAt),
                             ]);
-                            Log::info("$lazadaOrderCode - $numOfStatus - $LStatus1");
+                            Log::info("$lazadaOrderCode - $numOfStatus - " . LazadaService::ORDER_STATUS[$LStatuses[1]]);
                         }
 
                         $update++;
@@ -105,18 +103,33 @@ class LazadaService
 
                     try {
 
-                        DB::transaction(function () use ($lazadaOrderCode, $LName, $LPhone, $LAddress, $LStatus, $LCreatedAt, $LUpdatedAt, $LProducts) {
-                            $order = Order::create([
-                                'code' => "L-$lazadaOrderCode",
-                                'name' => $LName,
-                                'phone' => $LPhone,
-                                'address' => $LAddress,
-                                'status' => $LStatus,
-                                'selling_web' => 2,
-                                'api_created_at' => new Carbon($LCreatedAt),
-                                'api_updated_at' => new Carbon($LUpdatedAt)
-                            ]);
+                        DB::transaction(function () use ($lazadaOrderCode, $LName, $LPhone, $LAddress, $LCreatedAt, $LUpdatedAt, $LProducts, $LStatuses) {
 
+                            $numOfStatus = count($LStatuses);
+
+                            if ($numOfStatus == 1) {
+                                $order = Order::create([
+                                    'code' => "L-$lazadaOrderCode",
+                                    'name' => $LName,
+                                    'phone' => $LPhone,
+                                    'address' => $LAddress,
+                                    'status' => LazadaService::ORDER_STATUS[$LStatuses[0]],
+                                    'selling_web' => 2,
+                                    'api_created_at' => new Carbon($LCreatedAt),
+                                    'api_updated_at' => new Carbon($LUpdatedAt)
+                                ]);
+                            } else {
+                                $order = Order::create([
+                                    'code' => "L-$lazadaOrderCode",
+                                    'name' => $LName,
+                                    'phone' => $LPhone,
+                                    'address' => $LAddress,
+                                    'status' => LazadaService::ORDER_STATUS[$LStatuses[1]],
+                                    'selling_web' => 2,
+                                    'api_created_at' => new Carbon($LCreatedAt),
+                                    'api_updated_at' => new Carbon($LUpdatedAt)
+                                ]);
+                            }
                             foreach ($LProducts as $LProduct) {
                                 $product = Product::where('sku', $LProduct[0])->firstOrFail();
                                 $order->products()->attach($product, ['quantity' => -$LProduct[1], 'price' => $LProduct[2]]);

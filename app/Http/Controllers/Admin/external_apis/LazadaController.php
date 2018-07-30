@@ -12,6 +12,7 @@ use App\SDKs\lazada\lazop\LazopClient;
 use App\SDKs\lazada\lazop\UrlConstants;
 use App\SDKs\lazada\lazop\LazopRequest;
 use Carbon\Carbon;
+use Log as Log1;
 
 class LazadaController extends Controller
 {
@@ -44,12 +45,13 @@ class LazadaController extends Controller
         while ($endDay >= $startDay) {
             $res = LazadaService::syncOrderByDay($startDay);
             $result[] = [$startDay->toIso8601String(), $res];
+            Log1::info($startDay->toIso8601String());
             $startDay->addDay(1);
         }
 
         return response()->json($result);
     }
-    
+
     public function auth(Request $request)
     {
         $code = $request->get('code');
