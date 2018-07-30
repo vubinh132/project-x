@@ -21,7 +21,11 @@ class OrdersController extends Controller
     public function index()
     {
 
-        $orders = Order::orderBy('created_at', 'desc')->get();
+        $orders = Order::orderBy('created_at', 'desc')
+            ->with(['products' => function ($query) {
+                $query->orderBy('sku');
+            }])
+            ->get();
 
         $total = count($orders);
 
@@ -31,7 +35,7 @@ class OrdersController extends Controller
             $order->totalPrice = HTMLService::getOrderTotalPrice($order);
             $order->sellingWeb = $order->sellingWebText();
             $order->editLink = url('/admin/orders/' . $order->id . '/edit');
-            $order->orderDetail = HTMLService::getOrderDetails($order);
+            $order->orderDetail = HTMLService::getOrderDetails($order->products);
             $order->created_at = $order->getCreatedAt();
         }
 

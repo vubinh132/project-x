@@ -16,13 +16,10 @@ class HTMLService
         return "<span class='$textClass'>$totalPrice</span>";
     }
 
-    public static function getOrderDetails($order)
+    public static function getOrderDetails($products)
     {
-        $productOrder = Order::where('id', $order->id)->with(['products' => function ($query) {
-            $query->orderBy('sku');
-        }])->get();
         $html = '';
-        foreach ($productOrder[0]->products as $product) {
+        foreach ($products as $product) {
             $sku = "<span>$product->sku</span>";
             $quantity = str_pad(abs($product->pivot->quantity), 2, '0', STR_PAD_LEFT);
             $quantityHTML = "<span>$quantity</span>";
