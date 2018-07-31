@@ -18,10 +18,13 @@
             <div class="dataTables_wrapper no-footer">
                 <div class="dataTables_length">
                     <label>
-                        <a href="{{ url('/admin/orders/create') }}" class="btn btn-success pull-left">
-                            <i class="fa fa-plus"></i> Add Order
+                        <a href="{{ url('/admin/rom/commit') }}" class="btn btn-success pull-left">
+                            <i class="fa fa-check"></i> Commit
                         </a>
                     </label>
+                    <div>
+                        <b>{{$notification}}</b>
+                    </div>
                 </div>
 
                 <div class="dataTables_filter">
