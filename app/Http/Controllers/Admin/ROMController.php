@@ -20,7 +20,11 @@ class ROMController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = Order::where('status', Order::STATUS['RETURNED'])->orderBy('created_at', 'desc')->get();
+        $orders = Order::with(['products' => function ($query) {
+                $query->orderBy('sku');
+            }])
+            ->where('orders.status', Order::STATUS['RETURNED'])
+            ->orderBy('orders.created_at', 'desc')->get();
 
         foreach ($orders as $order) {
             $order->code = $order->getCode();
@@ -28,7 +32,7 @@ class ROMController extends Controller
             $order->totalPrice = HTMLService::getOrderTotalPrice($order);
             $order->sellingWeb = $order->sellingWebText();
             $order->editLink = url('/admin/orders/' . $order->id . '/edit');
-            $order->orderDetail = HTMLService::getOrderDetails($order);
+            $order->orderDetail = HTMLService::getOrderDetails($order->products);
             $order->created_at = $order->getCreatedAt();
             $order->returned = $order->returned ? true : false;
         }
