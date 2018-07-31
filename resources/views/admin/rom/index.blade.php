@@ -16,7 +16,7 @@
 
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">
-                <div class="dataTables_length">
+                <div class="dataTables_length" style="margin-bottom: 10px !important;">
                     <label>
                         <a href="{{ url('/admin/rom/commit') }}" class="btn btn-success pull-left">
                             <i class="fa fa-check"></i> Commit
