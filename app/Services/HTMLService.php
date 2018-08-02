@@ -71,7 +71,7 @@ class HTMLService
         } else {
             $html = "";
             foreach ($array as $key => $value) {
-                    $html = $html . "<tr><td style=\"width: 100px\">$key</td><td style=\"width: 100px\">" . abs($value) . "</td></tr>";
+                $html = $html . "<tr><td style=\"width: 100px\">$key</td><td style=\"width: 100px\">" . abs($value) . "</td></tr>";
             }
             return $html;
         }
@@ -92,5 +92,15 @@ class HTMLService
             return CommonService::formatPrice($AVGPrice);
         }
         return "-";
+    }
+
+    public static function getProductCheckingQuantity($total, $notReceived, $irregular, $lzd)
+    {
+        $remain = $total - $notReceived - $irregular - $lzd;
+        $html = "<span class='text-info'>$total</span> (*) <span class='text-danger'>$notReceived</span> (*) <span class='text-warning'>$irregular</span> (*) <span class='text-primary'>$lzd</span> (*) <span class='text-success'>$remain</span>";
+        return [
+            'remain' => $remain >= 0 ? true : false,
+            'html' => $html
+        ];
     }
 }

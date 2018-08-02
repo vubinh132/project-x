@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Services\CommonService;
 use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -197,6 +198,21 @@ class ProductsController extends Controller
 
     public function productChecking()
     {
+        //general data
+        $remainUnder0 = 0;
+
+        //get haven't received product
+        $notReceivedProducts = DB::table('orders')
+            ->select(DB::raw('order_details.product_id, sum(order_details.quantity) as quantity'))
+            ->join('order_details', 'order_details.order_id', 'orders.id')
+            ->where('orders.status', Order::STATUS['RETURNED'])
+            ->where(function ($query) {
+                $query->where('orders.returned', null)
+                    ->orWhere('orders.returned', false);
+            })
+            ->groupBy('order_details.product_id')
+            ->pluck('quantity', 'product_id');
+
         $res = LazadaService::getProductQuantity();
         if (!$res['success']) {
             return response()->json($res);
@@ -204,30 +220,76 @@ class ProductsController extends Controller
         $LProducts = $res['products'];
 
         $products = DB::table('products')
-            ->select(DB::raw('products.sku, sum(order_details.quantity) as available'))
+            ->select(DB::raw('products.sku, sum(order_details.quantity) as available, products.id'))
             ->leftJoin('order_details', 'order_details.product_id', 'products.id')
             ->join('orders', 'orders.id', 'order_details.order_id')
             ->where('products.status', Product::STATUS['IN_BUSINESS'])
             ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['INTERNAL']])
-            ->groupBy('products.sku')
+            ->groupBy('products.sku', 'products.id')
             ->get();
+
+        //handle irregular products
+        $productList = $products->pluck('sku')->toArray();
+        $handledProduct = [];
+        $irregularProducts = [];
+        foreach ($LProducts as $key => $value) {
+            if (!in_array($key, $productList)) {
+                $irregularProducts[$key] = $value;
+            }
+        }
+        foreach ($irregularProducts as $key => $value) {
+            $sku = $sku = config('lazada.' . $key, $key);
+            //package
+            if (str_contains($sku, '&')) {
+                $SKUs = explode('&', $sku);
+            } else {
+                $SKUs = [$sku];
+            }
+
+            foreach ($SKUs as $SKU) {
+                if (!in_array($SKU, $productList)) {
+                    Log::info("======= wrong sku $SKU =======");
+                    CommonService::writeLog(\App\Models\Log::CATEGORY['ERROR'], "Product checking: wrong sku $SKU");
+                } else {
+                    if (!array_key_exists($SKU, $handledProduct)) {
+                        $handledProduct[$SKU] = $value;
+                    } else {
+                        $quantity = $handledProduct[$SKU] + $value;
+                        $handledProduct[$SKU] = $quantity;
+                    }
+                }
+            }
+        }
+
+        //foreach products...
         foreach ($products as $product) {
             $sku = $product->sku;
             $flag = false;
             foreach ($LProducts as $key => $value) {
                 if ($key == $sku) {
                     $product->l = $value;
+                    unset($LProducts[$key]);
                     $flag = true;
                     break;
                 }
             }
+            //HTML parsing data
+            $total = $product->available;
+            $notReceived = !empty($notReceivedProducts[$sku]) ? $notReceivedProducts[$sku] : 0;
+            $irregular = !empty($handledProduct[$sku]) ? $handledProduct[$sku] : 0;
+            $lzd = !empty($product->l) ? $product->l : 0;
+            $quantity = HTMLService::getProductCheckingQuantity($total, $notReceived, $irregular, $lzd);
+            $product->available = $quantity['html'];
             if (!$flag) {
                 $product->l = 'N/a';
             }
+            if(!$quantity['remain']){
+                $product->sku = "$product->sku <i class='fa fa-warning'></i>";
+                $remainUnder0 ++;
+            }
         }
 
-        return view('admin.products.checking', compact('products'));
-
+        return view('admin.products.checking', compact('products', 'LProducts', 'remainUnder0'));
     }
 
     public function productCheckingTest()

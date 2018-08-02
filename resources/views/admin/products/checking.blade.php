@@ -13,6 +13,10 @@
         </div>
     </div>
     <div class="white-box" ng-app="myApp" ng-controller="productIndexCtrl">
+
+        <div style="padding-bottom: 20px">
+            <b>remaining quantity < 0: {{$remainUnder0}}</b>
+        </div>
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">
                 <table class="table table-hover" id="table">
@@ -26,9 +30,31 @@
                     <tbody>
                     @foreach($products as $product)
                         <tr>
-                            <td>{{$product->sku}}</td>
-                            <td>{{$product->available}}</td>
+                            <td>{!! $product->sku !!}</td>
+                            <td>{!! $product->available !!}</td>
                             <td>{{$product->l}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <div class="dataTables_wrapper no-footer">
+                <table class="table table-hover" id="table">
+                    <thead style="background-color: #c9e5df">
+                    <tr>
+                        <th width="10%">SKU</th>
+                        <th width="10%">Repository</th>
+                        <th width="10%">Ms. La</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($LProducts as $key => $value)
+                        <tr>
+                            <td>{{$key}}</td>
+                            <td></td>
+                            <td>{{$value}}</td>
                         </tr>
                     @endforeach
                     </tbody>
