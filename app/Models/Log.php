@@ -10,6 +10,7 @@ class Log extends Model
     const CATEGORY = [
         'SECURITY' => 1,
         'JOB' => 2,
+        'ERROR' => 4,
 
         //specific
         'ROM' => 101
@@ -18,6 +19,7 @@ class Log extends Model
     const CATEGORY_TEXT = [
         'SECURITY' => 'Security',
         'JOB' => 'Cron-job',
+        'ERROR' => 'Error',
         'ROM' => 'Rom'
     ];
 

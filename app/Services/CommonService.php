@@ -5,7 +5,7 @@ namespace App\Services;
 use App;
 use App\Models\Note;
 use Illuminate\Support\Str;
-use Log;
+use App\Models\Log;
 use App\Models\SettingKey;
 
 class CommonService
@@ -168,9 +168,16 @@ class CommonService
     public static function updateVersion()
     {
         $versionNotes = Note::where('name', 'Version Notes')->firstOrFail()->content;
-        Log::info($versionNotes);
         $versions = explode('/^<p>=====Version [0-9]+=====</p>$/', $versionNotes);
-        Log::info($versions);
         return 'ahihi';
+    }
+
+    public static function writeLog($category, $content, $notificationType = Log::NOTIFICATION_TYPE['NONE'])
+    {
+        Log::create([
+            'category' => $category,
+            'content' => $content,
+            'notification_type' => $notificationType
+        ]);
     }
 }
