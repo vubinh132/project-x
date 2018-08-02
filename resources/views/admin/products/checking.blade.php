@@ -14,8 +14,10 @@
     </div>
     <div class="white-box" ng-app="myApp" ng-controller="productIndexCtrl">
 
-        <div style="padding-bottom: 20px">
-            <b>remaining quantity < 0: {{$remainUnder0}}</b>
+        <div style="margin-bottom: 20px">
+            <div><b><div style="width: 270px; display: inline-block;">Remaining Quantity Less Than 0 :</div> <i class='fa fa-warning text-danger'></i> {{$remainLessThan0}}</b></div>
+            <div><b><div style="width: 270px; display: inline-block;">Remaining Quantity Equal 0 :</div> <i class='fa fa-check-circle text-success'></i> {{$remainEqual0}}</b></div>
+            <div><b><div style="width: 270px; display: inline-block;">Remaining Quantity Greater Than 0 :</div> <i class='fa fa-info-circle text-info'></i> {{$remainGreaterThan0}}</b></div>
         </div>
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">

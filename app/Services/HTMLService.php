@@ -99,7 +99,7 @@ class HTMLService
         $remain = $total - $notReceived - $irregular - $lzd;
         $html = "<span class='text-info'>$total</span> (*) <span class='text-danger'>$notReceived</span> (*) <span class='text-warning'>$irregular</span> (*) <span class='text-primary'>$lzd</span> (*) <span class='text-success'>$remain</span>";
         return [
-            'remain' => $remain >= 0 ? true : false,
+            'remain' => $remain,
             'html' => $html
         ];
     }

@@ -199,7 +199,9 @@ class ProductsController extends Controller
     public function productChecking()
     {
         //general data
-        $remainUnder0 = 0;
+        $remainLessThan0 = 0;
+        $remainEqual0 =0;
+        $remainGreaterThan0 = 0;
 
         //get haven't received product
         $notReceivedProducts = DB::table('orders')
@@ -275,7 +277,7 @@ class ProductsController extends Controller
             }
             //HTML parsing data
             $total = $product->available;
-            $notReceived = !empty($notReceivedProducts[$sku]) ? $notReceivedProducts[$sku] : 0;
+            $notReceived = !empty($notReceivedProducts[$product->id]) ? -$notReceivedProducts[$product->id] : 0;
             $irregular = !empty($handledProduct[$sku]) ? $handledProduct[$sku] : 0;
             $lzd = !empty($product->l) ? $product->l : 0;
             $quantity = HTMLService::getProductCheckingQuantity($total, $notReceived, $irregular, $lzd);
@@ -283,13 +285,19 @@ class ProductsController extends Controller
             if (!$flag) {
                 $product->l = 'N/a';
             }
-            if(!$quantity['remain']){
-                $product->sku = "$product->sku <i class='fa fa-warning'></i>";
-                $remainUnder0 ++;
+            if($quantity['remain'] < 0){
+                $product->sku = "$product->sku <i class='fa fa-warning text-danger'></i>";
+                $remainLessThan0 ++;
+            }elseif ($quantity['remain'] == 0){
+                $product->sku = "$product->sku <i class='fa fa-check-circle text-success'></i>";
+                $remainEqual0++;
+            }else{
+                $product->sku = "$product->sku <i class='fa fa-info-circle text-info'></i>";
+                $remainGreaterThan0++;
             }
         }
 
-        return view('admin.products.checking', compact('products', 'LProducts', 'remainUnder0'));
+        return view('admin.products.checking', compact('products', 'LProducts', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
     }
 
     public function productCheckingTest()
