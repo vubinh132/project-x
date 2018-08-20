@@ -25,10 +25,12 @@ class Log extends Model
 
     const NOTIFICATION_TYPE = [
         'NONE' => 0,
+        'MAIL' => 1
 
     ];
     const NOTIFICATION_TYPE_TEXT = [
         'NONE' => 'None',
+        'MAIL' => 'Mail'
     ];
 
     /**

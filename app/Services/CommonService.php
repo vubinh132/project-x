@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use App;
+use App, Mail;
 use App\Models\Note;
 use Illuminate\Support\Str;
 use App\Models\Log;
 use App\Models\SettingKey;
+use App\Mail\SimpleEmailSender;
 
 class CommonService
 {
@@ -179,5 +180,8 @@ class CommonService
             'content' => $content,
             'notification_type' => $notificationType
         ]);
+        if ($category == Log::CATEGORY['ERROR'])
+             Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('error!!!', 'emails.template', ['content' => $content], null));
+
     }
 }

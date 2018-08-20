@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use App\Services\CommonService;
 use App\Services\LazadaService;
 use App\Models\Log;
-use App\Models\Product;
 
 
 class Test extends Command
@@ -55,11 +54,13 @@ class Test extends Command
             $update = $res['data']['update'];
             $fail = $res['data']['fail'];
             $mess = "Sync orders from Lazada $insert insert, $update update, $fail fail";
+            CommonService::writeLog(Log::CATEGORY['JOB'], $mess);
+            if ($fail > 0)
+                CommonService::writeLog(Log::CATEGORY['ERROR'], "sync lazada orders fail: $fail");
         } else {
             $message = $res['message'];
             $mess = "Sync orders from Lazada is failed. $message";
+            CommonService::writeLog(Log::CATEGORY['ERROR'], $mess);
         }
-        Log::create(['category' => Log::CATEGORY['JOB'], 'content' => $mess, 'notification_type' => Log::NOTIFICATION_TYPE['NONE']]);
-
     }
 }
