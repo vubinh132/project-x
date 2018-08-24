@@ -94,10 +94,10 @@ class HTMLService
         return "-";
     }
 
-    public static function getProductCheckingQuantity($total, $notReceived, $irregular, $lzd)
+    public static function getProductCheckingQuantity($total, $notReceived, $irregular, $lzd, $sku)
     {
         $remain = $total - $notReceived - $irregular - $lzd;
-        $html = "<span class='text-info'>$total</span> (*) <span class='text-danger'>$notReceived</span> (*) <span class='text-warning'>$irregular</span> (*) <span class='text-primary'>$lzd</span> (*) <span class='text-success'>$remain</span>";
+        $html = "<span class='text-info'>$total</span> (*) <span class='text-danger'>$notReceived</span> (*) <span class='text-warning'>$irregular</span> (*) <span class='text-primary'>$lzd</span> (*) <span class='text-success' id='remain_$sku'>$remain</span>";
         return [
             'remain' => $remain,
             'html' => $html

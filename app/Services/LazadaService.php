@@ -356,6 +356,81 @@ class LazadaService
         }
     }
 
+    public static function getQuantity($sku)
+    {
+        try {
+            $params = [
+                'filter' => 'all',
+                'search' => $sku
+            ];
+
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $data = $res['data'];
+            if (!$data) {
+                return [
+                    'success' => false,
+                    'message' => "SKU doesn't exist"
+                ];
+            }
+            $quantityRes = [];
+            foreach ($data['products'] as $product){
+                foreach ($product['skus'] as $SKU){
+                    $sellerSku = $SKU['SellerSku'];
+                    if($sellerSku == $sku){
+                        $quantityRes[$sellerSku] = $SKU['Available'];
+                    }
+                }
+            }
+
+            if(!$quantityRes){
+                return [
+                    'success' => false,
+                    'message' => "given SKU doesn't match"
+                ];
+            }
+
+
+            return [
+                'success' => true,
+                'data' => [
+                    'quantity' => $quantityRes[$sku]
+                ]
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public static function setQuantity($sku, $quantity)
+    {
+        try {
+            $params = [
+                'payload' => "<Request><Product><Skus><Sku><SellerSku>$sku</SellerSku><Quantity>$quantity</Quantity><Price/><SalePrice/><SaleStartDate/><SaleEndDate/></Sku></Skus></Product></Request>"
+            ];
+
+            $res = LazadaService::callAPI('POST', '/product/price_quantity/update', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            return [
+                'success' => true
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
     private static function callAPI($method, $url, $params)
     {
         try {
@@ -378,10 +453,16 @@ class LazadaService
             $code = $body['code'];
 
             if (!$code) {
-                return [
-                    'success' => true,
-                    'data' => $body['data']
-                ];
+                if (isset($body['data'])) {
+                    return [
+                        'success' => true,
+                        'data' => $body['data']
+                    ];
+                } else {
+                    return [
+                        'success' => true,
+                    ];
+                }
             } else {
                 return [
                     'success' => false,

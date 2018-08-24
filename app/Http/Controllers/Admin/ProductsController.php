@@ -8,7 +8,7 @@ use App\Services\CommonService;
 use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Log, File, Session, DB;
+use Log, File, Session, DB, Exception;
 use App\Services\LazadaService;
 
 
@@ -275,24 +275,24 @@ class ProductsController extends Controller
                     break;
                 }
             }
-            //HTML parsing data
+            //HTML data parsing
             $total = $product->available;
             $notReceived = !empty($notReceivedProducts[$product->id]) ? -$notReceivedProducts[$product->id] : 0;
             $irregular = !empty($handledProduct[$sku]) ? $handledProduct[$sku] : 0;
             $lzd = !empty($product->l) ? $product->l : 0;
-            $quantity = HTMLService::getProductCheckingQuantity($total, $notReceived, $irregular, $lzd);
+            $quantity = HTMLService::getProductCheckingQuantity($total, $notReceived, $irregular, $lzd, $product->sku);
             $product->available = $quantity['html'];
             if (!$flag) {
                 $product->l = 'N/a';
             }
             if($quantity['remain'] < 0){
-                $product->sku = "$product->sku <i class='fa fa-warning text-danger'></i>";
+                $product->SKU = "$product->sku <i class='fa fa-warning text-danger'></i>";
                 $remainLessThan0 ++;
             }elseif ($quantity['remain'] == 0){
-                $product->sku = "$product->sku <i class='fa fa-check-circle text-success'></i>";
+                $product->SKU = "$product->sku <i class='fa fa-check-circle text-success'></i>";
                 $remainEqual0++;
             }else{
-                $product->sku = "$product->sku <i class='fa fa-info-circle text-info'></i>";
+                $product->SKU = "$product->sku <i class='fa fa-info-circle text-info'></i>";
                 $remainGreaterThan0++;
             }
         }
@@ -333,4 +333,33 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function updateQuantity(Request $request){
+        try{
+            $this->validate($request, [
+                'sku' => 'required',
+                'quantity' => 'required'
+            ]);
+
+            $requestData = $request->all();
+
+            $getQuantityRes = LazadaService::getQuantity($requestData['sku']);
+
+            if(!$getQuantityRes['success']){
+                return response()->json($getQuantityRes);
+            }
+
+            $quantity = $getQuantityRes['data']['quantity'] + $requestData['quantity'];
+
+            $setQuantityRes = LazadaService::setQuantity($requestData['sku'], $quantity);
+
+            return response()->json([$setQuantityRes]);
+
+        }catch (Exception $e){
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }

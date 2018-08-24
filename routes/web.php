@@ -12,7 +12,7 @@
 */
 
 Auth::routes();
-
+Route::post('admin/product-checking/update-quantity', 'Admin\\ProductsController@updateQuantity');
 
 Route::group(['middleware' => ['admin', 'revalidate']], function () {
     // Home page
@@ -41,8 +41,9 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::resource('admin/products', 'Admin\\ProductsController');
 
     //Product checking
-    Route::get('admin/product-checking', 'Admin\\ProductsController@productChecking');
+
     Route::get('admin/product-checking/test', 'Admin\\ProductsController@productCheckingTest');
+    Route::get('admin/product-checking', 'Admin\\ProductsController@productChecking');
 
     //get unit price of product
     Route::get('admin/products/{id}/unit-price', 'Admin\\ProductsController@getUnitPrice');
@@ -83,6 +84,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
 
 });
+
 
 
 
