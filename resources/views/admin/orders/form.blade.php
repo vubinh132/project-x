@@ -167,7 +167,7 @@
                 $('input.total-price-selector').each(function (index) {
                     totalPrice += parseInt($(this).val().replace(/,/g, ''));
                 })
-                if (totalPrice) {
+                if (totalPrice || totalPrice == 0) {
                     $('#total-price').html($.number(totalPrice));
                 }else{
                     $('#total-price').html('');
@@ -245,7 +245,7 @@
             var totalPriceSelector = parentSelector.find('input.total-price-selector');
             var unitPrice = parseInt(parentSelector.find('input.unit-price-selector').val().replace(/,/g, ''));
             var quantity = parentSelector.find('input.quantity-selector').val();
-            if (unitPrice && quantity) {
+            if ((unitPrice || unitPrice ==0) && quantity) {
                 totalPriceSelector.val($.number(unitPrice * quantity));
             }
             else {
