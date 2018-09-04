@@ -95,7 +95,8 @@ class OrdersController extends Controller
             for ($i = 1; $i <= $numOfProduct; $i++) {
                 $price = $requestData['price_' . $i];
                 $quantity = -($requestData['quantity_' . $i]);
-                if ($price && $quantity) {
+                //sell and adjust quantity -> price always >= 0
+                if ($price >= 0 && $quantity) {
                     array_push($products, [$requestData['product_id_' . $i], $quantity, $price]);
                 }
             }
