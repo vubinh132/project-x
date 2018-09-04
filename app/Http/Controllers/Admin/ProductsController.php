@@ -200,7 +200,7 @@ class ProductsController extends Controller
     {
         //general data
         $remainLessThan0 = 0;
-        $remainEqual0 =0;
+        $remainEqual0 = 0;
         $remainGreaterThan0 = 0;
 
         //get haven't received product
@@ -285,13 +285,13 @@ class ProductsController extends Controller
             if (!$flag) {
                 $product->l = 'N/a';
             }
-            if($quantity['remain'] < 0){
+            if ($quantity['remain'] < 0) {
                 $product->SKU = "$product->sku <i class='fa fa-warning text-danger'></i>";
-                $remainLessThan0 ++;
-            }elseif ($quantity['remain'] == 0){
+                $remainLessThan0++;
+            } elseif ($quantity['remain'] == 0) {
                 $product->SKU = "$product->sku <i class='fa fa-check-circle text-success'></i>";
                 $remainEqual0++;
-            }else{
+            } else {
                 $product->SKU = "$product->sku <i class='fa fa-info-circle text-info'></i>";
                 $remainGreaterThan0++;
             }
@@ -333,28 +333,35 @@ class ProductsController extends Controller
         ]);
     }
 
-    public function updateQuantity(Request $request){
-        try{
+    public function updateQuantity(Request $request)
+    {
+        try {
             $this->validate($request, [
                 'sku' => 'required',
-                'quantity' => 'required'
+                'quantity' => 'required|numeric'
             ]);
 
             $requestData = $request->all();
 
             $getQuantityRes = LazadaService::getQuantity($requestData['sku']);
 
-            if(!$getQuantityRes['success']){
+            if (!$getQuantityRes['success']) {
                 return response()->json($getQuantityRes);
             }
 
-            $quantity = $getQuantityRes['data']['quantity'] + $requestData['quantity'];
+            $pending = Order::join('order_details', 'orders.id', 'order_details.order_id')
+                ->join('products', 'products.id', 'order_details.product_id')
+                ->where('orders.status', Order::STATUS['ORDERED'])
+                ->where('products.sku', $requestData['sku'])
+                ->sum('order_details.quantity');
+
+            $quantity = $getQuantityRes['data']['quantity'] + $requestData['quantity'] - $pending;
 
             $setQuantityRes = LazadaService::setQuantity($requestData['sku'], $quantity);
 
-            return response()->json([$setQuantityRes]);
+            return response()->json($setQuantityRes);
 
-        }catch (Exception $e){
+        } catch (Exception $e) {
             Log::error($e->getMessage());
             return response()->json([
                 'success' => false,

@@ -41,7 +41,7 @@
                             <td>{!! $product->SKU !!}</td>
                             <td>{!! $product->available !!}</td>
                             <td>
-                                <div style="width:50px; display: inline-block;">
+                                <div id="{{'LZD_' .  $product->sku}}" style="width:50px; display: inline-block;">
                                     {{$product->l}}
                                 </div>
                                 <div style="display: inline-block;">
@@ -92,7 +92,9 @@
             <div class="modal-content" style="border-radius: 10px;">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h5 class="modal-title" style="display: inline-block"><b>Quantity Updating</b></h5>  <span id="sku" class="pull-right" style="padding-right: 10px"></span>
+                    <h5 class="modal-title" style="display: inline-block"><b>Quantity Updating</b></h5>  <span id="sku"
+                                                                                                               class="pull-right"
+                                                                                                               style="padding-right: 10px"></span>
                 </div>
                 <div class="modal-body">
                     <div>
@@ -102,7 +104,7 @@
                         <div class="row">
                             <div class="col-xs-5"> Lazada</div>
                             <div class="col-xs-3">
-                                <input style="text-align: right;" type="number" value="0" class="modal-lazada-quanity">
+                                <input style="text-align: right;" type="number" value="0" class="modal-lazada-quantity">
                             </div>
                             <div class="col-xs-4">
                                 <input type="button" value="update" class="modal-update">
@@ -123,7 +125,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.btn-quantity-update').click(function () {
-
                 //reset data to 0
                 $(".modal-body input[type='number']").val("0")
 
@@ -136,16 +137,63 @@
 
                 //set id for modal button and input
                 $(".modal-body .modal-update").attr('id', 'modal-update_' + sku);
-                $(".modal-body .modal-lazada-quanity").attr('id', 'modal-lazada-quanity_' + sku);
+                $(".modal-body .modal-lazada-quantity").attr('id', 'modal-lazada-quantity_' + sku);
             })
-            $('.modal-lazada-quanity').on('keyup scroll change', function() {
+            $('.modal-lazada-quantity').on('keyup scroll change', function () {
                 var sku = $(this).attr('id').split("_")[1];
                 var remain = $('#remain_' + sku).text();
                 $('#remaining-quantity').text(parseInt(remain) - $(this).val());
             });
             $('.modal-update').click(function () {
+                $('.modal-update').attr('disabled', true);
+                ;
                 var sku = $(this).attr('id').split("_")[1];
-                console.log(sku);
+                var quantity = parseInt($('#modal-lazada-quantity_' + sku).val());
+                console.log(sku + ' - ' + quantity);
+                var url = '{{url("admin/product-checking/update-quantity")}}';
+                $.post(url,
+                    {
+                        sku: sku,
+                        quantity: quantity
+                    },
+                    function (data, status) {
+                        $('.modal-update').attr('disabled', false);
+                        var success = data.success;
+                        if (success) {
+                            var remain = parseInt($('#remain_' + sku).text()) - quantity;
+                            var lzd = parseInt($('#lzd_' + sku).text()) + quantity;
+                            $('#remain_' + sku).text(remain);
+                            $('#lzd_' + sku).text(lzd);
+                            $('#LZD_' + sku).text(lzd);
+
+                            var element = $('td:contains(' + sku + ')');
+                            var i = element.find('i');
+                            i.removeClass();
+                            if (remain == 0) {
+                                i.addClass('fa fa-check-circle text-success');
+                            } else if (remain > 0) {
+                                i.addClass('fa fa-info-circle text-info');
+                            } else if (remain < 0) {
+                                i.addClass('fa fa-warning text-danger');
+                            }
+                            console.log('remain: ' + remain);
+                            console.log('lzd: ' + lzd);
+                            $('.modal-lazada-quantity').val(0);
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Success',
+                                content: 'Update successfully',
+                                offsetBottom: 450
+                            });
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: data.message,
+                                offsetBottom: 450
+                            });
+                        }
+                    });
             })
         });
     </script>
