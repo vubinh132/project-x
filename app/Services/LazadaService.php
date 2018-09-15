@@ -262,7 +262,7 @@ class LazadaService
             // get live products
             $params = [
                 'filter' => 'live',
-                'limit' => 500
+                'limit' => 100
             ];
 
             $res = LazadaService::callAPI('GET', '/products/get', $params);
@@ -279,7 +279,7 @@ class LazadaService
             //get sold out products
             $params = [
                 'filter' => 'sold-out',
-                'limit' => 500
+                'limit' => 100
             ];
 
             $res = LazadaService::callAPI('GET', '/products/get', $params);
@@ -314,7 +314,7 @@ class LazadaService
             // get live products
             $params = [
                 'filter' => 'live',
-                'limit' => 200
+                'limit' => 100
             ];
 
             $res = LazadaService::callAPI('GET', '/products/get', $params);
@@ -331,7 +331,7 @@ class LazadaService
             //get sold out products
             $params = [
                 'filter' => 'sold-out',
-                'limit' => 200
+                'limit' => 100
             ];
 
             $res = LazadaService::callAPI('GET', '/products/get', $params);
