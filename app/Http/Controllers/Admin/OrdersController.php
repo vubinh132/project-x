@@ -25,6 +25,7 @@ class OrdersController extends Controller
             ->with(['products' => function ($query) {
                 $query->orderBy('sku');
             }])
+            ->take(1000)
             ->get();
 
         $total = count($orders);
