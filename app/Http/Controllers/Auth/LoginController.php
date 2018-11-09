@@ -54,16 +54,16 @@ class LoginController extends Controller
             Session::flash('flash_message', 'Login successfully.');
             $this->redirectTo = "/";
         } else {
-            $ip = $request->ip();
-            $agent = new Agent();
-            $position = Location::get($ip);
-            $content = "You have logged in: IP address: $ip | Location: $position->cityName - $position->countryCode | Device: " . $agent->device() . ', OS: ' . $agent->platform() . ' ' . $agent->version($agent->platform()) . ', Browser: ' . $agent->browser() . ' ' . $agent->version($agent->browser());
-            $log = [
-                'category' => LogModel::CATEGORY['SECURITY'],
-                'content' => $content,
-                'notification_type' => LogModel::NOTIFICATION_TYPE['NONE']
-            ];
-            LogModel::create($log);
+//            $ip = $request->ip();
+//            $agent = new Agent();
+//            $position = Location::get($ip);
+//            $content = "You have logged in: IP address: $ip | Location: $position->cityName - $position->countryCode | Device: " . $agent->device() . ', OS: ' . $agent->platform() . ' ' . $agent->version($agent->platform()) . ', Browser: ' . $agent->browser() . ' ' . $agent->version($agent->browser());
+//            $log = [
+//                'category' => LogModel::CATEGORY['SECURITY'],
+//                'content' => $content,
+//                'notification_type' => LogModel::NOTIFICATION_TYPE['NONE']
+//            ];
+//            LogModel::create($log);
 
         }
 
