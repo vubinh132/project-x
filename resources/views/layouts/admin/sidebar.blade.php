@@ -53,6 +53,9 @@
                     <li>
                         <a href="{{ url('/admin/rom') }}">ROM</a>
                     </li>
+                    <li>
+                        <a href="{{ url('/admin/volume-adjustment') }}">Volume Adjustment</a>
+                    </li>
                 </ul>
             </li>
 

@@ -40,6 +40,9 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('admin/products/test', 'Admin\\ProductsController@test');
     Route::resource('admin/products', 'Admin\\ProductsController');
 
+    //Volume Adjustment
+    Route::get('admin/volume-adjustment', 'Admin\\ProductsController@getAdjustment');
+    Route::post('admin/volume-adjustment', 'Admin\\ProductsController@postAdjustment');
     //Product checking
 
     Route::get('admin/product-checking/test', 'Admin\\ProductsController@productCheckingTest');

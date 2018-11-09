@@ -369,4 +369,45 @@ class ProductsController extends Controller
             ]);
         }
     }
+
+    //volume adjustment
+
+    public function getAdjustment()
+    {
+        $order = Order::where('id', 2063)->with(['products' => function ($query) {
+            $query->orderBy('id');
+        }])->first();
+        return view('admin.products.volume_adjustment', compact('order'));
+    }
+
+    public function postAdjustment(Request $request)
+    {
+        $id = $request->get('id');
+
+        $isIncreasing = $request->get('isIncreasing') == 'true' ? true : false;
+
+        $product = DB::table('order_details')->where('order_id', 2063)->where('product_id', $id)->first();
+
+        if (!$product) {
+            return response()->json(
+                ['success' => false]
+            );
+        }
+
+        $oldVolume = $product->quantity;
+
+        if ($oldVolume >= 0 && !$isIncreasing) {
+            return response()->json(
+                ['success' => false]
+            );
+        }
+
+        $newVolume = $isIncreasing ? $oldVolume - 1 : $oldVolume + 1;
+
+        DB::table('order_details')->where('order_id', 2063)->where('product_id', $id)->update(['quantity' => $newVolume]);
+
+        return response()->json(
+            ['success' => true, 'quantity' => abs($newVolume)]
+        );
+    }
 }
