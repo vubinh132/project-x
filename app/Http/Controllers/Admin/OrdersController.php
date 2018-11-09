@@ -42,7 +42,7 @@ class OrdersController extends Controller
 
         $processing = Order::where('status', Order::STATUS['ORDERED'])->count();
         $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
-        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'] , Order::STATUS['RETURNED']])->count();
+        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED']])->count();
 
         return view('admin.orders.index', compact('orders', 'total', 'processing', 'done', 'canceled'));
     }

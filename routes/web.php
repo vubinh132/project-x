@@ -85,6 +85,11 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     //Google APIs
     Route::get('admin/external-api/google', 'Admin\\external_apis\\GoogleController@index');
 
+    //Finance
+    Route::get('admin/finance/import', 'Admin\\FinanceController@import');
+    Route::get('admin/finance/import/{providerId}', 'Admin\\FinanceController@importDetail');
+    Route::get('admin/finance/export', 'Admin\\FinanceController@export');
+
 
 });
 

@@ -35,6 +35,14 @@ class Order extends Model
         'SHOPEE' => 'Shopee'
     ];
 
+    const PROVIDER = [
+        'SEUDO' => 1,
+    ];
+
+    const PROVIDER_TEXT = [
+        'SEUDO' => 'seudo',
+    ];
+
 
     /**
      * The database table used by the model.
@@ -55,7 +63,7 @@ class Order extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'status', 'name', 'phone', 'address', 'price', 'email', 'note', 'selling_web', 'created_at', 'updated_at', 'api_created_at', 'api_updated_at', 'returned', 'is_parted', 'is_special'];
+    protected $fillable = ['code', 'status', 'name', 'phone', 'address', 'price', 'email', 'note', 'selling_web', 'created_at', 'updated_at', 'api_created_at', 'api_updated_at', 'returned', 'is_parted', 'is_special', 'provider'];
 
     /**
      * Get the users of role.
@@ -68,6 +76,11 @@ class Order extends Model
     public function sellingWebText()
     {
         return $this->selling_web ? Order::SELLING_WEB_TEXT[array_keys(Order::SELLING_WEB, $this->selling_web)[0]] : '';
+    }
+
+    public function providerText()
+    {
+        return $this->provider ? Order::PROVIDER_TEXT[array_keys(Order::PROVIDER, $this->provider)[0]] : '';
     }
 
     public function products()
