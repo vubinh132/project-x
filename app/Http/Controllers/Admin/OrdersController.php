@@ -84,9 +84,10 @@ class OrdersController extends Controller
         $numOfProduct = $requestData['numOfProducts'];
 
         if ($requestData['status'] == Order::STATUS['ORDERED'] || $requestData['status'] == Order::STATUS['PAID']) {
+            unset($requestData['provider']);
             $validate_list['selling_web'] = 'required';
-
             if ($requestData['selling_web'] == Order::SELLING_WEB['SELF']) {
+                unset($requestData['code']);
                 $this->validate($request, $validate_list);
             } else {
                 $validate_list['code'] = 'required';
@@ -104,9 +105,22 @@ class OrdersController extends Controller
 
         } elseif ($requestData['status'] == Order::STATUS['INTERNAL']) {
 
+            $validate_list = [
+                'provider' => 'required',
+                'numOfProducts' => 'required'
+            ];
+
             $this->validate($request, $validate_list);
 
             unset($requestData['selling_web']);
+            unset($requestData['code']);
+            unset($requestData['name']);
+            unset($requestData['phone']);
+            unset($requestData['email']);
+            unset($requestData['address']);
+            unset($requestData['address_test']);
+
+            $requestData['name'] = Order::PROVIDER_TEXT[array_keys(Order::PROVIDER, $requestData['provider'])[0]];
 
             for ($i = 1; $i <= $numOfProduct; $i++) {
                 $price = $requestData['operation_' . $i] == 1 ? $requestData['price_' . $i] : -($requestData['price_' . $i]);

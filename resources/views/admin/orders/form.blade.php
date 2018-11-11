@@ -60,15 +60,23 @@
     </div>
     <button type="button" id="btn_add" class="pull-right btn btn-info" style="margin-top: 20px">Add Product</button>
 </div>
-<div class="form-group row {{ $errors->has('name') ? 'has-error' : ''}}">
+<div class="form-group row {{ $errors->has('name') ? 'has-error' : ''}} customer-input-group">
     {!! Form::label('name', 'Customer Full Name', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
-        {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+        {!! Form::text('name', null, ['class' => 'form-control']) !!}
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
-<div class="form-group row {{ $errors->has('phone') ? 'has-error' : ''}}">
+<div class="form-group row {{ $errors->has('provider') ? 'has-error' : ''}} provider-input-group">
+    {!! Form::label('provider', 'Provider', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+    <div class="col-md-9 col-sm-7">
+        {!! Form::select('provider', \App\Services\CommonService::mapStatus(\App\Models\Order::PROVIDER, \App\Models\Order::PROVIDER_TEXT), null, ['class' => 'form-control', 'required' => 'required', 'id'=>'selling-web']) !!}
+        {!! $errors->first('provider', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group row {{ $errors->has('phone') ? 'has-error' : ''}} customer-input-group">
     {!! Form::label('phone', 'Customer Phone Number', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
         {!! Form::text('phone', null, ['class' => 'form-control']) !!}
@@ -76,7 +84,7 @@
     </div>
 </div>
 
-<div class="form-group row {{ $errors->has('email') ? 'has-error' : ''}}">
+<div class="form-group row {{ $errors->has('email') ? 'has-error' : ''}} customer-input-group">
     {!! Form::label('email', 'Customer Email', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
         {!! Form::text('email', null, ['class' => 'form-control']) !!}
@@ -84,7 +92,7 @@
     </div>
 </div>
 
-<div class="form-group row {{ $errors->has('address') ? 'has-error' : ''}}">
+<div class="form-group row {{ $errors->has('address') ? 'has-error' : ''}} customer-input-group">
     {!! Form::label('address', 'Shopping Address', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
         {!! Form::text('address', null, ['class' => 'form-control']) !!}
@@ -169,7 +177,7 @@
                 })
                 if (totalPrice || totalPrice == 0) {
                     $('#total-price').html($.number(totalPrice));
-                }else{
+                } else {
                     $('#total-price').html('');
                 }
             })
@@ -199,8 +207,12 @@
         function setStatus() {
             if ($("#status").val() == 3) {
                 $('#selling-web-group').hide();
+                $('.customer-input-group').hide();
+                $('.provider-input-group').show();
             } else {
                 $('#selling-web-group').show();
+                $('.customer-input-group').show();
+                $('.provider-input-group').hide();
             }
         }
 
@@ -245,7 +257,7 @@
             var totalPriceSelector = parentSelector.find('input.total-price-selector');
             var unitPrice = parseInt(parentSelector.find('input.unit-price-selector').val().replace(/,/g, ''));
             var quantity = parentSelector.find('input.quantity-selector').val();
-            if ((unitPrice || unitPrice ==0) && quantity) {
+            if ((unitPrice || unitPrice == 0) && quantity) {
                 totalPriceSelector.val($.number(unitPrice * quantity));
             }
             else {
