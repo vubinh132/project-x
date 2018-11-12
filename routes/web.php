@@ -32,7 +32,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::resource('roles', 'RolesController');
 
     //Diary
-    Route::resource('admin/diary', 'Admin\\DiaryController');
+    Route::resource('diary', 'DiaryController');
 
     //Products
     Route::post('admin/products/{id}/change-image', 'Admin\\ProductsController@changeImage');

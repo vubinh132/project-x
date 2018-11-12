@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="white-box">
-        <form action="{{url('admin/diary')}}" method="GET">
+        <form action="{{url('diary')}}" method="GET">
             <div class="form-group row ">
                 {!! Form::label('date', 'Date', ['class' => 'col-md-1 col-form-label', 'style' =>'padding-top:9px']) !!}
 
@@ -24,7 +24,7 @@
             </div>
         </form>
         @if($date)
-            <form action="{{url('admin/diary')}}" method="POST">
+            <form action="{{url('diary')}}" method="POST">
                 <div class="form-group row ">
                     {!! Form::token() !!}
                     <input type="hidden" name="date" value="{{Request::get('date')}}">

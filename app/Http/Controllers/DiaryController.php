@@ -1,8 +1,6 @@
 <?php
+namespace App\Http\Controllers;
 
-namespace App\Http\Controllers\Admin;
-
-use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
 use App\Models\Diary;
@@ -28,7 +26,7 @@ class DiaryController extends Controller
                 $content = $diary->content;
             }
         }
-        return view('admin.diary.index', compact('date', 'content'));
+        return view('diary.index', compact('date', 'content'));
     }
 
     public function store(Request $request)
@@ -48,7 +46,7 @@ class DiaryController extends Controller
             Diary::create($requestData);
         }
 
-        return redirect('admin/diary?date=' . $requestData['date']);
+        return redirect('diary?date=' . $requestData['date']);
     }
 
 
