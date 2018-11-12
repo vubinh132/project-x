@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Log, File, Session;
 use App\Models\Log as LogModel;
 use Illuminate\Http\Request;
@@ -19,7 +18,7 @@ class LogsController extends Controller
     {
         $logs = LogModel::orderBy('created_at', 'desc')->take(30)->get();
         $categories = LogModel::getCategories();
-        return view('admin.logs.index', compact('logs', 'categories'));
+        return view('logs.index', compact('logs', 'categories'));
     }
 
     public function list(Request $request)

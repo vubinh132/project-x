@@ -433,7 +433,7 @@ app.controller("logIndexCtrl", function ($scope, $http, $sce) {
 
     function loadData() {
         var id = $("#category").val();
-        var url = window.location.origin + '/admin/list/logs?category=' + id;
+        var url = window.location.origin + '/list/logs?category=' + id;
         $http({
             method: "GET",
             url: url

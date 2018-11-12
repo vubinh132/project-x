@@ -61,8 +61,8 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
 
     //Log
-    Route::resource('admin/logs', 'Admin\\LogsController');
-    Route::get('admin/list/logs', 'Admin\\LogsController@list');
+    Route::resource('logs', 'LogsController');
+    Route::get('list/logs', 'LogsController@list');
 
     //General Settings
     //send email for testing

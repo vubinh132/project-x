@@ -122,7 +122,7 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{url('admin/logs')}}">Log Storage</a>
+                        <a href="{{url('logs')}}">Log Storage</a>
                     </li>
                     <li>
                         <a href="{{url('general-settings')}}">General Settings</a>
