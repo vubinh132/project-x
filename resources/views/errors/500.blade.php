@@ -1,4 +1,4 @@
-@extends('layouts.admin.error')
+@extends('layouts.error')
 
 @section('content')
     <h1>500</h1>

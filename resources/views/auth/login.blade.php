@@ -1,4 +1,4 @@
-@extends('layouts.admin.empty')
+@extends('layouts.empty')
 @section('content')
     <style>
         body, html {

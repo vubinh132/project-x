@@ -45,16 +45,16 @@
 <body>
 <div class="loader"></div>
 <div id="wrapper">
-    @include('layouts.admin.header')
+    @include('layouts.header')
 
-    @include('layouts.admin.sidebar')
+    @include('layouts.sidebar')
 
     <div id="page-wrapper">
         <div class="container-fluid">
             @yield('content')
         </div>
 
-        @include('layouts.admin.footer')
+        @include('layouts.footer')
     </div>
 </div>
 
