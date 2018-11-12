@@ -69,7 +69,6 @@
 <script src="{{ asset('theme/admin/js/angular.min.js') }}"></script>
 <script src="{{ asset('theme/admin/js/angular-sanitize.js') }}"></script>
 <script src="{{ asset('theme/admin/js/ocLazyLoad.js') }}"></script>
-ocLazyLoad
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ asset('theme/admin/js/tether.min.js') }}"></script>
 <script src="{{ asset('theme/admin/js/bootstrap.min.js') }}"></script>
