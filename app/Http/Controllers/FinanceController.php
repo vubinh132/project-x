@@ -1,22 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Services\CommonService;
-use App\Services\HTMLService;
-use Illuminate\Http\Request;
-use App\Models\Product;
-use Log, File, Session, DB, Exception;
+use Log, File, Session, DB;
 
 
 class FinanceController extends Controller
 {
     public function import()
     {
-        $result = [];
-
         $providers = Order::selectRaw('orders.provider, count(DISTINCT orders.id) as num_of_orders, -sum(order_details.price) as total_value')
             ->join('order_details', 'order_details.order_id', 'orders.id')
             ->join('products', 'products.id', 'order_details.product_id')
@@ -24,7 +17,7 @@ class FinanceController extends Controller
             ->groupBy('orders.provider')
             ->get();
 
-        return view('admin.finance.import', compact('providers'));
+        return view('finance.import', compact('providers'));
     }
 
 
@@ -42,7 +35,7 @@ class FinanceController extends Controller
 
         $total = count($orders);
 
-        return view('admin.finance.import_detail', compact('orders', 'totalPrice', 'total'));
+        return view('finance.import_detail', compact('orders', 'totalPrice', 'total'));
     }
 
 

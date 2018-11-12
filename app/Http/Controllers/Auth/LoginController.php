@@ -10,6 +10,7 @@ Use Log, Location;
 use Jenssegers\Agent\Agent;
 use App\Models\Log as LogModel;
 
+
 class LoginController extends Controller
 {
     /*
@@ -30,7 +31,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -87,5 +88,14 @@ class LoginController extends Controller
             $this->username() => 'required|string|email|',
             'password' => 'required|string',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return redirect('/login');
     }
 }

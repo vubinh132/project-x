@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
-use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\CommonService;
@@ -56,7 +54,7 @@ class UsersController extends Controller
 
         $total = User::count();
 
-        return view('admin.users.index', compact('users', 'isUser', 'isAdmin', 'total'));
+        return view('users.index', compact('users', 'isUser', 'isAdmin', 'total'));
     }
 
 
@@ -71,7 +69,7 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
         $isMyProfile = false;
-        return view('admin.users.show', compact('user', 'isMyProfile'));
+        return view('users.show', compact('user', 'isMyProfile'));
     }
 
     public function myProfile()
@@ -79,7 +77,7 @@ class UsersController extends Controller
         $user = Auth::user();
         $isMyProfile = true;
 
-        return view('admin.users.show', compact('user', 'isMyProfile'));
+        return view('users.show', compact('user', 'isMyProfile'));
     }
 
     /**
@@ -97,7 +95,7 @@ class UsersController extends Controller
         foreach (Role::all() as $role) {
             $roles = $roles + [$role->id => $role->name];
         }
-        return view('admin.users.edit', compact('user', 'isMyProfile', 'roles'));
+        return view('users.edit', compact('user', 'isMyProfile', 'roles'));
     }
 
     public function editMyProfile()
@@ -105,7 +103,7 @@ class UsersController extends Controller
         $user = Auth::user();
         $isMyProfile = true;
 
-        return view('admin.users.edit', compact('user', 'isMyProfile'));
+        return view('users.edit', compact('user', 'isMyProfile'));
     }
 
     /**
@@ -126,7 +124,7 @@ class UsersController extends Controller
     {
         $this->updateData(Auth::id(), $request, true);
 
-        return redirect('admin/my-profile');
+        return redirect('my-profile');
     }
 
     public function changeProfileImage(Request $request)
@@ -149,7 +147,7 @@ class UsersController extends Controller
         $user->image_1 = $photoName;
         $user->save();
 
-        return redirect('admin/my-profile/edit');
+        return redirect('my-profile/edit');
     }
 
     public function changeUserProfileImage($id, Request $request)
@@ -172,7 +170,7 @@ class UsersController extends Controller
         $user->image_1 = $photoName;
         $user->save();
 
-        return redirect("admin/users/$user->id/edit");
+        return redirect("users/$user->id/edit");
     }
 
     private function updateData($id, Request $request, $isMyProfile)

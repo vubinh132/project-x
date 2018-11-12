@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\CommonService;
-use App\Services\LazadaService;
 use Carbon\Carbon;
 use App\Models\Order;
 use Log, DB, Mail;
@@ -107,6 +105,6 @@ class AdminsController extends Controller
 
         $todayProfit = ceil(($todayRevenue - $todayFund) / 1000);
 
-        return view('admin.index', compact('days', 'profit', 'productValue', 'todayProfit'));
+        return view('index', compact('days', 'profit', 'productValue', 'todayProfit'));
     }
 }

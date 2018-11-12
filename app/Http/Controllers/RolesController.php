@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
@@ -41,7 +41,7 @@ class RolesController extends Controller
 
         $canManageRoles = CommonService::checkPermission('ROLES_MANAGE');
 
-        return view('admin.roles.index', compact('roles', 'total', 'canManageRoles'));
+        return view('roles.index', compact('roles', 'total', 'canManageRoles'));
     }
 
     /**
@@ -52,7 +52,7 @@ class RolesController extends Controller
     public function create()
     {
         $permissionGroups = Role::PERMISSION_GROUPS;
-        return view('admin.roles.create', compact('permissionGroups'));
+        return view('roles.create', compact('permissionGroups'));
     }
 
     /**
@@ -94,7 +94,7 @@ class RolesController extends Controller
 
         Session::flash('flash_message', 'Đã thêm role mới!');
 
-        return redirect('admin/roles');
+        return redirect('roles');
     }
 
     /**
@@ -109,7 +109,7 @@ class RolesController extends Controller
         $role = Role::findOrFail($id);
         $permissionGroups = Role::PERMISSION_GROUPS;
         $permissionList = explode(',', $role->permissions);
-        return view('admin.roles.show', compact('role', 'permissionGroups', 'permissionList'));
+        return view('roles.show', compact('role', 'permissionGroups', 'permissionList'));
 
     }
 
@@ -125,7 +125,7 @@ class RolesController extends Controller
         $role = Role::findOrFail($id);
         $permissionGroups = Role::PERMISSION_GROUPS;
         $permissionList = explode(',', $role->permissions);
-        return view('admin.roles.edit', compact('role', 'permissionGroups', 'permissionList'));
+        return view('roles.edit', compact('role', 'permissionGroups', 'permissionList'));
     }
 
     /**
@@ -167,7 +167,7 @@ class RolesController extends Controller
 
         Session::flash('flash_message', 'Đã cập nhật quyền!');
 
-        return redirect('admin/roles');
+        return redirect('roles');
     }
 
     /**
@@ -187,6 +187,6 @@ class RolesController extends Controller
             LogService::Log('Xoá phân quyền: ' . $role->name, ActivityHistory::CATEGORIES['USER']);
             Session::flash('flash_message', 'Đã xóa phân quyền!');
         }
-        return redirect('admin/roles');
+        return redirect('roles');
     }
 }

@@ -16,20 +16,20 @@ Route::post('admin/product-checking/update-quantity', 'Admin\\ProductsController
 
 Route::group(['middleware' => ['admin', 'revalidate']], function () {
     // Home page
-    Route::get('admin', 'Admin\\AdminsController@index');
+    Route::get('/', 'AdminsController@index');
 
     //my profile without any permission
-    Route::post('admin/users/{id}/change-profile-image', 'Admin\\UsersController@changeUserProfileImage');
-    Route::get('admin/my-profile', 'Admin\\UsersController@myProfile');
-    Route::get('admin/my-profile/edit', 'Admin\\UsersController@editMyProfile');
-    Route::patch('admin/my-profile', 'Admin\\UsersController@updateProfile');
-    Route::post('admin/change-profile-image', 'Admin\\UsersController@changeProfileImage');
+    Route::post('users/{id}/change-profile-image', 'UsersController@changeUserProfileImage');
+    Route::get('my-profile', 'UsersController@myProfile');
+    Route::get('my-profile/edit', 'UsersController@editMyProfile');
+    Route::patch('my-profile', 'UsersController@updateProfile');
+    Route::post('change-profile-image', 'UsersController@changeProfileImage');
 
     // Manage users, user profile
-    Route::resource('admin/users', 'Admin\\UsersController', ['except' => ['destroy']]);
+    Route::resource('users', 'UsersController', ['except' => ['destroy']]);
 
     //Roles
-    Route::resource('admin/roles', 'Admin\\RolesController');
+    Route::resource('roles', 'RolesController');
 
     //Diary
     Route::resource('admin/diary', 'Admin\\DiaryController');
@@ -86,9 +86,9 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('admin/external-api/google', 'Admin\\external_apis\\GoogleController@index');
 
     //Finance
-    Route::get('admin/finance/import', 'Admin\\FinanceController@import');
-    Route::get('admin/finance/import/{providerId}', 'Admin\\FinanceController@importDetail');
-    Route::get('admin/finance/export', 'Admin\\FinanceController@export');
+    Route::get('finance/import', 'FinanceController@import');
+    Route::get('finance/import/{providerId}', 'FinanceController@importDetail');
+    Route::get('finance/export', 'FinanceController@export');
 
 
 });

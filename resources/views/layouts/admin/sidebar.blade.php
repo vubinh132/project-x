@@ -31,7 +31,7 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ url('/admin/users') }}">Users</a>
+                        <a href="{{ url('/users') }}">Users</a>
                     </li>
                 </ul>
             </li>
@@ -69,10 +69,10 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{url('/admin/finance/import')}}">Import</a>
+                        <a href="{{url('/finance/import')}}">Import</a>
                     </li>
                     <li>
-                        <a href="{{url('/admin/finance/export')}}">Export</a>
+                        <a href="{{url('/finance/export')}}">Export</a>
                     </li>
 
                 </ul>
