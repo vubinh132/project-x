@@ -5,7 +5,7 @@
             <i class="ti-menu"></i>
         </a>
         <div class="top-left-part">
-            <a class="logo" href="{{ url('/admin') }}">
+            <a class="logo" href="{{ url('/') }}">
                 <b>
                     {{--<img src="{{ asset('images/logo1.png') }}" alt="home" />--}}
                 </b>
@@ -47,7 +47,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/my-profile') }}">
+                        <a href="{{ url('my-profile') }}">
                             <i class="ti-user p-r-10"></i> My Profile
                         </a>
                     </li>

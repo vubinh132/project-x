@@ -66,10 +66,13 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
     //General Settings
     //send email for testing
-    Route::get('admin/general-settings/send-email', 'Admin\\GeneralSettingsController@sendEmail');
+    Route::get('general-settings/send-email', 'GeneralSettingsController@sendEmail');
     //update sync day
-    Route::get('admin/general-settings/update-syn-time', 'Admin\\GeneralSettingsController@updateSyncTime');
-    Route::resource('admin/general-settings', 'Admin\\GeneralSettingsController');
+    Route::get('general-settings/update-syn-time', 'GeneralSettingsController@updateSyncTime');
+    //change password
+    Route::post('general-settings/change-password', 'GeneralSettingsController@changePassword');
+
+    Route::resource('general-settings', 'GeneralSettingsController');
 
     //Note
     Route::resource('admin/notes', 'Admin\\NotesController');

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
 use App\Services\CommonService;
-use Log, Mail;
+use Log, Mail, Auth;
 use Exception;
 use App\Mail\SimpleEmailSender;
 
@@ -26,7 +25,7 @@ class GeneralSettingsController extends Controller
         $mailServer = env('MAIL_USERNAME');
         $day = CommonService::getSettingChosenValue('SYNC_TIME');
 
-        return view('admin.general_settings.index', compact('startDate', 'version', 'mailServer', 'day'));
+        return view('general_settings.index', compact('startDate', 'version', 'mailServer', 'day'));
     }
 
     public function update(Request $request)
@@ -57,6 +56,24 @@ class GeneralSettingsController extends Controller
         try {
             $day = $request->get('day');
             CommonService::updateSettingValue('SYNC_TIME', $day);
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'massage' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $user->password = bcrypt($request->get('newPassword'));
+            $user->save();
             return response()->json([
                 'success' => true
             ]);

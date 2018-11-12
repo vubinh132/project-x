@@ -125,7 +125,7 @@
                         <a href="{{url('admin/logs')}}">Log Storage</a>
                     </li>
                     <li>
-                        <a href="{{url('admin/general-settings')}}">General Settings</a>
+                        <a href="{{url('general-settings')}}">General Settings</a>
                     </li>
                 </ul>
             </li>

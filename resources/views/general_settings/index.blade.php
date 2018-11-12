@@ -21,9 +21,9 @@
                 </div>
             </div>
             <div class="form-group row ">
-                {!! Form::label('name', 'Version', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+                {!! Form::label('version', 'Version', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
                 <div class="col-md-9 col-sm-7">
-                    {!! Form::text('name', "Current Version: $version[0] | Last Update: $version[2]", ['class' => 'form-control text-center', 'required' => 'required', 'disabled'=>'disabled']) !!}
+                    {!! Form::text('version', "Current Version: $version[0] | Last Update: $version[2]", ['class' => 'form-control text-center', 'required' => 'required', 'disabled'=>'disabled']) !!}
                 </div>
             </div>
             <div class="form-group row ">
@@ -47,7 +47,20 @@
                     {!! Form::number('day', $day, ['class' => 'form-control text-center', 'required' => 'required', 'placeholder' => 'Day to sync...', 'id' => 'day']) !!}
                 </div>
                 <div class="col-md-2 col-sm-2">
-                    <button type="button" class="form-control" id="lazada"><span id="ui-button-text-lazada">UPDATE</span></button>
+                    <button type="button" class="form-control" id="lazada"><span
+                                id="ui-button-text-lazada">UPDATE</span></button>
+                </div>
+            </div>
+            <div class="form-group row ">
+                {!! Form::label('change-password', 'Change Password', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+                <div class="col-md-3 col-sm-3">
+                </div>
+                <div class="col-md-4 col-sm-2">
+                    {!! Form::password('new-password', ['class' => 'form-control text-center', 'required' => 'required', 'placeholder' => 'New password...', 'id'=>'new-password']) !!}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <button type="button" class="form-control" id="btn-change-password"><span
+                                id="ui-button-text-change-password">CHANGE</span></button>
                 </div>
             </div>
         </form>
@@ -60,7 +73,7 @@
                 $("#ui-button-text").text('SENDING...');
                 $("#send").attr('disabled', true);
                 $.ajax({
-                    url: "{{url('/admin/general-settings/send-email?email=')}}" + $("#email").val(),
+                    url: "{{url('/general-settings/send-email?email=')}}" + $("#email").val(),
                     type: 'GET',
                     success: function (res) {
 
@@ -87,7 +100,7 @@
                 $("#ui-button-text-lazada").text('UPDATING...');
                 $("#lazada").attr('disabled', true);
                 $.ajax({
-                    url: "{{url('/admin/general-settings/update-syn-time?day=')}}" + $("#day").val(),
+                    url: "{{url('/general-settings/update-syn-time?day=')}}" + $("#day").val(),
                     type: 'GET',
                     success: function (res) {
 
@@ -108,6 +121,34 @@
                         $("#lazada").attr('disabled', false);
                     }
                 })
+            });
+
+            $("#btn-change-password").click(function () {
+                $("#ui-button-text-change-password").text('CHANGING...');
+                $("#btn-change-password").attr('disabled', true);
+                $.post("{{url('/general-settings/change-password?XDEBUG_SESSION_START=17403')}}",
+                    {
+                        newPassword: $('#new-password').val(),
+                        _token: "{{ csrf_token() }}"
+                    },
+                    function (data, status) {
+                        $('#new-password').val('');
+                        if (data.success) {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Success',
+                                content: 'Update successfully',
+                            });
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: data.massage,
+                            });
+                        }
+                        $("#ui-button-text-change-password").text('CHANGE');
+                        $("#btn-change-password").attr('disabled', false);
+                    });
             });
         });
     </script>
