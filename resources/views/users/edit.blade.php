@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-8 col-sm-7 col-md-7 col-xs-12">
             <ol class="breadcrumb">
-                <li><a href="{{ url('/admin') }}">Admin</a></li>
+                <li><a href="{{ url('/') }}">Home</a></li>
                 @if ($isMyProfile)
                     <li><a href="{{ url('admin/my-profile') }}">My Profile</a></li>
                 @else

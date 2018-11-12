@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-8 col-xs-12">
             <ol class="breadcrumb">
-                <li><a href="{{ url('/admin') }}">Admin</a></li>
+                <li><a href="{{ url('/') }}">Home</a></li>
                 <li><a href="{{ url('/admin/roles') }}">Phân Quyền</a></li>
                 <li class="active">Thêm Quyền</li>
             </ol>

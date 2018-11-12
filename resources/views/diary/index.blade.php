@@ -7,7 +7,7 @@
         </div>
         <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
             <ol class="breadcrumb">
-                <li>Admin</li>
+                <li><a href="{{ url('/') }}">Home</a></li>
                 <li class="active">Diary</li>
             </ol>
         </div>
