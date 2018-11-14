@@ -205,7 +205,7 @@ class LazadaService
             foreach ($rawOrders as $rawOrder) {
                 $sku = config('lazada.' . $rawOrder['sku'], $rawOrder['sku']);
                 //package
-                if (str_contains($sku, '&')) {
+                if (str_contains($sku, '&') && $sku != 'BNU02-S&M') {
                     $SKUs = explode('&', $sku);
                 } else {
                     $SKUs = [$sku];

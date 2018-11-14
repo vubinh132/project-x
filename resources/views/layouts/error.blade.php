@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Virtus | Error') }}</title>
+    <title>{{ config('app.name', 'X-CMS | Error') }}</title>
 
     <link href="{{ asset('theme/admin/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('theme/admin/css/bootstrap-extension.css') }}" rel="stylesheet">
@@ -27,9 +27,7 @@
 
             <a href="/" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Back To Home</a>
         </div>
-        <footer class="footer text-center">
-            <?php echo date("Y"); ?> &copy; Virtus. All rights reserved.
-        </footer>
+        @include('layouts.footer')
     </div>
 </section>
 
