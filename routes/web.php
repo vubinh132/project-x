@@ -75,7 +75,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::resource('general-settings', 'GeneralSettingsController');
 
     //Note
-    Route::resource('admin/notes', 'Admin\\NotesController');
+    Route::resource('notes', 'NotesController');
 
     //External APIs
     //Lazada APIs

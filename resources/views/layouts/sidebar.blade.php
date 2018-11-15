@@ -106,7 +106,7 @@
                         <a href="{{ url('/diary') }}">Diary</a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/notes') }}">Notes</a>
+                        <a href="{{ url('/notes') }}">Notes</a>
                     </li>
                     <li>
                         <a href="#">Projects</a>

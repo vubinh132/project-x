@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <form action="{{url('admin/notes')}}" method="POST">
+        <form action="{{url('notes')}}" method="POST">
             <div class="form-group row ">
                 {!! Form::token() !!}
                 <input type="hidden" name="id" value="{{$id}}">
@@ -40,7 +40,7 @@
         $(document).ready(function () {
             $("#id option[value={!! $id !!}]").prop('selected', true);
             $("#id").change(function () {
-                window.location.href = "{{url('/admin/notes?id=')}}" + this.value;
+                window.location.href = "{{url('/notes?id=')}}" + this.value;
             });
         });
     </script>

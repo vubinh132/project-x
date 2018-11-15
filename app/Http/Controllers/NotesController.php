@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
 use App\Models\Diary;
@@ -28,7 +27,7 @@ class NotesController extends Controller
             $note = Note::where('id', $id)->firstOrFail();
             $content = $note->content;
         }
-        return view('admin.notes.index', compact('id', 'content', 'names'));
+        return view('notes.index', compact('id', 'content', 'names'));
     }
 
     public function store(Request $request)
@@ -43,7 +42,7 @@ class NotesController extends Controller
 
         $note->update(['content' => $requestData['content']]);
 
-        return redirect('admin/notes?id=' . $requestData['id']);
+        return redirect('notes?id=' . $requestData['id']);
     }
 
 
