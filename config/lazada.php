@@ -8,7 +8,7 @@ return [
     'RETURN_FORMAT_DATA' => 'json',
     'APP_KEY' => env('LAZADA_APP_KEY'),
     'APP_SECRET' => env('LAZADA_APP_SECRET'),
-    'AUTH_URL' => 'https://auth.lazada.com/oauth/authorize?response_type=code&redirect_uri=https%3A%2F%2Fproject-x-cms.herokuapp.com%2Fadmin%2Fexternal-api%2Flazada%2Fauth&client_id=104613',
+    'AUTH_URL' => 'https://auth.lazada.com/oauth/authorize?response_type=code&redirect_uri=https%3A%2F%2Fproject-x-cms.herokuapp.com%2Fexternal-api%2Flazada%2Fauth&client_id=104613',
 
     //product code
     //SINGLE
