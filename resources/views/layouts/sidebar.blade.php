@@ -85,10 +85,10 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{url('/admin/external-api/lazada')}}">Lazada</a>
+                        <a href="{{url('/external-api/lazada')}}">Lazada</a>
                     </li>
                     <li>
-                        <a href="{{url('/admin/external-api/google')}}">Google</a>
+                        <a href="{{url('/external-api/google')}}">Google</a>
                     </li>
 
 

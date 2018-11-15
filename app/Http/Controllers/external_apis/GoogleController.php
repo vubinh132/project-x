@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\external_apis;
+namespace App\Http\Controllers\external_apis;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
-use App\Services\CommonService;
 use Log, Mail;
-use Exception;
-use App\Mail\SimpleEmailSender;
+
 
 
 class GoogleController extends Controller
@@ -21,7 +19,7 @@ class GoogleController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.external_apis.google.index');
+        return view('external_apis.google.index');
     }
 
 

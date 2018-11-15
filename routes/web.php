@@ -80,13 +80,11 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     //External APIs
     //Lazada APIs
     //sync orders
-    Route::get('admin/external-api/lazada/sync-all-orders', 'Admin\\external_apis\\LazadaController@syncAllOrders');
-    Route::get('admin/external-api/lazada/sync-orders', 'Admin\\external_apis\\LazadaController@syncOrders');
-    Route::get('admin/external-api/lazada/auth', 'Admin\\external_apis\\LazadaController@auth');
-    Route::get('admin/external-api/lazada', 'Admin\\external_apis\\LazadaController@index');
+    Route::get('external-api/lazada/auth', 'external_apis\\LazadaController@auth');
+    Route::get('external-api/lazada', 'external_apis\\LazadaController@index');
 
     //Google APIs
-    Route::get('admin/external-api/google', 'Admin\\external_apis\\GoogleController@index');
+    Route::get('external-api/google', 'external_apis\\GoogleController@index');
 
     //Finance
     Route::get('finance/import', 'FinanceController@import');

@@ -161,33 +161,6 @@ class LazadaService
         }
     }
 
-    public static function syncOrderByDay($day)
-    {
-        $res = LazadaService::syncOrders($day, $day);
-        $success = $res['success'];
-        if ($success) {
-            $insert = $res['data']['insert'];
-            $update = $res['data']['update'];
-            $fail = $res['data']['fail'];
-            return [
-                'success' => true,
-                'data' => [
-                    'insert' => $insert,
-                    'update' => $update,
-                    'fail' => $fail,
-                ]
-            ];
-        } else {
-            $message = $res['message'];
-            $mess = "Sync orders from Lazada is failed. $message";
-            return [
-                'success' => false,
-                'message' => $mess
-            ];
-        }
-
-    }
-
     private static function getOrderProducts($orderId)
     {
         try {

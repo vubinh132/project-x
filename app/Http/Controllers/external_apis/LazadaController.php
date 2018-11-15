@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin\external_apis;
+namespace App\Http\Controllers\external_apis;
 
 use App\Http\Controllers\Controller;
-use App\Models\ActivityHistory;
 use Illuminate\Http\Request;
-use App\Models\Log;
-use App\Services\LazadaService;
 use App\Services\CommonService;
 use App\SDKs\lazada\lazop\LazopClient;
 use App\SDKs\lazada\lazop\UrlConstants;
 use App\SDKs\lazada\lazop\LazopRequest;
-use Carbon\Carbon;
-use Log as Log1;
 
 class LazadaController extends Controller
 {
@@ -24,32 +19,7 @@ class LazadaController extends Controller
      */
     public function index(Request $request)
     {
-
-        return view('admin.external_apis.lazada.index');
-    }
-
-    public function syncOrders(Request $request)
-    {
-        $day = $request->get('day');
-
-        $res = LazadaService::syncOrderByDay($day);
-
-        return response()->json($res);
-    }
-
-    public function syncAllOrders(Request $request)
-    {
-
-        $startDay = (new Carbon('2018-03-05'))->startOfDay();
-        $endDay = Carbon::now()->startOfDay();
-        while ($endDay >= $startDay) {
-            $res = LazadaService::syncOrderByDay($startDay);
-            $result[] = [$startDay->toIso8601String(), $res];
-            Log1::info($startDay->toIso8601String());
-            $startDay->addDay(1);
-        }
-
-        return response()->json($result);
+        return view('external_apis.lazada.index');
     }
 
     public function auth(Request $request)
@@ -62,9 +32,7 @@ class LazadaController extends Controller
         $res = json_decode($response);
         $token = $res->access_token;
         CommonService::updateSettingValue("L_TOKEN", $token);
-
         return response()->json(['success' => true]);
-
     }
 
 
