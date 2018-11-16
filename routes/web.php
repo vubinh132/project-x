@@ -49,7 +49,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('product-checking', 'ProductsController@productChecking');
 
     //get unit price of product
-    Route::get('admin/products/{id}/unit-price', 'Admin\\ProductsController@getUnitPrice');
+    Route::get('products/{id}/unit-price', 'ProductsController@getUnitPrice');
 
     //Orders
     Route::resource('admin/orders', 'Admin\\OrdersController');
@@ -58,7 +58,6 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('rom/commit', 'ROMController@commit');
     Route::get('rom/change-return-status/{id}', 'ROMController@changeReturnStatus');
     Route::resource('rom', 'ROMController');
-
 
     //Log
     Route::resource('logs', 'LogsController');
@@ -90,7 +89,6 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('finance/import', 'FinanceController@import');
     Route::get('finance/import/{providerId}', 'FinanceController@importDetail');
     Route::get('finance/export', 'FinanceController@export');
-
 
 });
 

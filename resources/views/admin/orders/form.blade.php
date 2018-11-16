@@ -117,6 +117,7 @@
 @section('extra_scripts')
     <script type="text/javascript">
         var products = {!! $products !!};
+        var firstId = products[Object.keys(products)[0]];
         var count = 2;
         $(document).ready(function () {
 
@@ -124,7 +125,7 @@
             addElementsForProduct(1);
 
             //unit price for product 1
-            setUnitPrice($('#unit_1').parent().parent(), 1)
+            setUnitPrice($('#unit_1').parent().parent(), firstId);
 
             //set status, selling wb, operation
             setStatus();
@@ -147,7 +148,7 @@
             $('#btn_add').click(function () {
                 $('#products').append('<div class="row" style="margin-top: 15px"><div class="col-md-2"><select class="form-control" id="operation_' + count + '" name="operation_' + count + '"><option value="1">OUT</option> <option value="2">IN</option></select></div><div class="col-md-4"><select class="form-control product-selector" id="product_id_' + count + '" name="product_id_' + count + '"></select></div><div class="col-md-2"><input type="text" class="form-control unit-price-selector" placeholder="unit price" id="unit_' + count + '" name="unit_' + count + '" required></div><div class="col-md-2"><input type="number" min = "0" max = "100" class="form-control quantity-selector" placeholder="quantity" id="quantity_' + count + '" name="quantity_' + count + '" required></div><div class="col-md-2"><input type="text" class="form-control total-price-selector" placeholder="total price" id="price_' + count + '" name="price_' + count + '" required readonly></div></div>');
                 addElementsForProduct(count);
-                setUnitPrice($('#unit_' + count).parent().parent(), 1)
+                setUnitPrice($('#unit_' + count).parent().parent(), firstId)
                 $('#numOfProducts').val(count);
                 if ($("#status").val() != 3) {
                     $('#operation_' + count).hide();
@@ -194,7 +195,7 @@
             selector.find('input.total-price-selector').val('');
             $('#total-price').html('');
             selector.find('input.quantity-selector').attr('disabled', true);
-            var url = window.location.origin + '/admin/products/' + id + '/unit-price';
+            var url = window.location.origin + '/products/' + id + '/unit-price';
             $.get(url, function (data, status) {
                 var unitPrice = data.data.price;
                 selector.find('input.unit-price-selector').val($.number(unitPrice));
