@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\CommonService;
 use App\Services\HTMLService;

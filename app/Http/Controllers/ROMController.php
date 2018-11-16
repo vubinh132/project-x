@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\ActivityHistory;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -22,7 +21,7 @@ class ROMController extends Controller
     public function index(Request $request)
     {
         $notification = Log::where('category', Log::CATEGORY['ROM'])->orderBy('created_at', 'desc')->first();
-        $notification = $notification ? $notification->content. ' at ' .$notification->created_at : '';
+        $notification = $notification ? $notification->content . ' at ' . $notification->created_at : '';
 
         $orders = Order::with(['products' => function ($query) {
             $query->orderBy('sku');
@@ -41,7 +40,7 @@ class ROMController extends Controller
             $order->returned = $order->returned ? true : false;
         }
 
-        return view('admin.rom.index', compact('orders', 'notification'));
+        return view('rom.index', compact('orders', 'notification'));
 
     }
 
@@ -73,7 +72,7 @@ class ROMController extends Controller
             'content' => "$received orders have been received",
             'notification_type' => Log::NOTIFICATION_TYPE['NONE']
         ]);
-        return redirect('/admin/rom');
+        return redirect('/rom');
     }
 
 }

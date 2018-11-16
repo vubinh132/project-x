@@ -387,7 +387,7 @@ app.controller("romIndexCtrl", function ($scope, $sce) {
     $scope.changeReturnStatus = function (id, value) {
 
         var status = value ? 1 : 0;
-        var url = window.location.origin + '/admin/rom/change-return-status/' + id + '?status=' + status;
+        var url = window.location.origin + '/rom/change-return-status/' + id + '?status=' + status;
         $.ajax({
             url: url,
             type: 'GET',

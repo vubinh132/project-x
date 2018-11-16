@@ -18,7 +18,7 @@
             <div class="dataTables_wrapper no-footer">
                 <div class="dataTables_length" style="margin-bottom: 10px !important;">
                     <label>
-                        <a href="{{ url('/admin/rom/commit') }}" class="btn btn-success pull-left">
+                        <a href="{{ url('/rom/commit') }}" class="btn btn-success pull-left">
                             <i class="fa fa-check"></i> Commit
                         </a>
                     </label>

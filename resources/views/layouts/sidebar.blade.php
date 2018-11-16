@@ -52,7 +52,7 @@
                         <a href="{{ url('/admin/product-checking') }}">Product Checking</a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/rom') }}">ROM</a>
+                        <a href="{{ url('/rom') }}">ROM</a>
                     </li>
                     <li>
                         <a href="{{ url('/admin/volume-adjustment') }}">Volume Adjustment</a>
