@@ -46,7 +46,7 @@
                         <a href="{{ url('/admin/orders') }}">Orders</a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/products') }}">Products</a>
+                        <a href="{{ url('/products') }}">Products</a>
                     </li>
                     <li>
                         <a href="{{ url('/admin/product-checking') }}">Product Checking</a>
@@ -55,7 +55,7 @@
                         <a href="{{ url('/rom') }}">ROM</a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/volume-adjustment') }}">Volume Adjustment</a>
+                        <a href="{{ url('/volume-adjustment') }}">Volume Adjustment</a>
                     </li>
                 </ul>
             </li>

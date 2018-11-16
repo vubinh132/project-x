@@ -35,14 +35,14 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::resource('diary', 'DiaryController');
 
     //Products
-    Route::post('admin/products/{id}/change-image', 'Admin\\ProductsController@changeImage');
-    Route::post('admin/products/{id}/delete', 'Admin\\ProductsController@destroy');
-    Route::get('admin/products/test', 'Admin\\ProductsController@test');
-    Route::resource('admin/products', 'Admin\\ProductsController');
+    Route::post('products/{id}/change-image', 'ProductsController@changeImage');
+    Route::post('products/{id}/delete', 'ProductsController@destroy');
+    Route::get('products/test', 'ProductsController@test');
+    Route::resource('products', 'ProductsController');
 
     //Volume Adjustment
-    Route::get('admin/volume-adjustment', 'Admin\\ProductsController@getAdjustment');
-    Route::post('admin/volume-adjustment', 'Admin\\ProductsController@postAdjustment');
+    Route::get('volume-adjustment', 'ProductsController@getAdjustment');
+    Route::post('volume-adjustment', 'ProductsController@postAdjustment');
     //Product checking
 
     Route::get('admin/product-checking/test', 'Admin\\ProductsController@productCheckingTest');

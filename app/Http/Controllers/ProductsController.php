@@ -28,8 +28,8 @@ class ProductsController extends Controller
             $product->statusText = $product->statusText();
             $product->quantity = HTMLService::getProductQuantity($product);
             $product->avgValue = HTMLService::getAVGValue($product);
-            $product->editLink = url('/admin/products/' . $product->id . '/edit');
-            $product->deleteLink = url('/admin/products/' . $product->id . '/delete');
+            $product->editLink = url('/products/' . $product->id . '/edit');
+            $product->deleteLink = url('/products/' . $product->id . '/delete');
             $array = $product->getAVGProfit();
             $product->avgProfit = HTMLService::getAVGProfit($array);
             $product->avgProfitDetails = HTMLService::getAVGProfitDetails($array);
@@ -42,7 +42,7 @@ class ProductsController extends Controller
         $in = Product::where('status', Product::STATUS['IN_BUSINESS'])->count();
         $out = Product::where('status', Product::STATUS['OUT_OF_BUSINESS'])->count();
 
-        return view('admin.products.index', compact('products', 'total', 'research', 'in', 'out'));
+        return view('products.index', compact('products', 'total', 'research', 'in', 'out'));
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        return view('products.create');
     }
 
     /**
@@ -74,7 +74,7 @@ class ProductsController extends Controller
 
         Product::create($requestData);
 
-        return redirect('admin/products');
+        return redirect('/products');
     }
 
     /**
@@ -89,7 +89,7 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
 
 
-        return view('admin.products.edit', compact('product'));
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -115,7 +115,7 @@ class ProductsController extends Controller
 
         Session::flash('flash_message', 'Updated!');
 
-        return redirect('admin/products');
+        return redirect('/products');
     }
 
     /**
@@ -135,7 +135,7 @@ class ProductsController extends Controller
             $product->delete();
             Session::flash('flash_message', 'Delete!');
         }
-        return redirect('admin/products');
+        return redirect('/products');
     }
 
     public function changeImage($id, Request $request)
@@ -161,7 +161,7 @@ class ProductsController extends Controller
         $product->image_url = $photoName;
         $product->save();
 
-        return redirect('admin/products/' . $id . '/edit');
+        return redirect('/products/' . $id . '/edit');
     }
 
     public function getUnitPrice($id)
@@ -376,7 +376,7 @@ class ProductsController extends Controller
         $order = Order::where('id', 2063)->with(['products' => function ($query) {
             $query->orderBy('id');
         }])->first();
-        return view('admin.products.volume_adjustment', compact('order'));
+        return view('products.volume_adjustment', compact('order'));
     }
 
     public function postAdjustment(Request $request)

@@ -17,7 +17,7 @@
             <div class="dataTables_wrapper no-footer">
                 <div class="dataTables_length">
                     <label>
-                        <a href="{{ url('/admin/products/create') }}" class="btn btn-success pull-left">
+                        <a href="{{ url('/products/create') }}" class="btn btn-success pull-left">
                             <i class="fa fa-plus"></i> Add Product
                         </a>
                     </label>

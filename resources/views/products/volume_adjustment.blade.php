@@ -55,7 +55,7 @@
                 console.log(id);
                 console.log(isIncreasing);
 
-                $.post("{{url('admin/volume-adjustment?XDEBUG_SESSION_START=11253')}}",
+                $.post("{{url('volume-adjustment')}}",
                     {
                         _token: "{{ csrf_token() }}",
                         id: id,
