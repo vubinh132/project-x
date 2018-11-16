@@ -296,7 +296,7 @@ class ProductsController extends Controller
             }
         }
 
-        return view('admin.products.checking', compact('products', 'LProducts', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
+        return view('products.checking', compact('products', 'LProducts', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
     }
 
     public function productCheckingTest()

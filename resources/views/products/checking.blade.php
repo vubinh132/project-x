@@ -150,7 +150,7 @@
                 var sku = $(this).attr('id').split("_")[1];
                 var quantity = parseInt($('#modal-lazada-quantity_' + sku).val());
                 console.log(sku + ' - ' + quantity);
-                var url = '{{url("admin/product-checking/update-quantity")}}';
+                var url = '{{url("product-checking/update-quantity")}}';
                 $.post(url,
                     {
                         sku: sku,

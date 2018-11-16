@@ -13,6 +13,6 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         'api/*',
-        'admin/product-checking/update-quantity',
+        'product-checking/update-quantity',
     ];
 }

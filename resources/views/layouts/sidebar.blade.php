@@ -49,7 +49,7 @@
                         <a href="{{ url('/products') }}">Products</a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/product-checking') }}">Product Checking</a>
+                        <a href="{{ url('/product-checking') }}">Product Checking</a>
                     </li>
                     <li>
                         <a href="{{ url('/rom') }}">ROM</a>
