@@ -324,6 +324,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
         if ($('#canceled').is(':checked')) {
             filterArray.push(4);
             filterArray.push(5);
+            filterArray.push(6);
         }
 
         for (var i = 0; i < $scope.orders.length; i++) {

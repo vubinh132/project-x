@@ -13,14 +13,16 @@ class Order extends Model
         'PAID' => 2,
         'INTERNAL' => 3,
         'CANCELED' => 4,
-        'RETURNED' => 5
+        'RETURNED' => 5,
+        'LOST' => 6
     ];
     const STATUS_TEXT = [
         'ORDERED' => 'Ordered',
         'PAID' => 'Paid',
         'INTERNAL' => 'Internal',
         'CANCELED' => 'Canceled',
-        'RETURNED' => 'Returned'
+        'RETURNED' => 'Returned',
+        'LOST' => 'Lost'
     ];
 
     const SELLING_WEB = [
@@ -102,6 +104,5 @@ class Order extends Model
     {
         return $this->api_created_at ? $this->api_created_at : $this->created_at;
     }
-
 
 }

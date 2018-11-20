@@ -62,25 +62,28 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Order', 'order_details')->withPivot('product_id', 'order_id', 'price', 'display_name');
     }
 
+    //get all orders exclude returned and status
     public function getAvailableQuantity()
     {
         return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->whereNotIn('orders.status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED']])->sum('order_details.quantity');
     }
 
+    //get all ordered orders
     public function getInOrderQuantity()
     {
         return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->where('orders.status', Order::STATUS['ORDERED'])->sum('order_details.quantity');
     }
 
+    //get all paid orders
     public function getSoldQuantity()
     {
         return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->where('orders.status', Order::STATUS['PAID'])->sum('order_details.quantity');
     }
 
+    //by AVAILABLE orders, return 0 when AVAILABLE = 0, otherwise return positive
     public function getAVGValue()
     {
         $available = $this->getAvailableQuantity();
-        $AVGValue = null;
         if ($available) {
             $totalPrice = 0;
             $remain = $available;
@@ -112,6 +115,7 @@ class Product extends Model
         return $AVGValue;
     }
 
+    //by PAID orders, throw exception when sum paid orders > sum internal orders
     public function getAVGProfit()
     {
         if (!$this->getAvailableQuantity() && !$this->getInOrderQuantity() && !$this->getSoldQuantity()) {
@@ -230,6 +234,7 @@ class Product extends Model
         }
     }
 
+    //by PAID orders
     public function getSellingSpeed()
     {
         if (!$this->getAvailableQuantity() && !$this->getInOrderQuantity() && !$this->getSoldQuantity()) {
@@ -247,6 +252,7 @@ class Product extends Model
         }
     }
 
+    //by PAID orders
     public function getSellingSpeedDetails()
     {
         if (!$this->getAvailableQuantity() && !$this->getInOrderQuantity() && !$this->getSoldQuantity()) {
@@ -301,6 +307,7 @@ class Product extends Model
         }
     }
 
+    //can not delete when this product have ANY order
     public function canDelete()
     {
         return !$this->orders()->count();

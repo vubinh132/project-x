@@ -2,7 +2,7 @@
 <div class="form-group row {{ $errors->has('status') ? 'has-error' : ''}}">
     {!! Form::label('status', 'Status', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-5 col-sm-5">
-        {!! Form::select('status', \App\Services\CommonService::mapStatus(\App\Models\Order::STATUS, \App\Models\Order::STATUS_TEXT, [1,2,3]), null, ['class' => 'form-control', 'required' => 'required', 'id' =>'status']) !!}
+        {!! Form::select('status', \App\Services\CommonService::mapStatus(\App\Models\Order::STATUS, \App\Models\Order::STATUS_TEXT, [\App\Models\Order::STATUS['ORDERED'],\App\Models\Order::STATUS['PAID'],\App\Models\Order::STATUS['INTERNAL']]), null, ['class' => 'form-control', 'required' => 'required', 'id' =>'status']) !!}
         {!! $errors->first('status', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -229,7 +229,6 @@
             }
         }
 
-
         //set operation
         function setOperation() {
             if ($("#status").val() == 3) {
@@ -244,14 +243,12 @@
             }
         }
 
-
         //add products for drop-down
         function addElementsForProduct(id) {
             for (var key in products) {
                 $('#product_id_' + id).append('<option value="' + products[key] + '">' + key + '</option>');
             }
         }
-
 
         //set total price
         function setTotalPrice(parentSelector) {

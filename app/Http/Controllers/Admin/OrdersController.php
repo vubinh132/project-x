@@ -42,7 +42,7 @@ class OrdersController extends Controller
 
         $processing = Order::where('status', Order::STATUS['ORDERED'])->count();
         $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
-        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED']])->count();
+        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED'], Order::STATUS['LOST']])->count();
 
         return view('admin.orders.index', compact('orders', 'total', 'processing', 'done', 'canceled'));
     }
@@ -132,6 +132,9 @@ class OrdersController extends Controller
                 }
             }
 
+        } else {
+            Session::flash('flash_error', 'Status of this order is incorrect!');
+            return redirect('admin/orders/create');
         }
 
         DB::transaction(function () use ($requestData, $products) {
@@ -157,7 +160,24 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $statusList = $order->status == Order::STATUS['INTERNAL'] ? CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [3]) : CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [1, 2, 4]);
+        $statusList = [];
+
+        if ($order->status == Order::STATUS['PAID'] || $order->status == Order::STATUS['ORDERED'] || $order->status == Order::STATUS['CANCELED']) {
+            //if order status is ordered, paid, cancelled
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['CANCELED'], Order::STATUS['RETURNED']]);
+        } elseif ($order->status == Order::STATUS['INTERNAL']) {
+            //if order status is internal
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['INTERNAL']]);
+        } elseif ($order->status == Order::STATUS['RETURNED'] && $order->returned) {
+            //if order status is return and have not been received
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED']]);
+        } elseif ($order->status == Order::STATUS['RETURNED'] && !$order->returned) {
+            //if order status is return and have been received
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED'], Order::STATUS['LOST']]);
+        } elseif ($order->status == Order::STATUS['LOST']) {
+            //if order status is lost
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['LOST']]);
+        }
 
         return view('admin.orders.edit', compact('order', 'statusList'));
     }
@@ -172,21 +192,19 @@ class OrdersController extends Controller
      */
     public function update($id, Request $request)
     {
-        $this->validate($request, [
-            'status' => "required",
-            'name' => " required",
-        ]);
-        $requestData = $request->all();
-
         $order = Order::findOrFail($id);
 
-        $oldStatus = $order->status;
+        //can not update internal order
+        if ($order->status != Order::STATUS['INTERNAL']) {
 
-        $products = $order->products()->get();
+            $this->validate($request, [
+                'status' => "required",
+                'name' => " required",
+            ]);
+            $requestData = $request->all();
 
-        DB::transaction(function () use ($requestData, $oldStatus, $products, $order) {
             $order->update($requestData);
-        });
+        }
 
         Session::flash('flash_message', 'Updated!');
 
