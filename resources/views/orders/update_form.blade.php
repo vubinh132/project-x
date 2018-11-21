@@ -10,7 +10,7 @@
     <div class="form-group row {{ $errors->has('name') ? 'has-error' : ''}}">
         {!! Form::label('name', 'Customer Full Name', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
         <div class="col-md-9 col-sm-7">
-            {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+            {!! Form::text('name', null, ['class' => 'form-control']) !!}
             {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
@@ -51,7 +51,7 @@
 
 <div class="form-group row">
     <div class="col-sm-12 text-right">
-        <a href="{{ url("admin/orders")  }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ url("/orders")  }}" class="btn btn-secondary">Cancel</a>
         {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-success']) !!}
     </div>
 </div>

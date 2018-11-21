@@ -8,7 +8,7 @@
         <div class="col-md-8 col-xs-12">
             <ol class="breadcrumb">
                 <li><a href="{{ url('/') }}">Home</a></li>
-                <li><a href="{{ url('/admin/orders') }}">Orders</a></li>
+                <li><a href="{{ url('/orders') }}">Orders</a></li>
                 <li class="active">Update Order</li>
             </ol>
         </div>
@@ -16,9 +16,8 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="white-box">
-
-                {!! Form::model($order, ['method' => 'PATCH', 'url' => ['/admin/orders', $order->id], 'class' => 'form-horizontal', 'files' => true]) !!}
-                @include ('admin.orders.update_form', ['submitButtonText' => 'Update'])
+                {!! Form::model($order, ['method' => 'PATCH', 'url' => ['/orders', $order->id], 'class' => 'form-horizontal', 'files' => true]) !!}
+                @include ('orders.update_form', ['submitButtonText' => 'Update'])
                 {!! Form::close() !!}
             </div>
         </div>

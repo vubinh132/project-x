@@ -52,7 +52,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('products/{id}/unit-price', 'ProductsController@getUnitPrice');
 
     //Orders
-    Route::resource('admin/orders', 'Admin\\OrdersController');
+    Route::resource('orders', 'OrdersController');
 
     //ROM
     Route::get('rom/commit', 'ROMController@commit');

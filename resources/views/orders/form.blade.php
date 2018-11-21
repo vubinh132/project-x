@@ -109,7 +109,7 @@
 </div>
 <div class="form-group row">
     <div class="col-sm-12 text-right">
-        <a href="{{url('admin/orders')}}" class="btn btn-secondary">Cancel</a>
+        <a href="{{url('/orders')}}" class="btn btn-secondary">Cancel</a>
         {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-success']) !!}
     </div>
 </div>

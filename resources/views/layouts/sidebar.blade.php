@@ -43,7 +43,7 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ url('/admin/orders') }}">Orders</a>
+                        <a href="{{ url('/orders') }}">Orders</a>
                     </li>
                     <li>
                         <a href="{{ url('/products') }}">Products</a>

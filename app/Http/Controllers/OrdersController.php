@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Order;
@@ -35,7 +34,7 @@ class OrdersController extends Controller
             $order->statusText = $order->statusText();
             $order->totalPrice = HTMLService::getOrderTotalPrice($order);
             $order->sellingWeb = $order->sellingWebText();
-            $order->editLink = url('/admin/orders/' . $order->id . '/edit');
+            $order->editLink = url('/orders/' . $order->id . '/edit');
             $order->orderDetail = HTMLService::getOrderDetails($order->products);
             $order->created_at = $order->getCreatedAt();
         }
@@ -44,7 +43,7 @@ class OrdersController extends Controller
         $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
         $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED'], Order::STATUS['LOST']])->count();
 
-        return view('admin.orders.index', compact('orders', 'total', 'processing', 'done', 'canceled'));
+        return view('orders.index', compact('orders', 'total', 'processing', 'done', 'canceled'));
     }
 
     /**
@@ -55,7 +54,7 @@ class OrdersController extends Controller
     public function create()
     {
         $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get()->pluck('id', 'sku');
-        return view('admin.orders.create', compact('products'));
+        return view('orders.create', compact('products'));
     }
 
     /**
@@ -134,7 +133,7 @@ class OrdersController extends Controller
 
         } else {
             Session::flash('flash_error', 'Status of this order is incorrect!');
-            return redirect('admin/orders/create');
+            return redirect('orders/create');
         }
 
         DB::transaction(function () use ($requestData, $products) {
@@ -146,7 +145,7 @@ class OrdersController extends Controller
             }
 
         });
-        return redirect('admin/orders');
+        return redirect('orders');
     }
 
     /**
@@ -179,7 +178,7 @@ class OrdersController extends Controller
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['LOST']]);
         }
 
-        return view('admin.orders.edit', compact('order', 'statusList'));
+        return view('orders.edit', compact('order', 'statusList'));
     }
 
     /**
@@ -208,7 +207,7 @@ class OrdersController extends Controller
 
         Session::flash('flash_message', 'Updated!');
 
-        return redirect('admin/orders');
+        return redirect('orders');
     }
 
 }
