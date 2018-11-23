@@ -4,6 +4,11 @@
         {!! Form::select('status', $statusList, null, ['class' => 'form-control', 'required' => 'required']) !!}
         {!! $errors->first('status', '<p class="help-block">:message</p>') !!}
     </div>
+    <div class="col-md-4 col-sm-2 text-center" style="background-color: #e6e6e6;">
+        <div style="padding-top: 5px; font-size: 20px;">
+            <b>{{$order->getCode()}}</b>
+        </div>
+    </div>
 </div>
 @if($order->status != \App\Models\Order::STATUS['INTERNAL'])
 
