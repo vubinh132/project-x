@@ -62,7 +62,7 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Order', 'order_details')->withPivot('product_id', 'order_id', 'price', 'display_name');
     }
 
-    //get all orders exclude returned and status
+    //get all orders exclude returned and canceled
     public function getAvailableQuantity()
     {
         return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->whereNotIn('orders.status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED']])->sum('order_details.quantity');
@@ -81,6 +81,7 @@ class Product extends Model
     }
 
     //by AVAILABLE orders, return 0 when AVAILABLE = 0, otherwise return positive
+    //TODO: return positive when available < 0
     public function getAVGValue()
     {
         $available = $this->getAvailableQuantity();
@@ -115,7 +116,8 @@ class Product extends Model
         return $AVGValue;
     }
 
-    //by PAID orders, throw exception when sum paid orders > sum internal orders
+    //by PAID and LOST orders, throw exception when sum (paid + lost) orders > sum internal orders. If is lost order, unit price will be 0
+    //TODO: ordered orders
     public function getAVGProfit()
     {
         if (!$this->getAvailableQuantity() && !$this->getInOrderQuantity() && !$this->getSoldQuantity()) {
@@ -133,9 +135,9 @@ class Product extends Model
                 ->join('products', 'products.id', 'order_details.product_id')
                 ->join('orders', 'orders.id', 'order_details.order_id')
                 ->where('products.id', $this->id)
-                ->where('orders.status', Order::STATUS['PAID'])
+                ->whereIn('orders.status', [Order::STATUS['PAID'], Order::STATUS['LOST']])
                 ->orderBy('order_details.created_at', 'asc')
-                ->get(['order_details.quantity', 'order_details.price']);
+                ->get(['order_details.quantity', 'order_details.price', 'orders.status']);
 
             $prices = DB::table('order_details')
                 ->join('products', 'products.id', 'order_details.product_id')
@@ -147,7 +149,7 @@ class Product extends Model
 
             foreach ($orders as $element) {
                 $quantity = abs($element->quantity);
-                $unitPrice = abs($element->price) / $quantity;
+                $unitPrice = $element->status == Order::STATUS['PAID'] ? abs($element->price) / $quantity : 0;
                 for ($i = 0; $i < $quantity; $i++) {
                     array_push($orderArray, $unitPrice);
                 }
