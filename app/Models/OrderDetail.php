@@ -15,7 +15,7 @@ class OrderDetail extends Pivot
     //OUT: ordered, paid, lost orders
     public function getProfit()
     {
-        if ($this->pivotParent->status == Order::STATUS['ORDERED'] || $this->pivotParent->status == Order::STATUS['PAID']) {
+//        if ($this->pivotParent->status == Order::STATUS['ORDERED'] || $this->pivotParent->status == Order::STATUS['PAID']) {
             $profit = 0;
             $productId = $this->product_id;
             $quantity = $this->quantity;
@@ -58,7 +58,7 @@ class OrderDetail extends Pivot
                 'success' => true,
                 'profit' => ceil($profit)
             ];
-        }
+//        }
         return [
             'success' => false,
             'message' => 'this order is not ordered or paid order'
