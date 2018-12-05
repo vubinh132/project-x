@@ -30,7 +30,7 @@ class OrderDetail extends Pivot
             $orderIndexEnd = Order::join('order_details', 'orders.id', 'order_details.order_id')
                 ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['LOST']])
                 ->where('order_details.product_id', $this->product_id)
-                ->where('order_details.created_at', '<=', $this->pivotParent->created_at)
+                ->where('order_details.created_at', '<=', $this->created_at)
                 ->orderBy('order_details.created_at', 'asc')
                 ->sum('order_details.quantity');
 
