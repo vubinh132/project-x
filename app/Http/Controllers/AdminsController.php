@@ -37,74 +37,31 @@ class AdminsController extends Controller
         //profit
         $profit = ceil(Order::join('order_details', 'orders.id', 'order_details.order_id')->whereIn('orders.status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->sum('order_details.price') / 1000);
 
-        //get today profit and revenue
+
+        //TODAY data
         $today = Carbon::now()->startOfDay();
+        $todayProfit = 0;
 
-        $todayFund = 0;
+        //if order have api_created_at, where by api_created_at. Else where by created_at
+        $todayOrders = Order::whereIn('status', [Order::STATUS['ORDERED'], Order::STATUS['PAID']])
+            ->where('orders.api_created_at', '>=', $today)
+            ->orWhere(function ($query) use ($today) {
+                $query->where('orders.api_created_at', null)
+                    ->where('orders.created_at', '>=', $today);
+            })
+            ->get();
 
-        $todayRevenue = 0;
+        //num of orders in today
+        $todayNumOfOrders = count($todayOrders);
 
-        //[[{product id}, {quantity}], .....]
-        $formattedOrderDetails = [];
+        //today profit
 
-        $orderDetails = DB::table('order_details'
-        )->join('orders', 'orders.id', 'order_details.order_id')
-            ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID']])
-            ->where('orders.api_created_at', '>', $today)
-            ->get(['order_details.price', 'order_details.product_id', 'order_details.quantity']);
-
-        foreach ($orderDetails as $orderDetail) {
-            $todayRevenue += $orderDetail->price;
-            $flag = false;
-            $productId = $orderDetail->product_id;
-            $quantity = $orderDetail->quantity;
-            for ($i = 0; $i < count($formattedOrderDetails); $i++) {
-                if ($formattedOrderDetails[$i][0] == $productId) {
-                    $formattedOrderDetails[$i][1] += (-$quantity);
-                    $flag = true;
-                    break;
-                }
-            }
-            if (!$flag) {
-                $formattedOrderDetails[] = [$productId, -$quantity];
-            }
+        foreach ($todayOrders as $order) {
+            $todayProfit += $order->getOrderProfit();
         }
 
-        foreach ($formattedOrderDetails as $formattedOrderDetail) {
-            $productId = $formattedOrderDetail[0];
-            $quantity = $formattedOrderDetail[1];
-            $availableQuantity = Product::find($productId)->getAvailableQuantity();
-            $prices = DB::table('order_details')
-                ->join('products', 'products.id', 'order_details.product_id')
-                ->join('orders', 'orders.id', 'order_details.order_id')
-                ->where('products.id', $productId)
-                ->where('orders.status', Order::STATUS['INTERNAL'])
-                ->orderBy('order_details.created_at', 'desc')
-                ->get(['order_details.quantity', 'order_details.price']);
-            foreach ($prices as $price) {
-                $pQuantity = abs($price->quantity);
-                $pPrice = abs($price->price) / $pQuantity;
-                $flag = false;
-                for ($i = 0; $i < $pQuantity; $i++) {
-                    if ($availableQuantity > 0) {
-                        $availableQuantity--;
-                    } else {
-                        $todayFund += $pPrice;
-                        $quantity--;
-                        if ($quantity == 0) {
-                            $flag = true;
-                            break;
-                        }
-                    }
-                }
-                if ($flag) {
-                    break;
-                }
-            }
-        }
+        $todayProfit = ceil($todayProfit / 1000);
 
-        $todayProfit = ceil(($todayRevenue - $todayFund) / 1000);
-
-        return view('index', compact('days', 'profit', 'productValue', 'todayProfit'));
+        return view('index', compact('days', 'profit', 'productValue', 'todayProfit', 'todayNumOfOrders'));
     }
 }

@@ -49,6 +49,22 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-3 col-sm-6  b-0">
+                <div class="col-in row">
+                    <div class="col-md-6 col-sm-6 col-xs-6"><i class="fa fa-building fa-fw text-success"></i>
+                        <h5 class="text-muted vb">TODAY ORDERS</h5></div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <h3 class="counter text-right m-t-15 text-success">{{$todayNumOfOrders}}</h3>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40% Complete (success)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-3 col-sm-6 row-in-br">
                 <div class="col-in row">
                     <div class="col-md-6 col-sm-6 col-xs-6">
@@ -60,22 +76,6 @@
                         <div class="progress">
                             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40"
                                  aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">40% Complete (success)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6  b-0">
-                <div class="col-in row">
-                    <div class="col-md-6 col-sm-6 col-xs-6"><i class="fa fa-building fa-fw text-success"></i>
-                        <h5 class="text-muted vb">KHÁCH SẠN</h5></div>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
-                        <h3 class="counter text-right m-t-15 text-success">0</h3>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40% Complete (success)</span>
                             </div>
                         </div>
                     </div>

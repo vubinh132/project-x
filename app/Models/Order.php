@@ -87,7 +87,7 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsToMany('App\Models\Product', 'order_details')->withPivot('product_id', 'order_id', 'quantity', 'price')->withTimestamps();
+        return $this->belongsToMany('App\Models\Product', 'order_details')->using('App\Models\OrderDetail')->withPivot('product_id', 'order_id', 'quantity', 'price', 'id')->withTimestamps();
     }
 
     public function getCode()
@@ -103,6 +103,23 @@ class Order extends Model
     public function getCreatedAt()
     {
         return $this->api_created_at ? $this->api_created_at : $this->created_at;
+    }
+
+    public function getOrderProfit()
+    {
+        $profit = 0;
+
+        $products = $this->products;
+
+        foreach ($products as $product) {
+            $res = $product->pivot->getProfit();
+
+            if ($res['success']) {
+                $profit += $res['profit'];
+            }
+        }
+
+        return $profit;
     }
 
 }
