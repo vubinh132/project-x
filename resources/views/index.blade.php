@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6  b-0">
+            <div class="col-lg-3 col-sm-6 row-in-br">
                 <div class="col-in row">
                     <div class="col-md-6 col-sm-6 col-xs-6"><i class="fa fa-building fa-fw text-success"></i>
                         <h5 class="text-muted vb">TODAY ORDERS</h5></div>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6 row-in-br">
+            <div class="col-lg-3 col-sm-6 b-0">
                 <div class="col-in row">
                     <div class="col-md-6 col-sm-6 col-xs-6">
                         <i class="linea-icon linea-basic fa-fw text-info" data-icon="V"></i>
