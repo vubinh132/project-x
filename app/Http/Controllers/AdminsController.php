@@ -44,10 +44,12 @@ class AdminsController extends Controller
 
         //if order have api_created_at, where by api_created_at. Else where by created_at
         $todayOrders = Order::whereIn('status', [Order::STATUS['ORDERED'], Order::STATUS['PAID']])
-            ->where('orders.api_created_at', '>=', $today)
-            ->orWhere(function ($query) use ($today) {
-                $query->where('orders.api_created_at', null)
-                    ->where('orders.created_at', '>=', $today);
+            ->where(function ($query) use ($today) {
+                $query->where('orders.api_created_at', '>=', $today)
+                    ->orWhere(function ($query) use ($today) {
+                        $query->where('orders.api_created_at', null)
+                            ->where('orders.created_at', '>=', $today);
+                    });
             })
             ->get();
 
