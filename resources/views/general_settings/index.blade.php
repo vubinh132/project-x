@@ -63,6 +63,17 @@
                                 id="ui-button-text-change-password">CHANGE</span></button>
                 </div>
             </div>
+            <div class="form-group row ">
+                {!! Form::label('change-api-key', 'Change API Key', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+                <div class="col-md-3 col-sm-3"></div>
+                <div class="col-md-4 col-sm-2">
+                    {!! Form::text('new-api-key', $apiKey, ['class' => 'form-control text-center', 'required' => 'required','placeholder' => 'New API key...', 'id'=>'new-api-key']) !!}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <button type="button" class="form-control" id="btn-change-api-key"><span
+                                id="ui-button-text-change-api-key">CHANGE</span></button>
+                </div>
+            </div>
         </form>
 
     </div>
@@ -126,7 +137,7 @@
             $("#btn-change-password").click(function () {
                 $("#ui-button-text-change-password").text('CHANGING...');
                 $("#btn-change-password").attr('disabled', true);
-                $.post("{{url('/general-settings/change-password?XDEBUG_SESSION_START=17403')}}",
+                $.post("{{url('/general-settings/change-password')}}",
                     {
                         newPassword: $('#new-password').val(),
                         _token: "{{ csrf_token() }}"
@@ -148,6 +159,34 @@
                         }
                         $("#ui-button-text-change-password").text('CHANGE');
                         $("#btn-change-password").attr('disabled', false);
+                    });
+            });
+
+            $("#btn-change-api-key").click(function () {
+                $("#ui-button-text-change-api-key").text('CHANGING...');
+                $("#btn-change-api-key").attr('disabled', true);
+                $.post("{{url('/general-settings/change-api-key')}}",
+                    {
+                        newAPIKey: $('#new-api-key').val(),
+                        _token: "{{ csrf_token() }}"
+                    },
+                    function (data, status) {
+                        if (data.success) {
+                            $('#new-api-key').val(data.newAPIKey);
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Success',
+                                content: 'Update successfully',
+                            });
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: data.massage,
+                            });
+                        }
+                        $("#ui-button-text-change-api-key").text('CHANGE');
+                        $("#btn-change-api-key").attr('disabled', false);
                     });
             });
         });

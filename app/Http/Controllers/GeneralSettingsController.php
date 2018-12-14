@@ -24,8 +24,9 @@ class GeneralSettingsController extends Controller
         $version = explode('|', CommonService::getSettingChosenValue('VERSION_DETAILS'));
         $mailServer = env('MAIL_USERNAME');
         $day = CommonService::getSettingChosenValue('SYNC_TIME');
+        $apiKey = CommonService::getSettingChosenValue('API_KEY');
 
-        return view('general_settings.index', compact('startDate', 'version', 'mailServer', 'day'));
+        return view('general_settings.index', compact('startDate', 'version', 'mailServer', 'day', 'apiKey'));
     }
 
     public function update(Request $request)
@@ -86,5 +87,21 @@ class GeneralSettingsController extends Controller
         }
     }
 
-
+    public function changeAPIKey(Request $request)
+    {
+        try {
+            $newAPIKey = $request->get('newAPIKey');
+            CommonService::updateSettingValue('API_KEY', $newAPIKey);
+            return response()->json([
+                'success' => true,
+                'newAPIKey' => $newAPIKey
+            ]);
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'massage' => $e->getMessage()
+            ]);
+        }
+    }
 }

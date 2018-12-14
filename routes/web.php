@@ -70,6 +70,8 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('general-settings/update-syn-time', 'GeneralSettingsController@updateSyncTime');
     //change password
     Route::post('general-settings/change-password', 'GeneralSettingsController@changePassword');
+    //update api key
+    Route::post('general-settings/change-api-key', 'GeneralSettingsController@changeAPIKey');
 
     Route::resource('general-settings', 'GeneralSettingsController');
 
@@ -90,6 +92,11 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('finance/import/{providerId}', 'FinanceController@importDetail');
     Route::get('finance/export', 'FinanceController@export');
 
+});
+
+//API for mobile application
+Route::group(['middleware' => ['api-middleware']], function () {
+    Route::get('api/general-information', 'APIs\\InformationController@getGeneralInformation');
 });
 
 
