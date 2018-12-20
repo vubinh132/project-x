@@ -94,10 +94,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
 });
 
-//API for mobile application
-Route::group(['middleware' => ['api-middleware']], function () {
-    Route::get('api/general-information', 'APIs\\InformationController@getGeneralInformation');
-});
+
 
 
 

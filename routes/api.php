@@ -13,9 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => ['apiheader']], function () {
-    Route::get('get-product/{id}', 'APIs\\ProductsController@getProduct');
-    Route::post('get-products', 'APIs\\ProductsController@getProducts');
-    Route::resource('orders', 'APIs\\OrdersController');
+//API for mobile application
+Route::group(['middleware' => ['api-middleware']], function () {
+    Route::get('general-information', 'APIs\\InformationController@getGeneralInformation');
 });
 
