@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App, Mail;
 use App\Models\Note;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\Log;
 use App\Models\SettingKey;
 use App\Mail\SimpleEmailSender;
+use App\Models\Order;
 
 class CommonService
 {
@@ -181,7 +183,52 @@ class CommonService
             'notification_type' => $notificationType
         ]);
         if ($category == Log::CATEGORY['ERROR'])
-             Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('error!!!', 'emails.template', ['content' => $content], null));
+            Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('error!!!', 'emails.template', ['content' => $content], null));
 
     }
+
+
+    /**
+     * @param $day
+     * @return array ['profit' => 100, 'numOfOrders' => 5]
+     */
+    public static function getOrderProfitByDay($day)
+    {
+
+        $startDay = (new Carbon($day))->startOfDay();
+        $endDay = (new Carbon($day))->endOfDay();
+
+        $profit = 0;
+
+        //if order have api_created_at, where by api_created_at. Else where by created_at
+        $todayOrders = Order::whereIn('status', [Order::STATUS['ORDERED'], Order::STATUS['PAID']])
+            ->where(function ($query) use ($startDay, $endDay) {
+                $query->where(function ($query) use ($startDay, $endDay) {
+                    $query->where('orders.api_created_at', '>=', $startDay)
+                        ->where('orders.api_created_at', '<=', $endDay);;
+                })
+                    ->orWhere(function ($query) use ($startDay, $endDay) {
+                        $query->where('orders.api_created_at', null)
+                            ->where('orders.created_at', '>=', $startDay)
+                            ->where('orders.created_at', '<=', $endDay);
+                    });
+            })
+            ->get();
+
+        //num of orders
+        $numOfOrders = count($todayOrders);
+
+        //today profit
+        foreach ($todayOrders as $order) {
+            $profit += $order->getOrderProfit();
+        }
+        $profit = ceil($profit / 1000);
+
+        return [
+            'profit' => $profit,
+            'numOfOrders' => $numOfOrders
+        ];
+    }
+
+
 }
