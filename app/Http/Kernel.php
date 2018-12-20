@@ -47,8 +47,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\User::class,
         ],
 
-        'apiheader' => [
-            \App\Http\Middleware\ApiHeader::class,
+        'api-middleware' => [
+            \App\Http\Middleware\ApiMiddleware::class,
         ],
 
         'api' => [
