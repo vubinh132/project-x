@@ -18,7 +18,7 @@ class ApiMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $headerValue = $request->header('API-KEY');
+        $headerValue = $request->header('api-key');
         if ($headerValue == CommonService::getSettingChosenValue('API_KEY')) {
             $data = ApiData::where('path', $request->path())->firstOrFail();
             $data->update([
