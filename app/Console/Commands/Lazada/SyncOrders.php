@@ -10,21 +10,21 @@ use App\Services\LazadaService;
 use App\Models\Log;
 
 
-class Test extends Command
+class SyncOrders extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:test';
+    protected $signature = 'lazada:sync-orders';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Sync orders from lazada by APIs';
 
     /**
      * Create a new command instance.
@@ -57,10 +57,12 @@ class Test extends Command
             CommonService::writeLog(Log::CATEGORY['JOB'], $mess);
             if ($fail > 0)
                 CommonService::writeLog(Log::CATEGORY['ERROR'], "sync lazada orders fail: $fail");
+            $this->line($mess);
         } else {
             $message = $res['message'];
             $mess = "Sync orders from Lazada is failed. $message";
             CommonService::writeLog(Log::CATEGORY['ERROR'], $mess);
+            $this->line($mess);
         }
     }
 }
