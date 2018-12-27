@@ -220,12 +220,14 @@ class ProductsController extends Controller
         }
         $LProducts = $res['products'];
 
+
+        //get available by eager loading instead of getAvailableQuantity() function
         $products = DB::table('products')
             ->select(DB::raw('products.sku, sum(order_details.quantity) as available, products.id'))
             ->leftJoin('order_details', 'order_details.product_id', 'products.id')
             ->join('orders', 'orders.id', 'order_details.order_id')
             ->where('products.status', Product::STATUS['IN_BUSINESS'])
-            ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['INTERNAL']])
+            ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['INTERNAL'], Order::STATUS['LOST']])
             ->groupBy('products.sku', 'products.id')
             ->get();
 
