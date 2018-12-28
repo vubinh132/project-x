@@ -23,7 +23,6 @@
                 <th scope="col">Num Of Uses</th>
                 <th scope="col">Last Time Called</th>
                 <th scope="col">Actions</th>
-
             </tr>
             </thead>
             <tbody>
@@ -32,15 +31,49 @@
                     <td>{{$element->path}}</td>
                     <td>{{$element->number_of_uses}}</td>
                     <td>{{$element->last_time_called}}</td>
-                    <td><a href=""
-                           data-toggle="tooltip" title="See details" data-animation="false">
-                            <i class="fa fa-eye text-inverse m-l-5 m-r-5"></i>
-                        </a>
+                    <td>
+                        <span data-toggle="tooltip" title="Switch Lock"
+                              data-animation="false" class="data-lock" id="{{'lock-'. $element->id}}">
+                            <i class="fa {{$element->is_locked ? 'fa-unlock' : 'fa-lock'}} text-inverse m-l-5 m-r-5"></i>
+                        </span>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
+@endsection
+
+@section('extra_scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.data-lock').click(function () {
+                let id = $(this).attr('id').substr(5);
+                $.post("{{url('/internal-apis/switch-lock')}}" + '/' + id + '?XDEBUG_SESSION_START=19694',
+                    {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    (data) => {
+
+                        if (data.success) {
+                            if (data.isLocked) {
+                                $(this).find('i').removeClass('fa-lock');
+                                $(this).find('i').addClass('fa-unlock');
+                            } else {
+                                $(this).find('i').removeClass('fa-unlock');
+                                $(this).find('i').addClass('fa-lock');
+                            }
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: data.massage,
+                            });
+                        }
+
+                    });
+            })
+        });
+    </script>
 @endsection
 

@@ -94,6 +94,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
 
     //Internal APIs
     Route::get('internal-apis', 'InternalApisController@index');
+    Route::post('internal-apis/switch-lock/{id}', 'InternalApisController@switchLock');
 });
 
 

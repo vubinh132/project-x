@@ -77,6 +77,8 @@
         </form>
 
     </div>
+@endsection
+
 @section('extra_scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -191,5 +193,4 @@
             });
         });
     </script>
-@endsection
 @endsection

@@ -27,7 +27,7 @@ class ApiData extends Model
      *
      * @var array
      */
-    protected $fillable = ['path', 'number_of_uses', 'last_time_called'];
+    protected $fillable = ['path', 'number_of_uses', 'last_time_called', 'is_locked'];
 
 
 }
