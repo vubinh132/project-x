@@ -81,7 +81,7 @@
             <li>
                 <a href="javascript:void(0);" class="waves-effect {{ $externalApisMenuSelected ? 'active' : '' }}">
                     <div style="display: inline-block; width: 20px"><i class="fa fa-feed" aria-hidden="true"></i></div>
-                    <span class="hide-menu">External APIs<i class="fa arrow"></i></span>
+                    <span class="hide-menu">APIs Management<i class="fa arrow"></i></span>
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -90,7 +90,9 @@
                     <li>
                         <a href="{{url('/external-api/google')}}">Google</a>
                     </li>
-
+                    <li>
+                        <a href="{{url('/internal-apis')}}">Internal APIs</a>
+                    </li>
 
                 </ul>
             </li>

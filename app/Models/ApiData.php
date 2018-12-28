@@ -20,6 +20,8 @@ class ApiData extends Model
      */
     protected $primaryKey = 'id';
 
+    protected $dates = ['last_time_called'];
+
     /**
      * Attributes that should be mass-assignable.
      *

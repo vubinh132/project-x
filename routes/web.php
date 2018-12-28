@@ -92,6 +92,8 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('finance/import/{providerId}', 'FinanceController@importDetail');
     Route::get('finance/export', 'FinanceController@export');
 
+    //Internal APIs
+    Route::get('internal-apis', 'InternalApisController@index');
 });
 
 
