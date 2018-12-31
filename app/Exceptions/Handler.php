@@ -6,6 +6,7 @@ use Exception, Log;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use ErrorException;
 
 
 class Handler extends ExceptionHandler
@@ -63,6 +64,12 @@ class Handler extends ExceptionHandler
                     'success' => false,
                     'error' => 'resource not found'
                 ], 404);
+            } elseif ($exception instanceof ErrorException) {
+                Log::error($exception->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'error' => 'internal server error'
+                ], 500);
             }
         } else {
 

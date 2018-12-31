@@ -49,7 +49,7 @@
         $(document).ready(function () {
             $('.data-lock').click(function () {
                 let id = $(this).attr('id').substr(5);
-                $.post("{{url('/internal-apis/switch-lock')}}" + '/' + id + '?XDEBUG_SESSION_START=19694',
+                $.post("{{url('/internal-apis/switch-lock')}}" + '/' + id,
                     {
                         _token: "{{ csrf_token() }}"
                     },
