@@ -51,10 +51,10 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
 
-        if (!($user->isAdmin())) {
-            Session::flash('flash_message', 'Login successfully.');
-            $this->redirectTo = "/";
-        } else {
+//        if (!($user->isAdmin())) {
+//            Session::flash('flash_message', 'Login successfully.');
+//            $this->redirectTo = "/";
+//        } else {
 //            $ip = $request->ip();
 //            $agent = new Agent();
 //            $position = Location::get($ip);
@@ -65,8 +65,8 @@ class LoginController extends Controller
 //                'notification_type' => LogModel::NOTIFICATION_TYPE['NONE']
 //            ];
 //            LogModel::create($log);
-
-        }
+//
+//        }
 
     }
 

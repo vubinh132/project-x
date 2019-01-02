@@ -14,7 +14,7 @@
 Auth::routes();
 Route::post('product-checking/update-quantity', 'ProductsController@updateQuantity');
 
-Route::group(['middleware' => ['admin', 'revalidate']], function () {
+Route::group(['middleware' => ['auth', 'revalidate']], function () {
     // Home page
     Route::get('/', 'AdminsController@index');
 
