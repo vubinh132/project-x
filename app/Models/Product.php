@@ -38,7 +38,7 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['sku', 'status', 'old_price', 'price', 'description', 'content', 'image_url', 'quantity', 'name'];
+    protected $fillable = ['sku', 'status', 'old_price', 'price', 'description', 'content', 'image_url', 'quantity', 'name', 'quantity_checking_time'];
 
     /**
      * Get the users of role.

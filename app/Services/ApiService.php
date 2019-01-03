@@ -5,9 +5,6 @@ namespace App\Services;
 use Carbon\Carbon;
 use App, Log, DB;
 use App\Models\Order;
-
-;
-
 use App\Models\Product;
 
 
@@ -50,5 +47,22 @@ class ApiService
             'yesterdayData' => $yesterdayData,
             'percentageIncrease' => $percentageIncrease
         ];
+    }
+
+    public static function checkQuantity($productId)
+    {
+        try {
+            $product = Product::findOrFail($productId);
+            $product->update(['quantity_checking_time' => Carbon::now()]);
+            return [
+                'success' => true
+            ];
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return [
+                'success' => false,
+                'massage' => $e->getMessage()
+            ];
+        }
     }
 }

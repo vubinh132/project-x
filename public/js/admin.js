@@ -228,61 +228,6 @@ var app = angular.module('myApp', ['oc.lazyLoad'], function ($interpolateProvide
     $interpolateProvider.endSymbol('%}');
 });
 
-app.controller("productIndexCtrl", function ($scope, $sce) {
-
-    $scope.products = products;
-
-    filter();
-
-    $('#in, #out, #research').change(function () {
-        filter();
-        $scope.$apply();
-    });
-    $(function () {
-        $('#keyWord').keyup(function () {
-            filter();
-            $scope.$apply();
-        });
-    });
-
-    function filter() {
-        $scope.filteredProducts = [];
-
-        var keyWord = $('#keyWord').val().toLowerCase();
-
-        //validate
-
-        if (!keyWord.match(/^[a-zA-Z0-9_.-]*$/)) {
-            keyWord = keyWord.substring(0, keyWord.length - 1);
-            $('#keyWord').val(keyWord);
-        }
-
-        var filterArray = [];
-
-        if ($('#in').is(':checked')) {
-            filterArray.push(2);
-        }
-        if ($('#out').is(':checked')) {
-            filterArray.push(3);
-        }
-        if ($('#research').is(':checked')) {
-            filterArray.push(1);
-        }
-
-        for (var i = 0; i < $scope.products.length; i++) {
-            if (filterArray.indexOf($scope.products[i].status) != -1 && (!keyWord || $scope.products[i].sku.toLowerCase().match(keyWord))) {
-                $scope.filteredProducts.push($scope.products[i]);
-            }
-        }
-
-    }
-
-    $scope.trustAsHtml = function (html) {
-        return $sce.trustAsHtml(html);
-    }
-
-});
-
 app.controller("orderIndexCtrl", function ($scope, $sce) {
 
     $scope.orders = orders;

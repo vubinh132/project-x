@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\ApiService;
 use App\Services\CommonService;
 use App\Services\HTMLService;
 use Illuminate\Http\Request;
@@ -410,5 +411,28 @@ class ProductsController extends Controller
         return response()->json(
             ['success' => true, 'quantity' => abs($newVolume)]
         );
+    }
+
+    public function checkQuantity($productId)
+    {
+        try {
+            $res = ApiService::checkQuantity($productId);
+
+            if (!$res['success']) {
+                return response()->json([
+                    'success' => false,
+                    'massage' => $res['message']
+                ]);
+            }
+            return response()->json([
+                'success' => true
+            ]);
+        } catch (Exception $e) {
+            Log::info($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'massage' => $e->getMessage()
+            ]);
+        }
     }
 }

@@ -40,16 +40,19 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::get('products/test', 'ProductsController@test');
     Route::resource('products', 'ProductsController');
 
-    //Volume Adjustment
+    //volume Adjustment
     Route::get('volume-adjustment', 'ProductsController@getAdjustment');
     Route::post('volume-adjustment', 'ProductsController@postAdjustment');
-    //Product checking
 
+    //product checking
     Route::get('product-checking/test', 'ProductsController@productCheckingTest');
     Route::get('product-checking', 'ProductsController@productChecking');
 
     //get unit price of product
     Route::get('products/{id}/unit-price', 'ProductsController@getUnitPrice');
+
+    //quantity checking
+    Route::post('quantity-checking/{id}', 'ProductsController@checkQuantity');
 
     //Orders
     Route::resource('orders', 'OrdersController');

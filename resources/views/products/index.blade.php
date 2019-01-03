@@ -67,23 +67,32 @@
                         <td ng-bind="x.statusText"></td>
                         <td ng-bind-html="trustAsHtml(x.quantity)"></td>
                         <td ng-bind-html="trustAsHtml(x.avgValue)"></td>
-                        <td><span ng-bind-html="trustAsHtml(x.avgProfit)" data-toggle='tooltip' ng-attr-title="{%x.avgProfitDetails%}" data-html="true" data-animation="false" bs-tooltip></span></td>
-                        <td><span ng-bind="x.sellingSpeed"  data-toggle='tooltip' ng-attr-title="{%x.sellingSpeedDetails%}" data-html="true" data-animation="false" bs-tooltip></span></td>
+                        <td><span ng-bind-html="trustAsHtml(x.avgProfit)" data-toggle='tooltip'
+                                  ng-attr-title="{%x.avgProfitDetails%}" data-html="true" data-animation="false"
+                                  bs-tooltip></span></td>
+                        <td><span ng-bind="x.sellingSpeed" data-toggle='tooltip'
+                                  ng-attr-title="{%x.sellingSpeedDetails%}" data-html="true" data-animation="false"
+                                  bs-tooltip></span></td>
                         <td class="text-center text-nowrap">
                             <a ng-href="{%x.editLink%}"
                                data-toggle="tooltip" title="Update" data-animation="false" bs-tooltip>
                                 <i class="fa fa-pencil-square-o text-inverse m-l-5 m-r-5"></i>
                             </a>
-
                             <form method="POST" action="{%x.deleteLink%}"
                                   style="display:inline ">
                                 <input type="hidden" class="csrf" name="_token">
                                 <a href="javascript:void(0);" data-toggle="tooltip" title="Delete"
                                    data-animation="false"
-                                   onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')" bs-tooltip>
+                                   onclick="confirmSubmit(event, this, 'Delete this product?', 'Do you want to delete?')"
+                                   bs-tooltip>
                                     <i class="fa fa-close text-inverse m-l-5 m-r-5"></i>
                                 </a>
                             </form>
+                            <span class="quantity-checking" id="{%'check-' + x.id%}" data-toggle="tooltip" title="Check"
+                                  data-animation="false"
+                                  bs-tooltip>
+                                <i class="fa fa-check-circle text-inverse m-l-5 m-r-5"></i>
+                            </span>
                         </td>
                     </tr>
                     </tbody>
@@ -91,18 +100,93 @@
             </div>
         </div>
     </div>
+@endsection
 @section('extra_scripts')
     <script type="text/javascript">
-        var csrf = "{{ csrf_token() }}";
 
         var products = {!! $products !!};
 
-        setCSRF();
+        app.controller("productIndexCtrl", function ($scope, $sce) {
 
-        function setCSRF() {
-            $('.csrf').val(csrf);
-        }
+            $scope.products = products;
+
+            filter();
+
+            $('#in, #out, #research').change(function () {
+                filter();
+                $scope.$apply();
+            });
+            $(function () {
+                $('#keyWord').keyup(function () {
+                    filter();
+                    $scope.$apply();
+                });
+            });
+
+            function filter() {
+                $scope.filteredProducts = [];
+
+                var keyWord = $('#keyWord').val().toLowerCase();
+
+                //validate
+
+                if (!keyWord.match(/^[a-zA-Z0-9_.-]*$/)) {
+                    keyWord = keyWord.substring(0, keyWord.length - 1);
+                    $('#keyWord').val(keyWord);
+                }
+
+                var filterArray = [];
+
+                if ($('#in').is(':checked')) {
+                    filterArray.push(2);
+                }
+                if ($('#out').is(':checked')) {
+                    filterArray.push(3);
+                }
+                if ($('#research').is(':checked')) {
+                    filterArray.push(1);
+                }
+
+                for (var i = 0; i < $scope.products.length; i++) {
+                    if (filterArray.indexOf($scope.products[i].status) != -1 && (!keyWord || $scope.products[i].sku.toLowerCase().match(keyWord))) {
+                        $scope.filteredProducts.push($scope.products[i]);
+                    }
+                }
+
+            }
+
+            $scope.trustAsHtml = function (html) {
+                return $sce.trustAsHtml(html);
+            }
+
+        });
+
+        $(document).ready(function () {
+            $('.csrf').val('{{ csrf_token() }}');
+            $('.quantity-checking').click(function () {
+                let id = $(this).attr('id').substr(6);
+                $.post("{{url('/quantity-checking')}}" + '/' + id,
+                    {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    (data) => {
+                        if (data.success) {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Success',
+                                content: 'Check quantity successfully',
+                            });
+                        } else {
+                            $.alert({
+                                backgroundDismiss: true,
+                                title: 'Fail',
+                                content: data.massage,
+                            });
+                        }
+
+                    });
+            });
+        });
 
     </script>
-@endsection
 @endsection
