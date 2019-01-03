@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\CommonService;
 use Illuminate\Database\Eloquent\Model;
 use File, DB;
 use Carbon\Carbon;
@@ -78,6 +77,20 @@ class Product extends Model
     public function getSoldQuantity()
     {
         return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->where('orders.status', Order::STATUS['PAID'])->sum('order_details.quantity');
+    }
+
+    public function getNotReturnedQuantity()
+    {
+        $quantity = Order::select(DB::raw('sum(order_details.quantity) as quantity'))
+            ->join('order_details', 'order_details.order_id', 'orders.id')
+            ->where('orders.status', Order::STATUS['RETURNED'])
+            ->where('order_details.product_id', $this->id)
+            ->where(function ($query) {
+                $query->where('orders.returned', null)
+                    ->orWhere('orders.returned', false);
+            })
+            ->first()->quantity;
+        return abs($quantity);
     }
 
     //by AVAILABLE orders, return 0 when AVAILABLE = 0, otherwise return positive
