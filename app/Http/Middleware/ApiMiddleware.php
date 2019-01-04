@@ -20,7 +20,17 @@ class ApiMiddleware
     {
         $headerValue = $request->header('api-key');
         if ($headerValue == CommonService::getSettingChosenValue('API_KEY')) {
-            $data = ApiData::where('path', $request->path())->first();
+            $apiData = ApiData::get();
+            $path = $request->path();
+            $data = null;
+            foreach ($apiData as $element) {
+                $regex = str_replace('/', '\/', $element->path);
+                $regex = '/^' . preg_replace('/{[a-z0-9-]+}/', '[a-z0-9-]+', $regex) . '$/';
+                if (preg_match($regex, $path)) {
+                    $data = $element;
+                    break;
+                }
+            }
             if (!$data) {
                 return response()->json([
                     'success' => false,
