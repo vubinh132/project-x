@@ -58,7 +58,7 @@ class ApiService
                 'success' => true
             ];
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return [
                 'success' => false,
                 'massage' => $e->getMessage()

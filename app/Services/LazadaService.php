@@ -189,7 +189,7 @@ class LazadaService
                 foreach ($SKUs as $SKU) {
                     //check sku
                     if (!in_array($SKU, $MProducts)) {
-                        Log::info("======= wrong sku $SKU =======");
+                        Log::error("======= wrong sku $SKU =======");
                         return [
                             'success' => false,
                             'data' => 'sku is wrong'

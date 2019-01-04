@@ -52,8 +52,6 @@ class ProductsController extends Controller
                 }
             }
 
-
-            Log::info($ids);
             return response()->json([
                 'success' => true,
                 'products' => $products

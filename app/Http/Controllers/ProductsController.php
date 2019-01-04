@@ -252,7 +252,7 @@ class ProductsController extends Controller
 
             foreach ($SKUs as $SKU) {
                 if (!in_array($SKU, $productList)) {
-                    Log::info("======= wrong sku $SKU =======");
+                    Log::error("======= wrong sku $SKU =======");
                     CommonService::writeLog(\App\Models\Log::CATEGORY['ERROR'], "Product checking: wrong sku $SKU");
                 } else {
                     if (!array_key_exists($SKU, $handledProduct)) {
@@ -428,7 +428,7 @@ class ProductsController extends Controller
                 'success' => true
             ]);
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'massage' => $e->getMessage()

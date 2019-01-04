@@ -26,7 +26,7 @@ class InternalApisController extends Controller
                 'isLocked' => $isLocked
             ]);
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'massage' => $e->getMessage()

@@ -44,7 +44,7 @@ class GeneralSettingsController extends Controller
                 'success' => true
             ]);
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'massage' => $e->getMessage()
@@ -61,7 +61,7 @@ class GeneralSettingsController extends Controller
                 'success' => true
             ]);
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'massage' => $e->getMessage()
@@ -79,7 +79,7 @@ class GeneralSettingsController extends Controller
                 'success' => true
             ]);
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'massage' => $e->getMessage()
@@ -97,7 +97,7 @@ class GeneralSettingsController extends Controller
                 'newAPIKey' => $newAPIKey
             ]);
         } catch (Exception $e) {
-            Log::info($e->getMessage());
+            Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
                 'massage' => $e->getMessage()
