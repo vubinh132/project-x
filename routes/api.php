@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 //API for mobile application
 Route::group(['middleware' => ['api-middleware']], function () {
     Route::get('general-information', 'APIs\\InformationController@getGeneralInformation');
-    Route::get('get-product-repository/{id}', 'APIs\\InformationController@getProductRepository');
+    Route::get('get-product-data/{wildcard}', 'APIs\\InformationController@getProductData');
     Route::get('logs/{numberOfLogs}', 'APIs\\InformationController@getLogs');
 });
 

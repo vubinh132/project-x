@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Log, DB, Exception;
 use App\Models\Product;
 use App\Models\Log as LogModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 
 class InformationController extends Controller
@@ -31,17 +32,37 @@ class InformationController extends Controller
 
     }
 
-    public function getProductRepository($id)
+    public function getProductData($wildcard)
     {
         try {
-            $product = Product::where('status', Product::STATUS['IN_BUSINESS'])->findOrFail($id);
-            $repository = $product->getAvailableQuantity() - $product->getNotReturnedQuantity();
-            return [
-                'success' => true,
-                'data' => [
-                    'productRepository' => $repository,
-                ]
-            ];
+            $products = Product::where('status', Product::STATUS['IN_BUSINESS'])
+                ->where('sku', 'like',"%$wildcard%")
+                ->get();
+            if (count($products) > 1) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'isProductList' => true,
+                        'productList' => $products->pluck('sku')
+                    ]
+                ]);
+            } elseif (count($products) == 1) {
+                $product = $products[0];
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'isProductList' => false,
+                        'product' => [
+                            'sku' => $product->sku,
+                            'image' => 'https://google.com',
+                            'repository' => $product->getAvailableQuantity() - $product->getNotReturnedQuantity()
+                        ]
+                    ]
+                ]);
+            }
+
+            throw new ModelNotFoundException('can not find any product');
+
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return [
