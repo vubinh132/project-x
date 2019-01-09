@@ -25,7 +25,7 @@ class ApiMiddleware
             $data = null;
             foreach ($apiData as $element) {
                 $regex = str_replace('/', '\/', $element->path);
-                $regex = '/^' . preg_replace('/{[a-z0-9-]+}/', '[a-z0-9-]+', $regex) . '$/';
+                $regex = '/^' . preg_replace('/{[a-zA-Z0-9-]+}/', '[a-zA-Z0-9-]+', $regex) . '$/';
                 if (preg_match($regex, $path)) {
                     $data = $element;
                     break;
