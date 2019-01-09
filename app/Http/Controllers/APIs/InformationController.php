@@ -7,6 +7,7 @@ use App\Services\ApiService;
 use Illuminate\Http\Request;
 use Log, DB, Exception;
 use App\Models\Product;
+use App\Models\Log as LogModel;
 
 
 class InformationController extends Controller
@@ -41,6 +42,28 @@ class InformationController extends Controller
                     'productRepository' => $repository,
                 ]
             ];
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return [
+                'success' => false,
+                'massage' => $e->getMessage()
+            ];
+        }
+
+    }
+
+    public function getLogs($numberOfLogs)
+    {
+        try {
+
+            $logs = LogModel::orderBy('created_at', 'desc')
+                ->take($numberOfLogs)
+                ->get(['created_at', 'category', 'content']);
+            return response()->json([
+                'success' => true,
+                'data' => $logs
+            ]);
+
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return [

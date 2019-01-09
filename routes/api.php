@@ -17,5 +17,6 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['api-middleware']], function () {
     Route::get('general-information', 'APIs\\InformationController@getGeneralInformation');
     Route::get('get-product-repository/{id}', 'APIs\\InformationController@getProductRepository');
+    Route::get('logs/{numberOfLogs}', 'APIs\\InformationController@getLogs');
 });
 
