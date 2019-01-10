@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\SDKs\lazada\lazop\LazopClient;
 use App\SDKs\lazada\lazop\LazopRequest;
 use App\SDKs\lazada\lazop\UrlConstants;
+use App\Models\ShopProduct;
 
 
 class LazadaService
@@ -25,7 +26,7 @@ class LazadaService
     ];
 
 
-//  order APIs
+    //order APIs
     public static function syncOrders($startDay, $endDay)
     {
         try {
@@ -226,7 +227,7 @@ class LazadaService
         }
     }
 
-//  products APIs
+    //products APIs
     public static function getProductQuantity()
     {
         try {
@@ -349,16 +350,16 @@ class LazadaService
                 ];
             }
             $quantityRes = [];
-            foreach ($data['products'] as $product){
-                foreach ($product['skus'] as $SKU){
+            foreach ($data['products'] as $product) {
+                foreach ($product['skus'] as $SKU) {
                     $sellerSku = $SKU['SellerSku'];
-                    if($sellerSku == $sku){
+                    if ($sellerSku == $sku) {
                         $quantityRes[$sellerSku] = $SKU['Available'];
                     }
                 }
             }
 
-            if(!$quantityRes){
+            if (!$quantityRes) {
                 return [
                     'success' => false,
                     'message' => "given SKU doesn't match"
@@ -404,6 +405,102 @@ class LazadaService
         }
     }
 
+    public static function syncProducts()
+    {
+        try {
+
+            $insert = 0;
+            $update = 0;
+            $soldOut = 0;
+            $delete = 0;
+
+            $existedSKUs = ShopProduct::pluck('sku')->toArray();
+
+            // get live products
+            $params = [
+                'filter' => 'live',
+                'limit' => 100
+            ];
+
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $products = $res['data']['products'];
+            foreach ($products as $product) {
+                foreach ($product['skus'] as $sku) {
+                    if (LazadaService::updateSKUData($sku, $existedSKUs) == 'u') {
+                        $update++;
+                    } else {
+                        $insert++;
+                    }
+                }
+            }
+
+            //get sold out products
+            $params = [
+                'filter' => 'sold-out',
+                'limit' => 100
+            ];
+            $res = LazadaService::callAPI('GET', '/products/get', $params);
+            if (!$res['success']) {
+                return $res;
+            }
+            $products = $res['data']['products'];
+            foreach ($products as $product) {
+                foreach ($product['skus'] as $sku) {
+                    if (LazadaService::updateSKUData($sku, $existedSKUs) == 'u') {
+                        $update++;
+                    } else {
+                        $insert++;
+                    }
+                    $soldOut++;
+                }
+            }
+
+            //delete sku
+            $deleteSKUs = ShopProduct::where('lazada', null)->where('shopee', null)->get();
+            foreach ($deleteSKUs as $deleteSKUs) {
+                $deleteSKUs->delete();
+                $delete++;
+            }
+
+            return [
+                'success' => true,
+                'data' => [
+                    'insert' => $insert,
+                    'update' => $update,
+                    'soldOut' => $soldOut,
+                    'delete' => $delete
+                ]
+            ];
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+
+    //return u if update and i if insert
+    private static function updateSKUData($sku, $existedSKUs)
+    {
+        $productSKU = $sku['SellerSku'];
+        $productAvailable = $sku['Available'];
+        if (in_array($productSKU, $existedSKUs)) {
+            $shopProduct = ShopProduct::where('sku', $productSKU)->first();
+            if ($shopProduct) {
+                $shopProduct->update(['lazada' => $productAvailable]);
+            }
+            return 'u';
+        } else {
+            ShopProduct::create(['sku' => $productSKU, 'lazada' => $productAvailable]);
+            return 'i';
+        }
+    }
+
+    //call API
     private static function callAPI($method, $url, $params)
     {
         try {
