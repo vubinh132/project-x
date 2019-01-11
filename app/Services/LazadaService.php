@@ -430,6 +430,7 @@ class LazadaService
             foreach ($products as $product) {
                 foreach ($product['skus'] as $sku) {
                     if (LazadaService::updateSKUData($sku, $existedSKUs) == 'u') {
+                        $existedSKUs = array_diff($existedSKUs, [$sku['SellerSku']]);
                         $update++;
                     } else {
                         $insert++;
@@ -450,6 +451,7 @@ class LazadaService
             foreach ($products as $product) {
                 foreach ($product['skus'] as $sku) {
                     if (LazadaService::updateSKUData($sku, $existedSKUs) == 'u') {
+                        $existedSKUs = array_diff($existedSKUs, [$sku['SellerSku']]);
                         $update++;
                     } else {
                         $insert++;
@@ -459,7 +461,7 @@ class LazadaService
             }
 
             //delete sku
-            $deleteSKUs = ShopProduct::where('lazada', null)->where('shopee', null)->get();
+            $deleteSKUs = ShopProduct::whereIn('sku', $existedSKUs)->get();
             foreach ($deleteSKUs as $deleteSKUs) {
                 $deleteSKUs->delete();
                 $delete++;
