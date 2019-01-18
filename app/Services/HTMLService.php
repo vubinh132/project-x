@@ -94,13 +94,18 @@ class HTMLService
         return "-";
     }
 
-    public static function getProductCheckingQuantity($total, $notReceived, $irregular, $lzd, $sku)
+    public static function getQuantityData($available, $notReceived, $selling, $remain)
     {
-        $remain = $total - $notReceived - $irregular - $lzd;
-        $html = "<span class='text-info'>$total</span> (*) <span class='text-danger'>$notReceived</span> (*) <span class='text-warning'>$irregular</span> (*) <span class='text-primary' id='lzd_$sku'>$lzd</span> (*) <span class='text-success' id='remain_$sku'>$remain</span>";
-        return [
-            'remain' => $remain,
-            'html' => $html
-        ];
+        $html = "<div class='text-center bg-primary' style='display: inline-block;width: 70px;border-radius: 7px; color: white'>A: $available</div> <div class='text-center bg-danger' style='display: inline-block;width: 70px; border-radius: 7px; color: white'>NA: $notReceived</div> <div class='text-center bg-warning' style='display: inline-block;width: 70px;border-radius: 7px; color: white'>S: $selling</div> <div class='text-center bg-info' style='display: inline-block;width: 70px;border-radius: 7px; color: white'>R: $remain</div>";
+        return $html;
+    }
+
+    public static function getCheckingDetail($detail)
+    {
+        $html = '';
+        foreach ($detail as $key => $value) {
+            $html = $html . "<tr><td style='width: 200px'>$key</td><td style='width: 70px'>$value</td></tr>";
+        }
+        return $html;
     }
 }

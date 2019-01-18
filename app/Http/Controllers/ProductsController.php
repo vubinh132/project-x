@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Log, File, Session, DB, Exception;
 use App\Services\LazadaService;
+use App\Models\ShopProduct;
 
 
 class ProductsController extends Controller
@@ -215,13 +216,6 @@ class ProductsController extends Controller
             ->groupBy('order_details.product_id')
             ->pluck('quantity', 'product_id');
 
-        $res = LazadaService::getProductQuantity();
-        if (!$res['success']) {
-            return response()->json($res);
-        }
-        $LProducts = $res['products'];
-
-
         //get available by eager loading instead of getAvailableQuantity() function
         $products = DB::table('products')
             ->select(DB::raw('products.sku, sum(order_details.quantity) as available, products.id'))
@@ -230,19 +224,36 @@ class ProductsController extends Controller
             ->where('products.status', Product::STATUS['IN_BUSINESS'])
             ->whereIn('orders.status', [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['INTERNAL'], Order::STATUS['LOST']])
             ->groupBy('products.sku', 'products.id')
+            ->orderBy('products.sku')
             ->get();
 
-        //handle irregular products
-        $productList = $products->pluck('sku')->toArray();
-        $handledProduct = [];
-        $irregularProducts = [];
-        foreach ($LProducts as $key => $value) {
-            if (!in_array($key, $productList)) {
-                $irregularProducts[$key] = $value;
-            }
+        //get shop product
+        $shopProducts = ShopProduct::get(['sku', 'lazada', 'shopee']);
+        //handle data
+        $temp = [];
+        foreach ($shopProducts as $element) {
+            $temp[$element->sku] = ['lazada' => $element->lazada, 'shopee' => $element->shopee];
         }
-        foreach ($irregularProducts as $key => $value) {
+        $shopProducts = $temp;
+
+        //get list sku to compare
+        $productList = $products->pluck('sku')->toArray();
+
+        foreach ($products as $product) {
+            $shopProduct = null;
+            if (array_key_exists($product->sku, $shopProducts)) {
+                $shopProduct = $shopProducts[$product->sku];
+                unset($shopProducts[$product->sku]);
+            }
+            $product->notReceived = !empty($notReceivedProducts[$product->id]) ? -$notReceivedProducts[$product->id] : 0;
+            $product->lazada = ($shopProduct && $shopProduct['lazada']) ? $shopProduct['lazada'] : 0;
+            $product->lazadaDetail = ($shopProduct && is_numeric($shopProduct['lazada'])) ? [$product->sku => $shopProduct['lazada']] : [];
+        }
+
+        foreach ($shopProducts as $key => $value) {
             $sku = $sku = config('lazada.' . $key, $key);
+            $lazada = $value['lazada'] ? $value['lazada'] : 0;
+            //$shopee = $value['shopee'] ? $value['shopee'] : 0;
             //package
             if (str_contains($sku, '&')) {
                 $SKUs = explode('&', $sku);
@@ -252,54 +263,45 @@ class ProductsController extends Controller
 
             foreach ($SKUs as $SKU) {
                 if (!in_array($SKU, $productList)) {
-                    Log::error("======= wrong sku $SKU =======");
+                    Log::error("Product checking: wrong sku $SKU");
                     CommonService::writeLog(\App\Models\Log::CATEGORY['ERROR'], "Product checking: wrong sku $SKU");
                 } else {
-                    if (!array_key_exists($SKU, $handledProduct)) {
-                        $handledProduct[$SKU] = $value;
-                    } else {
-                        $quantity = $handledProduct[$SKU] + $value;
-                        $handledProduct[$SKU] = $quantity;
+                    foreach ($products as $product) {
+                        if ($product->sku == $SKU) {
+                            $product->lazada = $product->lazada + $lazada;
+                            if (is_numeric($value['lazada'])) {
+                                $product->lazadaDetail[$key] = $lazada;
+                            }
+                            break;
+                        }
                     }
                 }
             }
         }
 
-        //foreach products...
+        //data parsing
         foreach ($products as $product) {
-            $sku = $product->sku;
-            $flag = false;
-            foreach ($LProducts as $key => $value) {
-                if ($key == $sku) {
-                    $product->l = $value;
-                    unset($LProducts[$key]);
-                    $flag = true;
-                    break;
-                }
-            }
             //HTML data parsing
-            $total = $product->available;
-            $notReceived = !empty($notReceivedProducts[$product->id]) ? -$notReceivedProducts[$product->id] : 0;
-            $irregular = !empty($handledProduct[$sku]) ? $handledProduct[$sku] : 0;
-            $lzd = !empty($product->l) ? $product->l : 0;
-            $quantity = HTMLService::getProductCheckingQuantity($total, $notReceived, $irregular, $lzd, $product->sku);
-            $product->available = $quantity['html'];
-            if (!$flag) {
-                $product->l = 'N/a';
-            }
-            if ($quantity['remain'] < 0) {
-                $product->SKU = "$product->sku <i class='fa fa-warning text-danger'></i>";
+            $available = $product->available;
+            $notReceived = $product->notReceived;
+            $selling = $product->lazada;
+            $remain = $available - $notReceived - $selling;
+            $product->quantityData = HTMLService::getQuantityData($available, $notReceived, $selling, $remain);
+            $product->lazadaDetail = HTMLService::getCheckingDetail($product->lazadaDetail);
+
+            if ($remain < 0) {
+                $product->SKU = "<i class='fa fa-warning text-danger'></i> $product->sku";
                 $remainLessThan0++;
-            } elseif ($quantity['remain'] == 0) {
-                $product->SKU = "$product->sku <i class='fa fa-check-circle text-success'></i>";
+            } elseif ($remain == 0) {
+                $product->SKU = " <i class='fa fa-check-circle text-success'></i> $product->sku";
                 $remainEqual0++;
             } else {
-                $product->SKU = "$product->sku <i class='fa fa-info-circle text-info'></i>";
+                $product->SKU = "<i class='fa fa-info-circle text-info'></i> $product->sku ";
                 $remainGreaterThan0++;
             }
         }
 
-        return view('products.checking', compact('products', 'LProducts', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
+        return view('products.checking', compact('products', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
     }
 
     public function productCheckingTest()
