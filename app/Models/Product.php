@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Faker\Provider\Image;
 use Illuminate\Database\Eloquent\Model;
-use File, DB;
+use File, DB, Exception, Log;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 
 class Product extends Model
 {
@@ -48,13 +50,6 @@ class Product extends Model
         return $this->status ? Product::STATUS_TEXT[array_keys(Product::STATUS, $this->status)[0]] : '';
     }
 
-    public function imageUrl()
-    {
-        if (!empty($this->image_url) && File::exists(public_path(config('constants.PRODUCT_IMAGE_FOLDER')) . '/' . $this->image_url)) {
-            return asset(config('constants.PRODUCT_IMAGE_FOLDER') . '/' . $this->image_url);
-        }
-        return asset('images/product.png');
-    }
 
     public function orders()
     {
@@ -328,5 +323,61 @@ class Product extends Model
         return !$this->orders()->count();
     }
 
+    public function uploadImageToDropbox($image, $imageName)
+    {
+        $client = new Client();
+        try {
+            $client->post('https://content.dropboxapi.com/2/files/upload', [
+                'headers' => [
+                    'Content-Type' => 'application/octet-stream',
+                    'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN'),
+                    'Dropbox-API-Arg' => "{\"path\": \"/products/$imageName\"}"
+                ],
+                'body' => $image
+            ]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+
+        //delete image and update new image name if don't throw exception
+        $oldImageName = $this->image_url;
+        if ($oldImageName) {
+            $client->post('https://api.dropboxapi.com/2/files/delete_v2', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN')
+                ],
+                'json' => ['path' => '/products/' . $oldImageName]
+            ]);
+        }
+        $this->update(['image_url' => $imageName]);
+        return true;
+    }
+
+    public function getImageLinkOnDropbox()
+    {
+        if ($this->image_url) {
+            try {
+                $client = new Client();
+                $res = $client->post('https://api.dropboxapi.com/2/files/get_temporary_link', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . env('DROPBOX_ACCESS_TOKEN')
+                    ],
+                    'json' => ['path' => '/products/' . $this->image_url]
+                ]);
+
+                $body = json_decode($res->getBody()->getContents(), true);
+
+                return $body['link'];
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                return config('constants.DROPBOX_DEFAULT_IMAGE');
+            }
+        } else {
+            return config('constants.DROPBOX_DEFAULT_IMAGE');
+        }
+    }
 
 }

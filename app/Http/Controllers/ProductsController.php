@@ -147,21 +147,10 @@ class ProductsController extends Controller
         ]);
 
         $product = Product::findOrFail($id);
-        // create new file
-        $photoName = time() . '.' . $product->id . '.' . $request->product_image->getClientOriginalExtension();
-        $request->product_image->move(public_path(config('constants.PRODUCT_IMAGE_FOLDER')), $photoName);
 
-        // remove old file
-        if (!empty($product->image_url)) {
-            $oldFilePath = public_path(config('constants.PRODUCT_IMAGE_FOLDER')) . '/' . $product->image_url;
-            if (File::exists($oldFilePath)) {
-                unlink($oldFilePath);
-            }
-        }
+        $imageName = time() . '.' . $product->id . '.' . $request->product_image->getClientOriginalExtension();
 
-        // update user image
-        $product->image_url = $photoName;
-        $product->save();
+        $product->uploadImageToDropbox(file_get_contents($request->file('product_image')), $imageName);
 
         return redirect('/products/' . $id . '/edit');
     }

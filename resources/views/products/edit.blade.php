@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col-sm-2 text-center">
-            <img src="{{ $product->imageUrl() }}" style="max-width: 150px;">
+            <img src="{{ $product->getImageLinkOnDropbox() }}" style="max-width: 150px;">
             {!! Form::model($product, ['method' => 'POST', 'url' => url('products/'.$product->id.'/change-image'), 'files' => true]) !!}
             {{Form::file('product_image', ['id' => 'product_image', 'onchange' => 'uploadFileWithLimit(this, 2);', 'style' => 'display: none', 'accept' => config('constants.ACCEPT_IMAGE_TYPES')])}}
             {{Form::button('Chang Image', ['onclick' => "document.getElementById('product_image').click();", 'class' => 'btn btn-info m-t-20'])}}
