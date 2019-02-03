@@ -36,7 +36,7 @@ class InformationController extends Controller
     {
         try {
             $products = Product::where('status', Product::STATUS['IN_BUSINESS'])
-                ->where('sku', 'like',"%$wildcard%")
+                ->where('sku', 'like', "%$wildcard%")
                 ->get();
             if (count($products) > 1) {
                 return response()->json([
@@ -54,7 +54,7 @@ class InformationController extends Controller
                         'isProductList' => false,
                         'product' => [
                             'sku' => $product->sku,
-                            'image' => 'https://google.com',
+                            'image' => $product->getImageLinkOnDropbox(),
                             'repository' => $product->getAvailableQuantity() - $product->getNotReturnedQuantity()
                         ]
                     ]
