@@ -3,67 +3,35 @@
 namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
-use Exception;
+use App\Services\ApiService;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use Log;
+use Log, DB, Exception;
 
 
 class ProductsController extends Controller
 {
-    public function getProduct($id)
+    public function checkQuantity(Request $request)
     {
         try {
-            $product = Product::where('id', $id)->where('status', Product::STATUS['IN_BUSINESS'])->firstOrFail(['id', 'name', 'display_name', 'quantity', 'old_price', 'price', 'description', 'content', 'image_url']);
-            if (!empty($product->image_url)) {
-                $product->image_url = url(config('constants.PRODUCT_IMAGE_FOLDER') . '/' . $product->image_url);
-            } else {
-                $product->image_url = url('images/product.png');
+            $this->validate($request, ['productId' => 'required|numeric']);
+            $requestData = $request->all();
+            $res = ApiService::checkQuantity($requestData['productId']);
+
+            if (!$res['success']) {
+                return response()->json([
+                    'success' => false,
+                    'massage' => $res['message']
+                ]);
             }
             return response()->json([
-                'success' => true,
-                'product' => $product
-
+                'success' => true
             ]);
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return response()->json([
                 'success' => false,
-
+                'massage' => $e->getMessage()
             ]);
         }
     }
-
-    public function getProducts(Request $request)
-    {
-        try {
-            $this->validate($request, [
-                'ids' => 'required'
-            ]);
-            $ids = $request->get('ids');
-
-            $products = $product = Product::whereIn('id', $ids)->where('status', Product::STATUS['IN_BUSINESS'])->get(['id', 'name', 'display_name', 'quantity', 'old_price', 'price', 'description', 'content', 'image_url']);
-
-            foreach ($products as $product) {
-                if (!empty($product->image_url)) {
-                    $product->image_url = url(config('constants.PRODUCT_IMAGE_FOLDER') . '/' . $product->image_url);
-                } else {
-                    $product->image_url = url('images/product.png');
-                }
-            }
-
-            return response()->json([
-                'success' => true,
-                'products' => $products
-
-            ]);
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-
-            ]);
-        }
-    }
-
 }

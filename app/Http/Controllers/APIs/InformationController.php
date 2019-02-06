@@ -53,9 +53,11 @@ class InformationController extends Controller
                     'data' => [
                         'isProductList' => false,
                         'product' => [
+                            'id' => $product->id,
                             'sku' => $product->sku,
                             'image' => $product->getImageLinkOnDropbox(),
-                            'repository' => $product->getAvailableQuantity() - $product->getNotReturnedQuantity()
+                            'repository' => $product->getAvailableQuantity() - $product->getNotReturnedQuantity(),
+                            'lastQuantityCheckingTime' => $product->quantity_checking_time
                         ]
                     ]
                 ]);
