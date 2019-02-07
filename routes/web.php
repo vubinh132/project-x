@@ -35,7 +35,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     //Products
     Route::post('products/{id}/change-image', 'ProductsController@changeImage');
     Route::post('products/{id}/delete', 'ProductsController@destroy');
-    Route::resource('products', 'ProductsController')->except(['show', 'destroy']);
+    Route::resource('products', 'ProductsController');
 
     //volume Adjustment
     Route::get('volume-adjustment', 'ProductsController@getAdjustment');
