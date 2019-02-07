@@ -181,6 +181,7 @@ class ProductsController extends Controller
         $remainLessThan0 = 0;
         $remainEqual0 = 0;
         $remainGreaterThan0 = 0;
+        $chartData = [];
 
         //get haven't received product
         $notReceivedProducts = DB::table('orders')
@@ -260,6 +261,18 @@ class ProductsController extends Controller
             }
         }
 
+        $total = count($products);
+        $lazadaCommon = 0;
+        //create data for lazada chart
+        foreach ($products as $p) {
+            if ($p->lazadaDetail) {
+                $lazadaCommon++;
+            }
+        }
+        $lazadaSoldOut = ShopProduct::where('lazada', 0)->count();
+        $chartData['lazada'] = [$total - $lazadaCommon, $lazadaCommon, $lazadaSoldOut];
+
+
         //data parsing
         foreach ($products as $product) {
             //HTML data parsing
@@ -282,7 +295,7 @@ class ProductsController extends Controller
             }
         }
 
-        return view('products.checking', compact('products', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
+        return view('products.checking', compact('products', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0', 'chartData'));
     }
 
     //volume adjustment
