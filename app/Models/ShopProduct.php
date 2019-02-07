@@ -25,7 +25,7 @@ class ShopProduct extends Model
      *
      * @var array
      */
-    protected $fillable = ['sku', 'lazada', 'shoppe'];
+    protected $fillable = ['sku', 'lazada', 'shopee'];
 
 
 }

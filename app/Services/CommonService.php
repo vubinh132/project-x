@@ -182,9 +182,13 @@ class CommonService
             'content' => $content,
             'notification_type' => $notificationType
         ]);
-        if ($category == Log::CATEGORY['ERROR'])
-            Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('error!!!', 'emails.template', ['content' => $content], null));
-
+        if ($category == Log::CATEGORY['ERROR']) {
+            if (env('ENVIRONMENT') == 'dev') {
+                Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('DEV - error!!!', 'emails.template', ['content' => $content], null));
+            } else {
+                Mail::to('vuqbinh995@gmail.com')->send(new SimpleEmailSender('error!!!', 'emails.template', ['content' => $content], null));
+            }
+        }
     }
 
 

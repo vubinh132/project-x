@@ -286,11 +286,14 @@ class LazadaService
 
             //delete sku
             $deleteSKUs = ShopProduct::whereIn('sku', $existedSKUs)->get();
-            foreach ($deleteSKUs as $deleteSKUs) {
-                $deleteSKUs->delete();
+            foreach ($deleteSKUs as $deleteSKU) {
+                if ($deleteSKU->shopee == null) {
+                    $deleteSKU->delete();
+                } else {
+                    $deleteSKU->update(['lazada' => null]);
+                }
                 $delete++;
             }
-
             return [
                 'success' => true,
                 'data' => [
