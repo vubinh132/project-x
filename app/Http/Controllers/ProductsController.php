@@ -175,17 +175,6 @@ class ProductsController extends Controller
         }
     }
 
-    public function test()
-    {
-        $result = ['success' => true];
-        $products = Product::where('status', Product::STATUS['IN_BUSINESS'])->get(['id', 'sku']);
-        foreach ($products as $product) {
-            $product['quantity'] = $product->getAvailableQuantity();
-        }
-        $result['products'] = $products;
-        return response()->json($result);
-    }
-
     public function productChecking()
     {
         //general data
@@ -291,76 +280,6 @@ class ProductsController extends Controller
         }
 
         return view('products.checking', compact('products', 'remainLessThan0', 'remainEqual0', 'remainGreaterThan0'));
-    }
-
-    public function productCheckingTest()
-    {
-        $wrongSKUs = [];
-        $res = LazadaService::getProductSKUs();
-        if (!$res['success']) {
-            return response()->json($res);
-        }
-        $LSKUs = $res['data'];
-        $MSKUs = Product::where('status', Product::STATUS['IN_BUSINESS'])->orderBy('sku')->get(['sku'])->pluck('sku')->toArray();
-        foreach ($LSKUs as $LSKU) {
-            if (str_contains($LSKU, '&')) {
-                $arraySKU = explode('&', $LSKU);
-            } else {
-                $arraySKU = [$LSKU];
-            }
-            foreach ($arraySKU as $sku) {
-                if (!in_array($sku, $MSKUs)) {
-                    $wrongSKUs[] = $LSKU;
-                    break;
-                }
-            }
-        }
-
-        sort($wrongSKUs);
-
-        return response()->json([
-            'Ms. La' => [
-                'count' => count($wrongSKUs),
-                'SKUs' => $wrongSKUs
-            ]
-        ]);
-    }
-
-    public function updateQuantity(Request $request)
-    {
-        try {
-            $this->validate($request, [
-                'sku' => 'required',
-                'quantity' => 'required|numeric'
-            ]);
-
-            $requestData = $request->all();
-
-            $getQuantityRes = LazadaService::getQuantity($requestData['sku']);
-
-            if (!$getQuantityRes['success']) {
-                return response()->json($getQuantityRes);
-            }
-
-            $pending = Order::join('order_details', 'orders.id', 'order_details.order_id')
-                ->join('products', 'products.id', 'order_details.product_id')
-                ->where('orders.status', Order::STATUS['ORDERED'])
-                ->where('products.sku', $requestData['sku'])
-                ->sum('order_details.quantity');
-
-            $quantity = $getQuantityRes['data']['quantity'] + $requestData['quantity'] - $pending;
-
-            $setQuantityRes = LazadaService::setQuantity($requestData['sku'], $quantity);
-
-            return response()->json($setQuantityRes);
-
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ]);
-        }
     }
 
     //volume adjustment
