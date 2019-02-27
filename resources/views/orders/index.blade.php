@@ -38,9 +38,7 @@
                             <input type="checkbox" name="canceled" value="1" id="canceled">
                             Canceled & Returned ({{$canceled}})
                         </label>
-                        <span class="input-group-btn btn btn-secondary" id='numOfOrders' ng-bind="numOfOrders"
-                              style="width: 50px">
-                        </span>
+                        <span class="input-group-btn btn btn-secondary" id='numOfOrders' style="width: 50px">...</span>
                         <input type="text" class="form-control search-text" id="keyWord"
                                placeholder="Search by order code..." style="margin-left: 0 !important;">
 

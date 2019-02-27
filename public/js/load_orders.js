@@ -2,8 +2,6 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
 
     $scope.orders = [];
 
-    $scope.numOfOrders = '...';
-
     let callingThreads = 0;
 
     getOrdersFromServer();
@@ -60,7 +58,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
                 $scope.orders = data.data;
                 callingThreads--;
                 if (callingThreads == 0) {
-                    $scope.numOfOrders = $scope.orders.length;
+                    $('#numOfOrders').html( $scope.orders.length);
                     $scope.$apply();
                     $('#table').show();
                     $('#is-loading-text').hide();
