@@ -5,5 +5,6 @@
     "/js/admin.js": "/js/admin.js",
     "/js/user.js": "/js/user.js",
     "/js/load_orders.js": "/js/load_orders.js",
-    "/js/load_logs.js": "/js/load_logs.js"
+    "/js/load_logs.js": "/js/load_logs.js",
+    "/js/load_rom.js": "/js/load_rom.js"
 }

@@ -19,4 +19,5 @@ mix.js(['resources/assets/js/vendor.js'], 'public/js')
     .scripts(['resources/assets/js/admin.js'], 'public/js/admin.js')
     .scripts(['resources/assets/js/user.js'], 'public/js/user.js')
     .scripts(['resources/assets/js/load_orders.js'], 'public/js/load_orders.js')
-    .scripts(['resources/assets/js/load_logs.js'], 'public/js/load_logs.js');
+    .scripts(['resources/assets/js/load_logs.js'], 'public/js/load_logs.js')
+    .scripts(['resources/assets/js/load_rom.js'], 'public/js/load_rom.js');

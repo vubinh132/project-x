@@ -85,9 +85,8 @@
     </div>
 @section('extra_scripts')
     <script type="text/javascript">
-
-        var orders = {!! $orders !!};
-
+        let orders = {!! $orders !!};
     </script>
+    <script src="{{ asset('js/load_rom.js') }}"></script>
 @endsection
 @endsection
