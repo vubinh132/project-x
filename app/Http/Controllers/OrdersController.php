@@ -19,31 +19,12 @@ class OrdersController extends Controller
      */
     public function index()
     {
-
-        $orders = Order::orderBy('created_at', 'desc')
-            ->with(['products' => function ($query) {
-                $query->orderBy('sku');
-            }])
-            ->take(1000)
-            ->get();
-
-        $total = count($orders);
-
-        foreach ($orders as $order) {
-            $order->code = $order->getCode();
-            $order->statusText = $order->statusText();
-            $order->totalPrice = HTMLService::getOrderTotalPrice($order);
-            $order->sellingWeb = $order->sellingWebText();
-            $order->editLink = url('/orders/' . $order->id . '/edit');
-            $order->orderDetail = HTMLService::getOrderDetails($order->products);
-            $order->created_at = $order->getCreatedAt();
-        }
-
+        $total = Order::count();
         $processing = Order::where('status', Order::STATUS['ORDERED'])->count();
         $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
         $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED'], Order::STATUS['LOST']])->count();
 
-        return view('orders.index', compact('orders', 'total', 'processing', 'done', 'canceled'));
+        return view('orders.index', compact('total', 'processing', 'done', 'canceled'));
     }
 
     /**
@@ -208,6 +189,45 @@ class OrdersController extends Controller
         Session::flash('flash_message', 'Updated!');
 
         return redirect('orders');
+    }
+
+    public function getOrders(Request $request)
+    {
+        try {
+            $orderCode = $request->get('orderCode');
+            $conditions = $request->get('conditions');
+            $orders = Order::orderBy('created_at', 'desc')
+                ->with(['products' => function ($query) {
+                    $query->orderBy('sku');
+                }]);
+
+            if (!empty($orderCode)) {
+                $orders = $orders->where('code', 'like', "%$orderCode%");
+            }
+
+            $orders = $orders->whereIn('status', $conditions ? $conditions : []);
+
+            $orders = $orders->take(100)->get();
+
+            foreach ($orders as $order) {
+                $order->code = $order->getCode();
+                $order->statusText = $order->statusText();
+                $order->totalPrice = HTMLService::getOrderTotalPrice($order);
+                $order->sellingWeb = $order->sellingWebText();
+                $order->editLink = url('/orders/' . $order->id . '/edit');
+                $order->orderDetail = HTMLService::getOrderDetails($order->products);
+                $order->created_at = $order->getCreatedAt();
+                unset($order->products);
+            }
+            return response()->json(['success' => true, 'data' => $orders]);
+
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'error' => 'internal server error'
+            ], 500);
+        }
     }
 
 }

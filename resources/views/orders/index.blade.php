@@ -38,7 +38,7 @@
                             <input type="checkbox" name="canceled" value="1" id="canceled">
                             Canceled & Returned ({{$canceled}})
                         </label>
-                        <span class="input-group-btn btn btn-secondary" ng-bind="filteredOrders.length"
+                        <span class="input-group-btn btn btn-secondary" id='numOfOrders' ng-bind="numOfOrders"
                               style="width: 50px">
                         </span>
                         <input type="text" class="form-control search-text" id="keyWord"
@@ -48,8 +48,7 @@
 
                 </div>
 
-
-                <table class="table table-hover" id="table">
+                <table class="table table-hover" id="table" style="display: none">
                     <thead>
                     <tr>
                         <th><span style="margin-left: 50px">Code</span></th>
@@ -63,7 +62,7 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="x in filteredOrders|orderBy:'created_at' : true">
+                    <tr ng-repeat="x in orders|orderBy:'created_at' : true">
                         <td ng-bind="x.code"></td>
                         <td ng-bind="x.statusText"></td>
                         <td><span ng-bind-html="trustAsHtml(x.totalPrice)" data-toggle='tooltip'
@@ -83,15 +82,19 @@
                     </tbody>
                 </table>
             </div>
+            <div class="text-center" id='is-loading-text'
+                 style="margin-top: 100px; margin-bottom: 150px; font-size: 18px">
+                <b>Data is loading. Please wait...</b>
+            </div>
         </div>
     </div>
 
 
 @section('extra_scripts')
-    <script type="text/javascript">
-
-        var orders = {!! $orders !!};
-
+    <script>
+        let getOrdersUrl = "{{url('orders/get-orders')}}";
+        let csrfToken = "{{ csrf_token() }}";
     </script>
+    <script src="{{ asset('js/load_orders.js') }}"></script>
 @endsection
 @endsection

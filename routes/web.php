@@ -51,6 +51,7 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::post('quantity-checking/{id}', 'ProductsController@checkQuantity');
 
     //Orders
+    Route::post('orders/get-orders', 'OrdersController@getOrders');
     Route::resource('orders', 'OrdersController');
 
     //ROM

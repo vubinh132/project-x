@@ -17,4 +17,5 @@ mix.js(['resources/assets/js/vendor.js'], 'public/js')
 })
     .sass('resources/assets/sass/user.scss', 'public/css')
     .scripts(['resources/assets/js/admin.js'], 'public/js/admin.js')
-    .scripts(['resources/assets/js/user.js'], 'public/js/user.js');
+    .scripts(['resources/assets/js/user.js'], 'public/js/user.js')
+    .scripts(['resources/assets/js/load_orders.js'], 'public/js/load_orders.js');
