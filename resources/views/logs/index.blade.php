@@ -27,14 +27,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="x in data|orderBy:'created_at':true">
-                            <td ng-bind-html="trustAsHtml(x.created_at + '</br>' + getTime(x.created_at))"></td>
-                            <td ng-bind="x.categoryText"></td>
-                            <td ng-bind="x.content"></td>
-                        </tr>
+                    <tr ng-repeat="x in data|orderBy:'created_at':true">
+                        <td ng-bind-html="trustAsHtml(x.created_at + '</br>' + getTime(x.created_at))"></td>
+                        <td ng-bind="x.categoryText"></td>
+                        <td ng-bind="x.content"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+@section('extra_scripts')
+    <script src="{{ asset('js/load_logs.js') }}"></script>
+@endsection
 @endsection

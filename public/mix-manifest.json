@@ -4,5 +4,6 @@
     "/css/user.css": "/css/user.css",
     "/js/admin.js": "/js/admin.js",
     "/js/user.js": "/js/user.js",
-    "/js/load_orders.js": "/js/load_orders.js"
+    "/js/load_orders.js": "/js/load_orders.js",
+    "/js/load_logs.js": "/js/load_logs.js"
 }
