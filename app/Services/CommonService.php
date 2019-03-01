@@ -10,6 +10,7 @@ use App\Models\Log;
 use App\Models\SettingKey;
 use App\Mail\SimpleEmailSender;
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class CommonService
 {
@@ -177,6 +178,9 @@ class CommonService
 
     public static function writeLog($category, $content, $notificationType = Log::NOTIFICATION_TYPE['NONE'])
     {
+        if ($category == Log::CATEGORY['ACTIVITIES'])
+            $content = Auth::user()->full_name . ' ' . $content;
+
         Log::create([
             'category' => $category,
             'content' => $content,

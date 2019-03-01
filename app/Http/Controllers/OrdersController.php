@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Log, File, Session, DB;
 use App\Services\CommonService;
+use App\Models\Log as LogModel;
 
 
 class OrdersController extends Controller
@@ -149,11 +150,11 @@ class OrdersController extends Controller
             //if order status is internal
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['INTERNAL']]);
         } elseif ($order->status == Order::STATUS['RETURNED'] && $order->returned) {
-            //if order status is return and have not been received
+            //if order status is return and have been received
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED']]);
         } elseif ($order->status == Order::STATUS['RETURNED'] && !$order->returned) {
-            //if order status is return and have been received
-            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED'], Order::STATUS['LOST']]);
+            //if order status is return and have not been received
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED'], Order::STATUS['LOST'], Order::STATUS['PAID']]);
         } elseif ($order->status == Order::STATUS['LOST']) {
             //if order status is lost
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['LOST']]);
@@ -174,6 +175,8 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
 
+        $oldStatus = $order->getOriginal('status');
+
         //can not update internal order
         if ($order->status != Order::STATUS['INTERNAL']) {
 
@@ -184,6 +187,13 @@ class OrdersController extends Controller
             $requestData = $request->all();
 
             $order->update($requestData);
+
+            $newStatus = $order->status;
+        }
+
+        if ($oldStatus != $newStatus) {
+            $orderCode = $order->code;
+            CommonService::writeLog(LogModel::CATEGORY['ACTIVITIES'], "have updated order $orderCode: ($oldStatus) -> ($newStatus)");
         }
 
         Session::flash('flash_message', 'Updated!');

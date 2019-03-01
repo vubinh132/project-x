@@ -13,14 +13,16 @@ class Log extends Model
         'ERROR' => 4,
 
         //specific
-        'ROM' => 101
+        'ROM' => 101,
+        'ACTIVITIES' => 102
 
     ];
     const CATEGORY_TEXT = [
         'SECURITY' => 'Security',
         'JOB' => 'Cron-job',
         'ERROR' => 'Error',
-        'ROM' => 'Rom'
+        'ROM' => 'Rom',
+        'ACTIVITIES' => 'Activities'
     ];
 
     const NOTIFICATION_TYPE = [
