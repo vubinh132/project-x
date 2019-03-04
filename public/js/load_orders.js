@@ -36,16 +36,16 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
         var filterArray = [];
 
         if ($('#processing').is(':checked')) {
-            filterArray.push(1);
+            filterArray.push('N');
         }
         if ($('#done').is(':checked')) {
-            filterArray.push(2);
-            filterArray.push(3);
+            filterArray.push('P');
+            filterArray.push('I');
         }
         if ($('#canceled').is(':checked')) {
-            filterArray.push(4);
-            filterArray.push(5);
-            filterArray.push(6);
+            filterArray.push('C');
+            filterArray.push('RN');
+            filterArray.push('L');
         }
 
         $.post(getOrdersUrl,
@@ -58,7 +58,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
                 $scope.orders = data.data;
                 callingThreads--;
                 if (callingThreads == 0) {
-                    $('#numOfOrders').html( $scope.orders.length);
+                    $('#numOfOrders').html($scope.orders.length);
                     $scope.$apply();
                     $('#table').show();
                     $('#is-loading-text').hide();

@@ -9,12 +9,12 @@ use DB;
 class Order extends Model
 {
     const STATUS = [
-        'ORDERED' => 1,
-        'PAID' => 2,
-        'INTERNAL' => 3,
-        'CANCELED' => 4,
-        'RETURNED' => 5,
-        'LOST' => 6
+        'ORDERED' => 'N',
+        'PAID' => 'P',
+        'INTERNAL' => 'I',
+        'CANCELED' => 'C',
+        'RETURNED' => 'RN',
+        'LOST' => 'L'
     ];
     const STATUS_TEXT = [
         'ORDERED' => 'Ordered',
