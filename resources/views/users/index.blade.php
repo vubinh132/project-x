@@ -63,7 +63,7 @@
                                              style="border: 1px solid #ddd;">
                                     </td>
                                     <td>
-                                        {{ $item->full_name }}
+                                        {{ $item->username }}
                                         <div class="small">{{ $item->fb_uid || $item->google_uid ? "(".$item->loginType().")" : '' }}</div>
                                     </td>
                                     <td>{{ $item->email }}</td>

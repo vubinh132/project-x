@@ -58,7 +58,7 @@
             min-height: 1em;
         }
 
-        .reauth-email {
+        .reauth-username {
             display: block;
             color: #404040;
             line-height: 2;
@@ -74,7 +74,8 @@
         }
 
         .form-signin #inputEmail,
-        .form-signin #inputPassword {
+        .form-signin #inputPassword,
+        .form-signin #inputUsername {
             direction: ltr;
             height: 44px;
             font-size: 16px;
@@ -130,17 +131,17 @@
             <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
             <form class="form-signin" action="{{ route('login') }}" class="login-form text-center" method="POST">
-                <span id="reauth-email" class="reauth-email"></span>
-                <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address"
+                <span id="reauth-username" class="reauth-username"></span>
+                <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username"
                        required autofocus
-                       value="{{ old('email') }}">
+                       value="{{ old('username') }}">
                 <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password"
                        required>
                 {{ csrf_field() }}
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
-                @if ($errors->has('password') || $errors->has('email'))
+                @if ($errors->has('password') || $errors->has('username'))
                     <div class="help-block text-center" style="text-align: left; color: red;">
-                        <strong>Email or Password is incorrect.</strong>
+                        <strong>Username or Password is incorrect.</strong>
                     </div>
                 @endif
             </form><!-- /form -->

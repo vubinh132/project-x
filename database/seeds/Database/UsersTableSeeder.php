@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
     {
         $users = [
             [
-                'full_name' => 'admin',
+                'username' => 'admin',
                 'role_id' => 1,
                 'email' => 'admin@mailinator.com',
                 'password' => bcrypt('123456'),
@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ],
             [
-                'full_name' => 'user',
+                'username' => 'user',
                 'role_id' => null,
                 'email' => 'user@mailinator.com',
                 'password' => bcrypt('123456'),

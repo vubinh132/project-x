@@ -19,5 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(NotesTableSeeder::class);
         //sync time
         $this->call(Ver8SyncTimeSeeder::class);
+        //lazada token
+        $this->call(Ver9AuthTokenSeeder::class);
+        //internal api key
+        $this->call(Ver13ApiKeySeeder::class);
     }
 }

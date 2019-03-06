@@ -32,11 +32,11 @@ class UsersController extends Controller
             $isAdmin = true;
         }
 
-        $users = User::orderBy('full_name');
+        $users = User::orderBy('username');
         if (!empty($keyword)) {
             $keyword = CommonService::correctSearchKeyword($keyword);
             $users = $users->where(function ($query) use ($keyword) {
-                $query->orWhere('full_name', 'LIKE', $keyword);
+                $query->orWhere('username', 'LIKE', $keyword);
                 $query->orWhere('email', 'LIKE', $keyword);
                 $query->orWhere('phone', 'LIKE', $keyword);
             });
