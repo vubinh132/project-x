@@ -16,13 +16,13 @@ use App\Models\ShopProduct;
 class LazadaService
 {
     const ORDER_STATUS = [
-        'pending' => 1,
-        'shipped' => 1,
-        'ready_to_ship' => 1,
-        'delivered' => 2,
-        'returned' => 5,
-        'canceled' => 4,
-        'failed' => 5
+        'pending' => 'N',
+        'shipped' => 'N',
+        'ready_to_ship' => 'N',
+        'delivered' => 'P',
+        'returned' => 'RN',
+        'canceled' => 'C',
+        'failed' => 'RN'
     ];
 
 

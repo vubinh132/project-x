@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Models\Role;
 
 class Ver15UpdateUser extends Migration
 {
@@ -18,7 +19,12 @@ class Ver15UpdateUser extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->renameColumn('full_name', 'username');
+            $table->unique(['username']);
         });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->boolean('allows_login_cms')->default(false);
+        });
+        Role::where('id', 1)->where('code', 'admin')->update(['allows_login_cms' => true]);
     }
 
     /**
@@ -34,6 +40,10 @@ class Ver15UpdateUser extends Migration
             $table->string('google_uid')->nullable();
             $table->dropColumn(['first_name', 'last_name']);
             $table->renameColumn('username', 'full_name');
+            $table->dropUnique(['username']);
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->dropColumn(['allows_login_cms']);
         });
     }
 }

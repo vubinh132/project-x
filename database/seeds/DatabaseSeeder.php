@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Ver9AuthTokenSeeder::class);
         //internal api key
         $this->call(Ver13ApiKeySeeder::class);
+        //roles
+        $this->call(Ver15RoleAndUserSeeder::class);
     }
 }

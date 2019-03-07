@@ -17,7 +17,8 @@ class RolesTableSeeder extends Seeder
                 'name' => 'Admin',
                 'code' => 'admin',
                 'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
+                'updated_at' => Carbon::now(),
+                'allows_login_cms' => true
             ]
         ];
 

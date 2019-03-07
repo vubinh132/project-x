@@ -7,8 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 Use Log, Location;
-use Jenssegers\Agent\Agent;
-use App\Models\Log as LogModel;
+use App\Models\Role;
 
 
 class LoginController extends Controller
@@ -45,7 +44,9 @@ class LoginController extends Controller
 
     protected function credentials(Request $request)
     {
-        return array_merge($request->only($this->username(), 'password'), ['is_locked' => false]);
+        $adminRoleId = Role::where('allows_login_cms', true)->first()->id;
+
+        return array_merge($request->only($this->username(), 'password'), ['is_locked' => false, 'role_id' => $adminRoleId]);
     }
 
     protected function authenticated(Request $request, $user)

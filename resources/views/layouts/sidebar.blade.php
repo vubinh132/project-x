@@ -12,18 +12,7 @@
 
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse slimscrollsidebar">
-        <ul class="nav" id="side-menu">
-            <li class="sidebar-search hidden-sm hidden-md hidden-lg">
-                <div class="input-group custom-search-form">
-                    <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
-                </div>
-            </li>
-            <li class="user-pro">
-                <a href="javascript:void(0)" class="waves-effect">
-                    <img src="{{ Auth::user()->imageUrl() }}" alt="user-img" class="img-circle">
-                    <span class="hide-menu">{{ Auth::user()->full_name }}</span>
-                </a>
-            </li>
+        <ul class="nav" id="side-menu" style="padding-top: 12px">
             <li>
                 <a href="javascript:void(0);" class="waves-effect {{ $userMenuSelected ? 'active' : '' }}">
                     <div style="display: inline-block; width: 20px"><i class="fa fa-users" aria-hidden="true"></i></div>
@@ -32,6 +21,9 @@
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="{{ url('/users') }}">Users</a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/roles') }}">Roles</a>
                     </li>
                 </ul>
             </li>

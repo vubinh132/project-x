@@ -150,7 +150,7 @@
                 addElementsForProduct(count);
                 setUnitPrice($('#unit_' + count).parent().parent(), firstId)
                 $('#numOfProducts').val(count);
-                if ($("#status").val() != 3) {
+                if ($("#status").val() != '{{\App\Models\Order::STATUS['INTERNAL']}}') {
                     $('#operation_' + count).hide();
                 } else {
                     $('#operation_' + count).val(2)
@@ -206,7 +206,7 @@
 
         //set status
         function setStatus() {
-            if ($("#status").val() == 3) {
+            if ($("#status").val() == '{{\App\Models\Order::STATUS['INTERNAL']}}') {
                 $('#selling-web-group').hide();
                 $('.customer-input-group').hide();
                 $('.provider-input-group').show();
@@ -231,7 +231,7 @@
 
         //set operation
         function setOperation() {
-            if ($("#status").val() == 3) {
+            if ($("#status").val() == '{{\App\Models\Order::STATUS['INTERNAL']}}') {
                 for (var i = 1; i < count; i++) {
                     $('#operation_' + i).show();
                     $('#operation_' + i).val(2);
