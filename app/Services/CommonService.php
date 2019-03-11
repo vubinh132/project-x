@@ -178,9 +178,6 @@ class CommonService
 
     public static function writeLog($category, $content, $notificationType = Log::NOTIFICATION_TYPE['NONE'])
     {
-        if ($category == Log::CATEGORY['ACTIVITIES'])
-            $content = Auth::user()->username . ' ' . $content;
-
         Log::create([
             'category' => $category,
             'content' => $content,

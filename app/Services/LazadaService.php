@@ -11,6 +11,7 @@ use App\SDKs\lazada\lazop\LazopClient;
 use App\SDKs\lazada\lazop\LazopRequest;
 use App\SDKs\lazada\lazop\UrlConstants;
 use App\Models\ShopProduct;
+use App\Models\User;
 
 
 class LazadaService
@@ -33,6 +34,8 @@ class LazadaService
             $update = 0;
             $insert = 0;
             $fail = 0;
+
+            $entity = User::where('username', 'lazada')->firstOrFail();
 
             $orders = Order::where('selling_web', Order::SELLING_WEB['LAZADA'])->get();
 
@@ -78,13 +81,13 @@ class LazadaService
                             $order->update([
                                 'status' => LazadaService::ORDER_STATUS[$LStatuses[0]],
                                 'api_updated_at' => new Carbon($LUpdatedAt)
-                            ]);
+                            ], ['entity' => $entity]);
                         } else {
                             $order->update([
                                 'is_parted' => true,
                                 'status' => LazadaService::ORDER_STATUS[$LStatuses[1]],
                                 'api_updated_at' => new Carbon($LUpdatedAt),
-                            ]);
+                            ], ['entity' => $entity]);
                             Log::info("$lazadaOrderCode - $numOfStatus - " . LazadaService::ORDER_STATUS[$LStatuses[1]]);
                         }
 
@@ -104,7 +107,7 @@ class LazadaService
 
                     try {
 
-                        DB::transaction(function () use ($lazadaOrderCode, $LName, $LPhone, $LAddress, $LCreatedAt, $LUpdatedAt, $LProducts, $LStatuses) {
+                        DB::transaction(function () use ($lazadaOrderCode, $LName, $LPhone, $LAddress, $LCreatedAt, $LUpdatedAt, $LProducts, $LStatuses, $entity) {
 
                             $numOfStatus = count($LStatuses);
 
@@ -118,7 +121,7 @@ class LazadaService
                                     'selling_web' => 2,
                                     'api_created_at' => new Carbon($LCreatedAt),
                                     'api_updated_at' => new Carbon($LUpdatedAt)
-                                ]);
+                                ], ['entity' => $entity]);
                             } else {
                                 $order = Order::create([
                                     'is_parted' => true,
@@ -130,7 +133,7 @@ class LazadaService
                                     'selling_web' => 2,
                                     'api_created_at' => new Carbon($LCreatedAt),
                                     'api_updated_at' => new Carbon($LUpdatedAt)
-                                ]);
+                                ], ['entity' => $entity]);
                             }
                             foreach ($LProducts as $LProduct) {
                                 $product = Product::where('sku', $LProduct[0])->firstOrFail();

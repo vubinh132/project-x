@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Product;
-use DB;
+use DB, Log;
+use App\Services\CommonService;
+use App\Models\Log as LogModel;
+use Carbon\Carbon;
 
 class Order extends Model
 {
@@ -120,6 +122,47 @@ class Order extends Model
         }
 
         return $profit;
+    }
+
+    public static function create(array $attributes = [], array $options = [])
+    {
+        $model = static::query()->create($attributes);
+        if (!empty($options['entity'])) {
+            $entity = $options['entity'];
+            $status = $model->status;
+            $isManual = !empty($options['isManual']);
+            OrderLog::create(['order_id' => $model->id, 'to' => $status, 'entity_id' => $entity->id, 'is_manual' => $isManual, 'creation_time' => Carbon::now()]);
+            if ($isManual) {
+                $orderCode = $model->getCode();
+                CommonService::writeLog(LogModel::CATEGORY['ACTIVITIES'], $entity->username . " have created a new order $orderCode - ($status)");
+            }
+        }
+        return $model;
+    }
+
+    public function update(array $attributes = [], array $options = [])
+    {
+        if (!$this->exists) {
+            return false;
+        }
+
+        $oldStatus = $this->status;
+
+        $res = $this->fill($attributes)->save($options);
+
+        if (!empty($attributes['status']) && !empty($options['entity'])) {
+            $entity = $options['entity'];
+            $newStatus = $attributes['status'];
+            $isManual = !empty($options['isManual']);
+            if ($newStatus != $oldStatus) {
+                OrderLog::create(['order_id' => $this->id, 'from' => $oldStatus, 'to' => $newStatus, 'entity_id' => $entity->id, 'is_manual' => $isManual, 'creation_time' => Carbon::now()]);
+                if ($isManual) {
+                    $orderCode = $this->getCode();
+                    CommonService::writeLog(LogModel::CATEGORY['ACTIVITIES'], $entity->username . " have updated order $orderCode: ($oldStatus) -> ($newStatus)");
+                }
+            }
+        }
+        return $res;
     }
 
 }

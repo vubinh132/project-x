@@ -6,9 +6,8 @@ use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
-use Log, File, Session, DB;
+use Log, File, Session, DB, Auth;
 use App\Services\CommonService;
-use App\Models\Log as LogModel;
 
 
 class OrdersController extends Controller
@@ -120,7 +119,7 @@ class OrdersController extends Controller
 
         DB::transaction(function () use ($requestData, $products) {
 
-            $order = Order::create($requestData);
+            $order = Order::create($requestData, ['isManual' => true, 'entity' => Auth::user()]);
 
             foreach ($products as $product) {
                 $order->products()->attach($product[0], ['quantity' => $product[1], 'price' => $product[2]]);
@@ -175,8 +174,6 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $oldStatus = $order->getOriginal('status');
-
         //can not update internal order
         if ($order->status != Order::STATUS['INTERNAL']) {
 
@@ -186,14 +183,7 @@ class OrdersController extends Controller
             ]);
             $requestData = $request->all();
 
-            $order->update($requestData);
-
-            $newStatus = $order->status;
-        }
-
-        if ($oldStatus != $newStatus) {
-            $orderCode = $order->code;
-            CommonService::writeLog(LogModel::CATEGORY['ACTIVITIES'], "have updated order $orderCode: ($oldStatus) -> ($newStatus)");
+            $order->update($requestData, ['isManual' => true, 'entity' => Auth::user()]);
         }
 
         Session::flash('flash_message', 'Updated!');
