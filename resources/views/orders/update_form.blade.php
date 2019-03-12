@@ -44,15 +44,15 @@
         </div>
     </div>
 
-    <div class="form-group row {{ $errors->has('note') ? 'has-error' : ''}}">
-        {!! Form::label('note', 'Note', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
-        <div class="col-md-9 col-sm-7">
-            {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
-            {!! Form::textarea('note', null, ['class' => 'form-control summernote']) !!}
-        </div>
-    </div>
-
 @endif
+
+<div class="form-group row {{ $errors->has('note') ? 'has-error' : ''}}">
+    {!! Form::label('note', 'Note', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+    <div class="col-md-9 col-sm-7">
+        {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
+        {!! Form::textarea('note', null, ['class' => 'form-control summernote']) !!}
+    </div>
+</div>
 
 <div class="form-group row">
     <div class="col-sm-12 text-right">

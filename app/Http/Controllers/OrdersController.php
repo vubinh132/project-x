@@ -183,8 +183,12 @@ class OrdersController extends Controller
             ]);
             $requestData = $request->all();
 
-            $order->update($requestData, ['isManual' => true, 'entity' => Auth::user()]);
+        } else {
+            //just update note for internal orders
+            $requestData = ['note' => $request->get('note')];
         }
+
+        $order->update($requestData, ['isManual' => true, 'entity' => Auth::user()]);
 
         Session::flash('flash_message', 'Updated!');
 
