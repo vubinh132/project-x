@@ -140,6 +140,8 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
 
+        $logs = $order->logs;
+
         $statusList = [];
 
         if ($order->status == Order::STATUS['PAID'] || $order->status == Order::STATUS['ORDERED'] || $order->status == Order::STATUS['CANCELED']) {
@@ -159,7 +161,7 @@ class OrdersController extends Controller
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['LOST']]);
         }
 
-        return view('orders.edit', compact('order', 'statusList'));
+        return view('orders.edit', compact('order', 'statusList', 'logs'));
     }
 
     /**

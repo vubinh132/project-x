@@ -77,10 +77,16 @@ class Order extends Model
         return $this->status ? Order::STATUS_TEXT[array_keys(Order::STATUS, $this->status)[0]] : '';
     }
 
+    public static function statusTextByCode($status)
+    {
+        return $status ? Order::STATUS_TEXT[array_keys(Order::STATUS, $status)[0]] : '';
+    }
+
     public function sellingWebText()
     {
         return $this->selling_web ? Order::SELLING_WEB_TEXT[array_keys(Order::SELLING_WEB, $this->selling_web)[0]] : '';
     }
+
 
     public function providerText()
     {
@@ -164,5 +170,12 @@ class Order extends Model
         }
         return $res;
     }
+
+
+    public function logs()
+    {
+        return $this->hasMany('App\Models\OrderLog', 'order_id')->orderBy('id');
+    }
+
 
 }

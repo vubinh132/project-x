@@ -235,5 +235,14 @@ class CommonService
         ];
     }
 
+    public static function getStringDuration($period)
+    {
+        $seconds = $period % 60 > 0 ? str_pad($period % 60, 2, '0', STR_PAD_LEFT) . 's' : '';
+        $minutes = floor(($period / 60) % 60) > 0 ? str_pad(floor(($period / 60) % 60), 2, '0', STR_PAD_LEFT) . 'm ' : '';
+        $hours = floor(($period / 3600) % 24) > 0 ? str_pad(floor(($period / 3600) % 24), 2, '0', STR_PAD_LEFT) . 'h ' : '';
+        $days = floor($period / 86400) > 0 ? floor($period / 86400) . 'd ' : '';
+        return $days . $hours . $minutes . $seconds;
+    }
+
 
 }
