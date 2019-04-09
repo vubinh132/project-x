@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Services\HTMLService;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
 use Log, File, Session, DB, Auth;
 use App\Services\CommonService;
+use App\Models\User;
 
 
 class OrdersController extends Controller
@@ -92,15 +94,18 @@ class OrdersController extends Controller
 
             $this->validate($request, $validate_list);
 
-            unset($requestData['selling_web']);
+            $requestData['name'] = User::getActiveUserById($requestData['provider'], Role::ROLE_CODE['PROVIDER'])->username;
+
+            $requestData['selling_web'] = $requestData['provider'];
+
             unset($requestData['code']);
-            unset($requestData['name']);
             unset($requestData['phone']);
             unset($requestData['email']);
             unset($requestData['address']);
             unset($requestData['address_test']);
+            unset($requestData['provider']);
 
-            $requestData['name'] = Order::PROVIDER_TEXT[array_keys(Order::PROVIDER, $requestData['provider'])[0]];
+
 
             for ($i = 1; $i <= $numOfProduct; $i++) {
                 $price = $requestData['operation_' . $i] == 1 ? $requestData['price_' . $i] : -($requestData['price_' . $i]);

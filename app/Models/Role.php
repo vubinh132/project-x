@@ -324,6 +324,10 @@ class Role extends Model
         ],
     ];
 
+    const ROLE_CODE = [
+        'PROVIDER' =>'provider'
+    ];
+
     /**
      * The database table used by the model.
      *

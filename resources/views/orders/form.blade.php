@@ -71,7 +71,7 @@
 <div class="form-group row {{ $errors->has('provider') ? 'has-error' : ''}} provider-input-group">
     {!! Form::label('provider', 'Provider', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
     <div class="col-md-9 col-sm-7">
-        {!! Form::select('provider', \App\Services\CommonService::mapStatus(\App\Models\Order::PROVIDER, \App\Models\Order::PROVIDER_TEXT), null, ['class' => 'form-control', 'required' => 'required', 'id'=>'selling-web']) !!}
+        {!! Form::select('provider', \App\Models\User::getProviders(), null, ['class' => 'form-control', 'required' => 'required', 'id'=>'selling-web']) !!}
         {!! $errors->first('provider', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

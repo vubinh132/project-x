@@ -39,14 +39,6 @@ class Order extends Model
         'SHOPEE' => 'Shopee'
     ];
 
-    const PROVIDER = [
-        'SEUDO' => 1,
-    ];
-
-    const PROVIDER_TEXT = [
-        'SEUDO' => 'seudo',
-    ];
-
 
     /**
      * The database table used by the model.
@@ -84,7 +76,7 @@ class Order extends Model
 
     public function sellingWebText()
     {
-        return $this->selling_web ? Order::SELLING_WEB_TEXT[array_keys(Order::SELLING_WEB, $this->selling_web)[0]] : '';
+        return ($this->selling_web && $this->status != Order::STATUS['INTERNAL']) ? Order::SELLING_WEB_TEXT[array_keys(Order::SELLING_WEB, $this->selling_web)[0]] : '';
     }
 
 
@@ -177,5 +169,8 @@ class Order extends Model
         return $this->hasMany('App\Models\OrderLog', 'order_id')->orderBy('id');
     }
 
+    public function owner(){
+        return $this->belongsTo('App\Models\User', 'selling_web');
+    }
 
 }

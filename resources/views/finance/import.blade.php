@@ -29,10 +29,10 @@
             <tbody>
             @foreach($providers as $provider)
                 <tr>
-                    <td>{{ \App\Models\Order::PROVIDER_TEXT[array_keys(\App\Models\Order::PROVIDER, 1)[0]] }}</td>
+                    <td>{{$provider->owner->username }}</td>
                     <td>{{$provider->num_of_orders}}</td>
                     <td>{{\App\Services\CommonService::formatPrice($provider->total_value)}}</td>
-                    <td><a href="{{ url('/finance/import/' . $provider->provider) }}"
+                    <td><a href="{{ url('/finance/import/' . $provider->owner->id) }}"
                            data-toggle="tooltip" title="See details" data-animation="false">
                             <i class="fa fa-eye text-inverse m-l-5 m-r-5"></i>
                         </a></td>

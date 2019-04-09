@@ -12,6 +12,7 @@ use Log;
 
 class User extends Authenticatable
 {
+
     const STATUS_TEXT = [
         'ACTIVE' => 'Active Account',
         'LOCKED' => 'Blocked Account'
@@ -215,8 +216,32 @@ class User extends Authenticatable
 
     public function isLocked()
     {
-
         return $this->is_locked;
+    }
 
+    public static function getProviders()
+    {
+        return User::selectRaw('users.username, users.id, count(*) as numOfOrders')
+            ->join('roles', 'roles.id', 'users.role_id')
+            ->leftJoin('orders', 'orders.selling_web', 'users.id')
+            ->where('roles.code', Role::ROLE_CODE['PROVIDER'])
+            ->where('is_locked', false)
+            ->groupBy('users.username', 'users.id')
+            ->orderby('numOfOrders', 'desc')
+            ->pluck('users.username', 'users.id');
+    }
+
+    public static function getActiveUserById($id, $roleCode = null)
+    {
+        $user = User::join('roles', 'roles.id', 'users.role_id')
+            ->where('is_locked', false);
+
+        if ($roleCode) {
+            $user->where('roles.code', $roleCode);
+        }
+
+        $user = $user->findOrFail($id);
+
+        return $user;
     }
 }

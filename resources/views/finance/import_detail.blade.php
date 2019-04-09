@@ -20,7 +20,7 @@
             <thead>
             <tr>
                 <th scope="col">Code</th>
-                <th scope="col">Name</th>
+                <th scope="col">Provider Name</th>
                 <th scope="col">Total Price</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Note</th>
@@ -30,7 +30,7 @@
             @foreach($orders as $order)
                 <tr>
                     <th scope="row">{{$order->id}}</th>
-                    <td>{{$order->name}}</td>
+                    <td>{{$order->owner->username}}</td>
                     <td>{{ \App\Services\CommonService::formatPrice($order->total_price)}}</td>
                     <td>{{$order->quantity}}</td>
                     <td>{!! $order->note !!}</td>
