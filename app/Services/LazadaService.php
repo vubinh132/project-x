@@ -17,13 +17,13 @@ use App\Models\User;
 class LazadaService
 {
     const ORDER_STATUS = [
-        'pending' => 'N',
-        'shipped' => 'N',
-        'ready_to_ship' => 'N',
-        'delivered' => 'P',
-        'returned' => 'RN',
-        'canceled' => 'C',
-        'failed' => 'RN'
+        'pending' => Order::STATUS['ORDERED'],
+        'shipped' => Order::STATUS['ORDERED'],
+        'ready_to_ship' => Order::STATUS['ORDERED'],
+        'delivered' => Order::STATUS['PAID'],
+        'returned' => Order::STATUS['NOT_RECEIVED'],
+        'canceled' => Order::STATUS['CANCELED'],
+        'failed' => Order::STATUS['NOT_RECEIVED']
     ];
 
 
