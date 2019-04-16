@@ -325,7 +325,8 @@ class Role extends Model
     ];
 
     const ROLE_CODE = [
-        'PROVIDER' =>'provider'
+        'PROVIDER' =>'provider',
+        'ECOMMERCE_PLATFORM' => 'ecommerce_platform'
     ];
 
     /**

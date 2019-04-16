@@ -59,7 +59,7 @@ class Product extends Model
     //get all orders exclude returned and canceled
     public function getAvailableQuantity()
     {
-        return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->whereNotIn('orders.status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED']])->sum('order_details.quantity');
+        return Product::join('order_details', 'order_details.product_id', 'products.id')->join('orders', 'orders.id', 'order_details.order_id')->where('products.id', $this->id)->whereNotIn('orders.status', [Order::STATUS['CANCELED'], Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED']])->sum('order_details.quantity');
     }
 
     //get all ordered orders
@@ -78,7 +78,7 @@ class Product extends Model
     {
         $quantity = Order::select(DB::raw('sum(order_details.quantity) as quantity'))
             ->join('order_details', 'order_details.order_id', 'orders.id')
-            ->where('orders.status', Order::STATUS['RETURNED'])
+            ->where('orders.status', Order::STATUS['NOT_RECEIVED'])
             ->where('order_details.product_id', $this->id)
             ->where(function ($query) {
                 $query->where('orders.returned', null)

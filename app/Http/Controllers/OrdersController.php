@@ -24,7 +24,7 @@ class OrdersController extends Controller
         $total = Order::count();
         $processing = Order::where('status', Order::STATUS['ORDERED'])->count();
         $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
-        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['RETURNED'], Order::STATUS['LOST']])->count();
+        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED'],Order::STATUS['LOST']])->count();
 
         return view('orders.index', compact('total', 'processing', 'done', 'canceled'));
     }
@@ -151,16 +151,16 @@ class OrdersController extends Controller
 
         if ($order->status == Order::STATUS['PAID'] || $order->status == Order::STATUS['ORDERED'] || $order->status == Order::STATUS['CANCELED']) {
             //if order status is ordered, paid, cancelled
-            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['CANCELED'], Order::STATUS['RETURNED']]);
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['CANCELED'], Order::STATUS['NOT_RECEIVED']]);
         } elseif ($order->status == Order::STATUS['INTERNAL']) {
             //if order status is internal
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['INTERNAL']]);
-        } elseif ($order->status == Order::STATUS['RETURNED'] && $order->returned) {
+        } elseif ($order->status == Order::STATUS['NOT_RECEIVED'] && $order->returned) {
             //if order status is return and have been received
-            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED']]);
-        } elseif ($order->status == Order::STATUS['RETURNED'] && !$order->returned) {
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['NOT_RECEIVED']]);
+        } elseif ($order->status == Order::STATUS['NOT_RECEIVED'] && !$order->returned) {
             //if order status is return and have not been received
-            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['RETURNED'], Order::STATUS['LOST'], Order::STATUS['PAID']]);
+            $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['NOT_RECEIVED'], Order::STATUS['LOST'], Order::STATUS['PAID']]);
         } elseif ($order->status == Order::STATUS['LOST']) {
             //if order status is lost
             $statusList = CommonService::mapStatus(Order::STATUS, Order::STATUS_TEXT, [Order::STATUS['LOST']]);

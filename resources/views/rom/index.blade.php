@@ -74,7 +74,7 @@
                         <td ng-bind="x.created_at"></td>
                         <td class="text-center text-nowrap">
                             <input type="checkbox" ng-model="x.returned"
-                                   ng-change="changeReturnStatus(x.id, x.returned)">
+                                   ng-change="changeReturnStatus(x)">
                         </td>
                     </tr>
 

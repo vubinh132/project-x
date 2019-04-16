@@ -46,6 +46,7 @@ app.controller("orderIndexCtrl", function ($scope, $sce) {
             filterArray.push('C');
             filterArray.push('RN');
             filterArray.push('L');
+            filterArray.push('RR');
         }
 
         $.post(getOrdersUrl,

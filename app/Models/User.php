@@ -231,6 +231,18 @@ class User extends Authenticatable
             ->pluck('users.username', 'users.id');
     }
 
+    public static function getEcommercePlatforms()
+    {
+        return User::selectRaw('users.username, users.id, count(*) as numOfOrders')
+            ->join('roles', 'roles.id', 'users.role_id')
+            ->leftJoin('orders', 'orders.selling_web', 'users.id')
+            ->where('roles.code', Role::ROLE_CODE['ECOMMERCE_PLATFORM'])
+            ->where('is_locked', false)
+            ->groupBy('users.username', 'users.id')
+            ->orderby('numOfOrders', 'desc')
+            ->pluck('users.username', 'users.id');
+    }
+
     public static function getActiveUserById($id, $roleCode = null)
     {
         $user = User::join('roles', 'roles.id', 'users.role_id')

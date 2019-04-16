@@ -15,7 +15,8 @@ class Order extends Model
         'PAID' => 'P',
         'INTERNAL' => 'I',
         'CANCELED' => 'C',
-        'RETURNED' => 'RN',
+        'NOT_RECEIVED' => 'RN',
+        'RECEIVED' => 'RR',
         'LOST' => 'L'
     ];
     const STATUS_TEXT = [
@@ -23,8 +24,21 @@ class Order extends Model
         'PAID' => 'Paid',
         'INTERNAL' => 'Internal',
         'CANCELED' => 'Canceled',
-        'RETURNED' => 'Returned',
+        'NOT_RECEIVED' => 'Returned - NOT',
+        'RECEIVED' => 'Returned - RE',
         'LOST' => 'Lost'
+    ];
+
+
+    //TODO: implement status configuration
+    const STATUS_CONFIGURATION = [
+        Order::STATUS['ORDERED'] => [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['CANCELED']],
+        Order::STATUS['PAID'] => [Order::STATUS['ORDERED'], Order::STATUS['PAID'], Order::STATUS['CANCELED']],
+        Order::STATUS['INTERNAL'] => [Order::STATUS['INTERNAL']],
+        Order::STATUS['CANCELED'] => [Order::STATUS['CANCELED']],
+        Order::STATUS['NOT_RECEIVED'] => [Order::STATUS['NOT_RECEIVED']],
+        Order::STATUS['RECEIVED'] => [Order::STATUS['RECEIVED']],
+        Order::STATUS['LOST'] => [Order::STATUS['LOST']],
     ];
 
     const SELLING_WEB = [
@@ -169,7 +183,8 @@ class Order extends Model
         return $this->hasMany('App\Models\OrderLog', 'order_id')->orderBy('id');
     }
 
-    public function owner(){
+    public function owner()
+    {
         return $this->belongsTo('App\Models\User', 'selling_web');
     }
 

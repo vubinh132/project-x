@@ -187,11 +187,7 @@ class ProductsController extends Controller
         $notReceivedProducts = DB::table('orders')
             ->select(DB::raw('order_details.product_id, sum(order_details.quantity) as quantity'))
             ->join('order_details', 'order_details.order_id', 'orders.id')
-            ->where('orders.status', Order::STATUS['RETURNED'])
-            ->where(function ($query) {
-                $query->where('orders.returned', null)
-                    ->orWhere('orders.returned', false);
-            })
+            ->where('orders.status', Order::STATUS['NOT_RECEIVED'])
             ->groupBy('order_details.product_id')
             ->pluck('quantity', 'product_id');
 

@@ -1,5 +1,7 @@
 app.controller("romIndexCtrl", function ($scope, $sce) {
 
+    const statuses = {RN: 'Returned - NOT', RR: 'Returned - RE'};
+
     $scope.orders = orders;
 
     filter();
@@ -42,32 +44,41 @@ app.controller("romIndexCtrl", function ($scope, $sce) {
         }
     }
 
-    $scope.changeReturnStatus = function (id, value) {
-
-        var status = value ? 1 : 0;
-        var url = window.location.origin + '/rom/change-return-status/' + id + '?status=' + status;
+    $scope.changeReturnStatus = function (x) {
+        var status = x.returned ? 1 : 0;
+        var url = window.location.origin + '/rom/change-return-status/' + x.id + '?status=' + status;
         $.ajax({
             url: url,
             type: 'GET',
             success: function (res) {
-                filter();
-                $scope.$apply();
-
                 if (res.success) {
+                    x.status = res.data.status;
+                    x.statusText = statuses[x.status];
+                    filter();
+                    $scope.$apply();
                     $.alert({
                         backgroundDismiss: true,
                         title: 'Success',
-                        content: 'Update successfully',
+                        content: 'Update successfully ' + '(' + x.status + ')',
                     });
                 } else {
+                    x.returned = !x.returned;
+                    $scope.$apply();
                     $.alert({
                         backgroundDismiss: true,
                         title: 'Fail',
-                        content: 'Fail...',
+                        content: res.message,
                     });
                 }
-                $("#ui-button-text-lazada").text('UPDATE');
-                $("#lazada").attr('disabled', false);
+            }, error: function (xhr, status, error) {
+                x.returned = !x.returned;
+                $scope.$apply();
+                let errorMessage = xhr.status + ': ' + xhr.statusText
+                $.alert({
+                    backgroundDismiss: true,
+                    title: 'Fail',
+                    content: 'Error - ' + errorMessage,
+                });
             }
         })
     }

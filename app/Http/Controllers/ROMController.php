@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\HTMLService;
 use App\Models\Log;
 use Exception;
+Use Illuminate\Support\Facades\Auth;
 
 
 class ROMController extends Controller
@@ -26,7 +27,7 @@ class ROMController extends Controller
         $orders = Order::with(['products' => function ($query) {
             $query->orderBy('sku');
         }])
-            ->where('orders.status', Order::STATUS['RETURNED'])
+            ->whereIn('orders.status', [Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED']])
             ->orderBy('orders.created_at', 'desc')->get();
 
         foreach ($orders as $order) {
@@ -37,7 +38,7 @@ class ROMController extends Controller
             $order->editLink = url('/admin/orders/' . $order->id . '/edit');
             $order->orderDetail = HTMLService::getOrderDetails($order->products);
             $order->created_at = $order->getCreatedAt();
-            $order->returned = $order->returned ? true : false;
+            $order->returned = $order->status == Order::STATUS['RECEIVED'] ? true : false;
         }
 
         return view('rom.index', compact('orders', 'notification'));
@@ -47,26 +48,32 @@ class ROMController extends Controller
     public function changeReturnStatus(Request $request, $id)
     {
         try {
-            $status = $request->get('status') == 0 ? false : true;
+            $status = $request->get('status') == 0 ? Order::STATUS['NOT_RECEIVED'] : Order::STATUS['RECEIVED'];
 
-            $order = Order::where('id', $id)->where('status', Order::STATUS['RETURNED'])->firstOrFail();
+            $order = Order::where('id', $id)->whereIN('status', [Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED']])->firstOrFail();
 
-            $order->update(['returned' => $status]);
+            $order->update(['status' => $status], ['isManual' => true, 'entity' => Auth::user()]);
 
             return response()->json([
-                    'success' => true]
+                    'success' => true,
+                    'data' => [
+                        'status' => $order->status
+                    ]
+                ]
             );
 
         } catch (Exception $e) {
             return response()->json([
-                    'success' => false]
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
             );
         }
     }
 
     public function commit()
     {
-        $received = Order::where('status', Order::STATUS['RETURNED'])->where('returned', true)->count();
+        $received = Order::where('status', Order::STATUS['NOT_RECEIVED'])->where('returned', true)->count();
         Log::create([
             'category' => Log::CATEGORY['ROM'],
             'content' => "$received orders have been received",
