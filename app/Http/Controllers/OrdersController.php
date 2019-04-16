@@ -24,7 +24,7 @@ class OrdersController extends Controller
         $total = Order::count();
         $processing = Order::where('status', Order::STATUS['ORDERED'])->count();
         $done = Order::whereIn('status', [Order::STATUS['PAID'], Order::STATUS['INTERNAL']])->count();
-        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED'],Order::STATUS['LOST']])->count();
+        $canceled = Order::whereIn('status', [Order::STATUS['CANCELED'], Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED'], Order::STATUS['LOST']])->count();
 
         return view('orders.index', compact('total', 'processing', 'done', 'canceled'));
     }
@@ -104,7 +104,6 @@ class OrdersController extends Controller
             unset($requestData['address']);
             unset($requestData['address_test']);
             unset($requestData['provider']);
-
 
 
             for ($i = 1; $i <= $numOfProduct; $i++) {
@@ -213,7 +212,13 @@ class OrdersController extends Controller
                 }]);
 
             if (!empty($orderCode)) {
-                $orders = $orders->where('code', 'like', "%$orderCode%");
+                $orders = $orders->where(function ($query) use ($orderCode) {
+                    $query->where('code', 'like', "%$orderCode%")
+                        ->orWhere(function ($query) use ($orderCode) {
+                            $query->where('status', Order::STATUS['INTERNAL'])
+                                ->where('id', 'like', '%' . ltrim($orderCode, '0') . '%');
+                        });
+                });
             }
 
             $orders = $orders->whereIn('status', $conditions ? $conditions : []);
