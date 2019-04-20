@@ -102,7 +102,6 @@ class OrdersController extends Controller
             unset($requestData['phone']);
             unset($requestData['email']);
             unset($requestData['address']);
-            unset($requestData['address_test']);
             unset($requestData['provider']);
 
 
@@ -120,6 +119,8 @@ class OrdersController extends Controller
             Session::flash('flash_error', 'Status of this order is incorrect!');
             return redirect('orders/create');
         }
+
+        $requestData['is_special'] = $request->get('is_special') ? true : false;
 
         DB::transaction(function () use ($requestData, $products) {
 
@@ -190,9 +191,11 @@ class OrdersController extends Controller
             $requestData = $request->all();
 
         } else {
-            //just update note for internal orders
+            //just update note and is_special for internal orders
             $requestData = ['note' => $request->get('note')];
         }
+
+        $requestData['is_special'] = $request->get('is_special') ? true : false;
 
         $order->update($requestData, ['isManual' => true, 'entity' => Auth::user()]);
 

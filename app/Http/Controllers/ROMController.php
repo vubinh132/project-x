@@ -73,7 +73,7 @@ class ROMController extends Controller
 
     public function commit()
     {
-        $received = Order::where('status', Order::STATUS['NOT_RECEIVED'])->where('returned', true)->count();
+        $received = Order::where('status', Order::STATUS['RECEIVED'])->count();
         Log::create([
             'category' => Log::CATEGORY['ROM'],
             'content' => "$received orders have been received",

@@ -57,6 +57,14 @@
     </div>
 </div>
 
+<div class="form-group row {{ $errors->has('is_special') ? 'has-error' : ''}}">
+    {!! Form::label('is_special', 'Is Special Order', ['class' => 'col-md-3 col-sm-5 col-form-label']) !!}
+    <div class="col-md-9 col-sm-7">
+        {!! $errors->first('is_special', '<p class="help-block">:message</p>') !!}
+        {!! Form::checkbox('is_special', 1, (isset($order) && $order->is_special) ? true :  false,['class' => '']) !!}
+    </div>
+</div>
+
 <div class="form-group row">
     <div class="col-sm-12 text-right">
         <a href="{{ url("/orders")  }}" class="btn btn-secondary">Cancel</a>
