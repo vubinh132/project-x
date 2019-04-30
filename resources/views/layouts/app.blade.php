@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="{{ url('/favicon.ico') }}"/>
+    <link rel="icon" type="image/x-icon" href="{{ url('/logo.jpg') }}"/>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -64,17 +64,11 @@
 
 <!-- Theme Scripts -->
 <!-- jQuery -->
-<script src="{{ asset('theme/admin/js/jquery.min.js') }}"></script>
-<!-- AngularJs -->
-<script src="{{ asset('theme/admin/js/angular.min.js') }}"></script>
-<script src="{{ asset('theme/admin/js/angular-sanitize.js') }}"></script>
-<script src="{{ asset('theme/admin/js/ocLazyLoad.js') }}"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="{{ asset('theme/admin/js/tether.min.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('theme/admin/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('theme/admin/js/bootstrap-extension.min.js') }}"></script>
 <!-- Datatable JavaScript -->
-<script src="{{ asset('theme/admin/js/jquery.dataTables.min.js') }}"></script>
+{{--<script src="{{ asset('theme/admin/js/jquery.dataTables.min.js') }}"></script>--}}
 <!-- Menu Plugin JavaScript -->
 <script src="{{ asset('theme/admin/js/sidebar-nav.min.js') }}"></script>
 <!--slimscroll JavaScript -->
@@ -89,8 +83,6 @@
 <!-- jQuery peity -->
 <script src="{{ asset('theme/admin/js/jquery.peity.min.js') }}"></script>
 <script src="{{ asset('theme/admin/js/jquery.peity.init.js') }}"></script>
-<!-- Comfirm box -->
-<script src="{{ asset('theme/admin/js/jquery-confirm.min.js') }}"></script>
 <!-- Bootbox -->
 <script src="{{ asset('theme/admin/js/bootbox.min.js') }}"></script>
 <!-- Moment -->
@@ -109,16 +101,13 @@
 <script src="{{ asset('theme/admin/js/row-sorter.js') }}"></script>
 <!-- Custom Theme JavaScript -->
 <script src="{{ asset('theme/admin/js/custom.min.js') }}"></script>
-<!-- QR code JavaScript -->
-<script src="{{ asset('theme/admin/js/jquery-qrcode.min.js') }}"></script>
 <!-- Jquery format number -->
 <script src="{{ asset('theme/admin/js/jquery.number.min.js') }}"></script>
 <!-- Scripts -->
-<script src="{{ asset('js/vendor.js') }}"></script>
 <script src="{{ asset('js/admin.js') }}"></script>
 
 <script type="text/javascript">
-    $(window).load(function() {
+    $(window).on('load', function() {
         $(".loader").fadeOut(1000);
     });
     @if (session('flash_message'))

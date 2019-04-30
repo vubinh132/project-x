@@ -3,11 +3,9 @@
   float: none;
   text-align: center;
 }
-
 .dataTables_wrapper .dataTables_filter .search-text {
   width: 300px;
 }
-
 .dataTables_wrapper .dataTables_filter .input-group label {
   padding-top: 10px;
 }
@@ -16,13 +14,11 @@
 .bootbox.modal {
   top: 20%;
 }
-
 @media screen and (max-width: 767px) {
   .bootbox.modal {
     top: 5%;
   }
 }
-
 .bootbox.modal .modal-dialog {
   margin: 30px auto;
 }
@@ -35,27 +31,21 @@ ul.alert {
 .multiselect-native-select .multiselect-container.dropdown-menu {
   width: 100% !important;
 }
-
 .multiselect-native-select .multiselect-container.dropdown-menu label.checkbox input[type=checkbox] {
   opacity: 1;
 }
-
 .multiselect-native-select .multiselect-container.dropdown-menu label.radio input[type=radio] {
   opacity: 1;
 }
-
 .multiselect-native-select .btn-group {
   width: 100% !important;
 }
-
 .multiselect-native-select .btn-group .multiselect {
   width: 100% !important;
 }
-
 .multiselect-native-select .btn-group button.multiselect {
   text-align: left;
 }
-
 .multiselect-native-select .btn-group button.multiselect::after {
   float: right;
   margin-top: 7px;
@@ -80,7 +70,6 @@ table tr.sorting-row td {
 .bootbox-confirm .modal-dialog .modal-content .modal-header {
   padding: 5px 15px;
 }
-
 .bootbox-confirm .modal-dialog .modal-content .modal-header .modal-title {
   margin-top: 20px;
 }

@@ -12,21 +12,30 @@
     "test": "php vendor/phpunit/phpunit/phpunit"
   },
   "devDependencies": {
-    "axios": "^0.15.3",
-    "bootstrap-sass": "^3.3.7",
+    "angular-sanitize": "^1.7.8",
+    "axios": "^0.18",
+    "bootstrap": "^4.0.0",
+    "bootstrap-sass": "^3.4.1",
     "cross-env": "^3.2.3",
     "del": "^3.0.0",
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",
-    "gulp-rename": "^1.2.2",
-    "jquery": "^3.1.1",
-    "laravel-mix": "^1.0.*",
-    "lodash": "^4.17.4",
+    "gulp-rename": "^1.4.0",
+    "jquery": "^3.4.0",
+    "jquery-confirm": "^3.3.4",
+    "laravel-mix": "^4.0.7",
+    "lodash": "^4.17.11",
+    "oclazyload": "^1.1.0",
+    "popper.js": "^1.12",
     "run-sequence": "^1.2.2",
-    "vue": "^2.1.10"
+    "sass": "^1.19.0",
+    "sass-loader": "^7.1.0",
+    "sidebar-nav": "^1.0.18",
+    "tether": "^1.4.6",
+    "vue": "^2.5.17",
+    "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
-    "angular-sanitize": "^1.7.0",
-    "oclazyload": "^1.1.0"
+    "angular": "^1.7.8"
   }
 }
