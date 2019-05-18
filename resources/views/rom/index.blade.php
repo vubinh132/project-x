@@ -13,20 +13,12 @@
         </div>
     </div>
     <div class="white-box" ng-app="myApp" ng-controller="romIndexCtrl">
-
+        <ul class="nav nav-pills">
+            <li class="active"><a href="#">Checking Page</a></li>
+            <li><a href="https://google.com">Confirmation Page</a></li>
+        </ul>
         <div class="table-responsive">
             <div class="dataTables_wrapper no-footer">
-                <div class="dataTables_length" style="margin-bottom: 10px !important;">
-                    <label>
-                        <a href="{{ url('/rom/commit') }}" class="btn btn-success pull-left">
-                            <i class="fa fa-check"></i> Commit
-                        </a>
-                    </label>
-                    <div>
-                        <b>{{$notification}}</b>
-                    </div>
-                </div>
-
                 <div class="dataTables_filter">
 
                     <div class="input-group">

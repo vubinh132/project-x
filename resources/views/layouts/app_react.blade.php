@@ -45,16 +45,15 @@
 <body>
 <div class="loader"></div>
 <div id="wrapper">
+
     @include('layouts.header')
 
     @include('layouts.sidebar')
-
     <div id="page-wrapper">
-        <div class="container-fluid">
-            @yield('content')
-        </div>
+        {{-----------------------------REACT CONTENT FIELD-----------------------------}}
     </div>
     @include('layouts.footer')
+
 </div>
 
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -63,7 +62,7 @@
 
 <!-- Theme Scripts -->
 <!-- jQuery -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/app_react.js') }}"></script>
 <script src="{{ asset('theme/admin/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('theme/admin/js/bootstrap-extension.min.js') }}"></script>
 <!-- Datatable JavaScript -->

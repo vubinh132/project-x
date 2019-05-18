@@ -103,7 +103,7 @@
                         <a href="{{ url('/notes') }}">Notes</a>
                     </li>
                     <li>
-                        <a href="#">Projects</a>
+                        <a href="https://google.com">Projects</a>
                     </li>
                 </ul>
             </li>

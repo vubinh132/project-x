@@ -13,4 +13,7 @@ require('oclazyload');
 window.Tether = require('tether');
 require('jquery-confirm');
 
+require('./components/rom/Main')
+
+
 

@@ -27,7 +27,7 @@ class ROMController extends Controller
         $orders = Order::with(['products' => function ($query) {
             $query->orderBy('sku');
         }])
-            ->whereIn('orders.status', [Order::STATUS['NOT_RECEIVED'], Order::STATUS['RECEIVED']])
+            ->where('orders.status', Order::STATUS['NOT_RECEIVED'])
             ->orderBy('orders.created_at', 'desc')->get();
 
         foreach ($orders as $order) {
@@ -80,6 +80,10 @@ class ROMController extends Controller
             'notification_type' => Log::NOTIFICATION_TYPE['NONE']
         ]);
         return redirect('/rom');
+    }
+
+    public function getView(){
+        return view('layouts.app_react');
     }
 
 }

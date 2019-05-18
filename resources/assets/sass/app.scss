@@ -1,14 +1,163 @@
+//// Fonts
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+//
+//// Variables
+//@import "variables";
+//
+//// Bootstrap
+//@import '~bootstrap/scss/bootstrap';
+//
+//.navbar-laravel {
+//  background-color: #fff;
+//  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+//}
 
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+//CUSTOM CSS ------------------------------------------------------------------------------------------------
 
-// Variables
-@import "variables";
+/* Custom Datatable CSS */
+.dataTables_wrapper {
+  .dataTables_paginate {
+    float: none;
+    text-align: center;
+  }
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+  .dataTables_filter {
+    .search-text {
+      width: 300px;
+    }
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    .input-group {
+      label {
+        padding-top: 10px;
+      }
+    }
+  }
+}
+
+/* Custom bootbox modal */
+.bootbox {
+  &.modal {
+    top: 20%;
+
+    @media screen and (max-width: 767px) {
+      top: 5%;
+    }
+
+    .modal-dialog {
+      margin: 30px auto;
+    }
+  }
+}
+
+ul.alert {
+  padding-left: 30px;
+}
+
+/* Bootstrap Multiselect */
+.multiselect-native-select {
+  .multiselect-container.dropdown-menu {
+    width: 100% !important;
+
+    label.checkbox {
+      input[type=checkbox] {
+        opacity: 1;
+      }
+    }
+
+    label.radio {
+      input[type=radio] {
+        opacity: 1;
+      }
+    }
+  }
+
+  .btn-group {
+    width: 100% !important;
+
+    .multiselect {
+      width: 100% !important;
+    }
+
+    button {
+      &.multiselect {
+        text-align: left;
+
+        &::after {
+          float: right;
+          margin-top: 7px;
+        }
+      }
+    }
+  }
+}
+
+/* Row Sorter */
+table.sorting-table {
+  cursor: move;
+}
+
+table tr.sorting-row td {
+  background-color: #ddd;
+}
+
+.left-label {
+  display: inline-block;
+  font-weight: 500;
+  width: 110px;
+}
+
+/* Bootbox confirm */
+.bootbox-confirm {
+  .modal-dialog {
+    .modal-content {
+      .modal-header {
+        padding: 5px 15px;
+
+        .modal-title {
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+}
+
+.tooltip-inner {
+  min-width: 100px;
+  max-width: 100%;
+  opacity: 0.9 !important;
+}
+
+.loader {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('../images/loader.gif') 50% 50% no-repeat rgb(249, 249, 249);
+  opacity: 1;
+}
+
+.react-loader {
+  height: 400px;
+  background: url('../images/react_loader.gif') 50% 50% no-repeat rgb(249, 249, 249);
+  opacity: 1;
+}
+
+.page-title {
+  display: inline-block;
+  padding-right: 25px;
+  margin: 0px !important;
+  vertical-align: middle;
+}
+
+.btn-nav {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.footer {
+  padding: 7px 30px;
+  border: 1px solid;
+  margin-bottom: 1px;
 }

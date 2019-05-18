@@ -55,9 +55,11 @@ Route::group(['middleware' => ['admin', 'revalidate']], function () {
     Route::resource('orders', 'OrdersController');
 
     //ROM
-    Route::get('rom/commit', 'ROMController@commit');
-    Route::get('rom/change-return-status/{id}', 'ROMController@changeReturnStatus');
-    Route::resource('rom', 'ROMController');
+//    Route::get('rom/commit', 'ROMController@commit');
+//    Route::get('rom/change-return-status/{id}', 'ROMController@changeReturnStatus');
+//    Route::resource('rom', 'ROMController');
+
+    Route::get('rom', 'ROMController@getView');
 
     //Log
     Route::resource('logs', 'LogsController');

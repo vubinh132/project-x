@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+let mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,12 +12,5 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/admin.scss', 'public/css').options({
-    processCssUrls: false
-})
-    .sass('resources/assets/sass/user.scss', 'public/css')
-    .scripts(['resources/assets/js/admin.js'], 'public/js/admin.js')
-    .scripts(['resources/assets/js/user.js'], 'public/js/user.js')
-    .scripts(['resources/assets/js/load_orders.js'], 'public/js/load_orders.js')
-    .scripts(['resources/assets/js/load_logs.js'], 'public/js/load_logs.js')
-    .scripts(['resources/assets/js/load_rom.js'], 'public/js/load_rom.js');
+    .react('resources/assets/js/app_react.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css');

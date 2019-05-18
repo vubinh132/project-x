@@ -104,6 +104,11 @@ class Order extends Model
         return $this->belongsToMany('App\Models\Product', 'order_details')->using('App\Models\OrderDetail')->withPivot('product_id', 'order_id', 'quantity', 'price', 'id')->withTimestamps();
     }
 
+    public function productsWithoutPivots()
+    {
+        return $this->belongsToMany('App\Models\Product', 'order_details')->using('App\Models\OrderDetail');
+    }
+
     public function getCode()
     {
         return ($this->selling_web && ($this->selling_web == Order::SELLING_WEB['LAZADA'] || $this->selling_web == Order::SELLING_WEB['SHOPEE'])) ? $this->code : str_pad($this->id, 5, '0', STR_PAD_LEFT);
