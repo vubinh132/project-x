@@ -274,7 +274,7 @@ class LazadaService
             if (!$res['success']) {
                 return $res;
             }
-            $products = $res['data']['products'];
+            $products = empty($res['data']['products']) ? [] : $res['data']['products'];
             foreach ($products as $product) {
                 foreach ($product['skus'] as $sku) {
                     if (LazadaService::updateSKUData($sku, $existedSKUs) == 'u') {
