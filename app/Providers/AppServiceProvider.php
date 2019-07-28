@@ -20,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
 //        URL::forceScheme('https');
         Schema::defaultStringLength(191);
 
+        set_time_limit(3000);
+
         Validator::extend('html_required', function($attribute, $value, $parameters, $validator) {
             if(!empty($value) && strlen(trim(strip_tags($value))) > 0){
                 return true;
